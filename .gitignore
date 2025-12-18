@@ -1,0 +1,73 @@
+# ======================
+# Node / JavaScript
+# ======================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+
+# ======================
+# Python (Backend)
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.env
+*.venv/
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+*.egg
+.pytest_cache/
+.coverage
+
+# ======================
+# Vite / Frontend
+# ======================
+.vite/
+vite.config.*.js
+
+# ======================
+# Logs
+# ======================
+*.log
+logs/
+*.out
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# IDE / Editor
+# ======================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ======================
+# Misc / Temp
+# ======================
+*.swp
+*.tmp
+
+# ======================
+# Optional: TypeScript
+# ======================
+*.tsbuildinfo
+
+# ======================
+# Testing / Coverage
+# ======================
+coverage/

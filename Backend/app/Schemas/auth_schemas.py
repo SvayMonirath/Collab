@@ -9,7 +9,6 @@ class RegisterInput(BaseModel):
 
 class LoginInput(BaseModel):
     # You can use either username or email to login
-    username: Optional[str] = None
-    email: Optional[EmailStr] = None
+    username: str
     password: str
 

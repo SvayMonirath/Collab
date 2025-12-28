@@ -76,7 +76,7 @@ export function Register() {
                             <label htmlFor="" className="text-black! font-bold text-base ml-5
                                 sm:text-lg! md:text-xl!
                             ">Password</label>
-                            <input type="text" className="rounded-md! px-2! text-black!
+                            <input type="password" className="rounded-md! px-2! text-black!
                                 sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
                             " placeholder="*************" id="password" value={formData.password} onChange={handleChange} />
                         </div>
@@ -85,7 +85,7 @@ export function Register() {
                             <label htmlFor="" className="text-black! font-bold text-base ml-5
                                 sm:text-lg! md:text-xl!
                             ">Confirm</label>
-                            <input type="text" className="rounded-md! px-2! text-black!
+                            <input type="password" className="rounded-md! px-2! text-black!
                                 sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
                             " placeholder="*************" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
                         </div>

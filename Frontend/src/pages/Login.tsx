@@ -32,7 +32,7 @@ export function Login() {
                         <label htmlFor="" className="text-black! font-bold text-base ml-5
                             sm:text-lg! md:text-xl!
                         ">Password</label>
-                        <input type="text" className="rounded-md! px-2! text-black!
+                        <input type="password" className="rounded-md! px-2! text-black!
                             sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
                         " placeholder="Enter your password" id="password" />
                     </div>

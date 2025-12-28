@@ -89,7 +89,7 @@ export function Login() {
                     </div>
                 </div>
                 {/* illustration */}
-                <img src={Collaboration} alt="Collaboration Illustration" className="hidden! md:block!"/>
+                <img src={Collaboration} alt="Collaboration Illustration" className="hidden! lg:block! lg:size-[40rem] 2xl:size-[50rem] "/>
             </main>
         </div>
     );

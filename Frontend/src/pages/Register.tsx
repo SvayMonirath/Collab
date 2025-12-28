@@ -11,7 +11,7 @@ export function Register() {
                 md:pt-5! md:text-left! md:items-center! lg:justify-around!
             ">
                 {/* illustration */}
-                <img src={VideoCall} alt="Video Call Illustration" className="hidden! md:block! size-[30rem]"/>
+                <img src={VideoCall} alt="Video Call Illustration" className="hidden! lg:block! size-[30rem] lg:size-[35rem] 2xl:size-[40rem]"/>
                 {/* input content */}
                 <div className="flex flex-col gap-4 w-full max-w-md px-4!
                     sm:mt-6 md:max-w-lg! md:px-6! lg:max-w-xl! lg:px-8!

@@ -6,7 +6,7 @@ const UnAuthNav: React.FC = () => {
         <nav className="flex flex-row justify-between items-center p-4 bg-linear-to-r from-white via-gray-200 to-white shadow-md">
             <div className="text-gray-800 font-extrabold text-xl!
                 md:text-2xl! lg:text-3xl!
-            ">Collab</div>
+            ">COLLAB</div>
             <div className="flex flex-row items-center gap-7!
                 md:gap-6! lg:gap-8!
                 text-sm! md:text-base! lg:text-lg!

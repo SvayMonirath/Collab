@@ -195,7 +195,7 @@ export function Landing() {
             >
               <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
                 {/* from asset */}
-                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4 rounded-lg! shadow-md!">
+                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
                   <img
                     src={CallingAmico}
                     alt="Calling Illustration"
@@ -220,7 +220,7 @@ export function Landing() {
               {/* section2  */}
               <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
                 {/* from asset */}
-                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4 rounded-lg! shadow-md!">
+                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
                   <img
                     src={LiveTranscript}
                     alt="Live Transcription Illustration"
@@ -243,7 +243,7 @@ export function Landing() {
               {/* section3  */}
               <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
                 {/* from asset */}
-                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4 rounded-lg! shadow-md!">
+                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
                   <img
                     src={AiSuggestion}
                     alt="AI Suggestion Illustration"
@@ -268,7 +268,7 @@ export function Landing() {
               {/* section4  */}
               <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
                 {/* from asset */}
-                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4 rounded-lg! shadow-md!">
+                <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
                   <img
                     src={ReviewApprove}
                     alt="Review & Approve Illustration"

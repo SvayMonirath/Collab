@@ -1,15 +1,44 @@
+import { useState } from "react";
+
+import { useRegister } from "../hooks/registerHooks";
+import type { RegisterTypes } from "../types/registerTypes";
+
+import { PopUpMessage } from "../components/popUpMessage";
 import { AuthNav } from "../components/AuthNav";
 import VideoCall from "../assets/videoCall.svg"
 import GoogleIcon from "../assets/googleIcon.png";
 import GithubIcon from "../assets/githubIcon.png";
 
 export function Register() {
+
+    const { register, loading, error, message } = useRegister();
+
+    const [formData, setFormData] = useState<RegisterTypes>({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        });
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await register(formData);
+    }
+
     return (
         <div>
             <AuthNav />
-            <main className="bg-white min-h-screen flex flex-row justify-center! pb-20! pt-5!
+            <main className="bg-white min-h-screen flex flex-row justify-center! pb-20! pt-5! relative
                 md:pt-5! md:text-left! md:items-center! lg:justify-around!
             ">
+                { (message || error) && <PopUpMessage message={message} error={error} /> }
                 {/* illustration */}
                 <img src={VideoCall} alt="Video Call Illustration" className="hidden! lg:block! size-[30rem] lg:size-[35rem] 2xl:size-[40rem]"/>
                 {/* input content */}
@@ -29,7 +58,7 @@ export function Register() {
                         ">Name</label>
                         <input type="text" className="rounded-md! px-2! text-black!
                             sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
-                        " placeholder="Enter your name" id="name" />
+                        " placeholder="Enter your name" id="username" value={formData.username} onChange={handleChange} />
                     </div>
                     {/* email */}
                     <div className="flex flex-col gap-2 ">
@@ -38,7 +67,7 @@ export function Register() {
                         ">Email</label>
                         <input type="email" className="rounded-md! px-2! text-black!
                             sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
-                        " placeholder="Enter your email" id="email" />
+                        " placeholder="Enter your email" id="email" value={formData.email} onChange={handleChange} />
                     </div>
                     {/* passwords */}
                     <div className="flex flex-row justify-between ">
@@ -49,7 +78,7 @@ export function Register() {
                             ">Password</label>
                             <input type="text" className="rounded-md! px-2! text-black!
                                 sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
-                            " placeholder="*************" id="password" />
+                            " placeholder="*************" id="password" value={formData.password} onChange={handleChange} />
                         </div>
                         {/* confirm */}
                         <div className="flex flex-col gap-2">
@@ -58,14 +87,14 @@ export function Register() {
                             ">Confirm</label>
                             <input type="text" className="rounded-md! px-2! text-black!
                                 sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
-                            " placeholder="*************" id="confirmPassword" />
+                            " placeholder="*************" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
                         </div>
 
                     </div>
 
-                    <button className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
+                    <button onClick={handleSubmit} disabled={loading} className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
                         sm:text-base! md:text-lg!
-                    ">Register</button>
+                    ">{loading ? "Registering..." : "Register"}</button>
                     <p className="text-gray-500 text-center text-sm opacity-80
                         md:text-base!
                     ">Or Register With</p>

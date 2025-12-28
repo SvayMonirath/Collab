@@ -23,7 +23,6 @@ async def register(user_input: RegisterInput, db: AsyncSession = Depends(get_db)
     existing_user = result.scalar_one_or_none()
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already taken")
-
     #  check for in matching passwords
     if user_input.password != user_input.confirmPassword:
         raise HTTPException(status_code=400, detail="Passwords do not match")
@@ -36,7 +35,7 @@ async def register(user_input: RegisterInput, db: AsyncSession = Depends(get_db)
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
-    return {"message": "User registered successfully"}
+    return {"message": "User registered successfully", "success": True}
 
 # --------------- Login Endpoint ---------------
 @auth_router.post("/login")

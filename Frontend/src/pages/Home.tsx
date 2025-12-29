@@ -53,11 +53,31 @@ export function Home() {
                         {teams.length === 0 && !loading && <p>No teams found.</p>}
 
                         {teams.map((team) => (
-                            <div key={team.id} className="team-card border border-black! rounded-lg! p-4! shadow-md! bg-gray-100!">
-                                <h3>{team.title}</h3>
-                                <p>{team.description}</p>
-                                <p>Owner ID: {team.owner_id}</p>
-                                <p>Code: {team.code}</p>
+                            <div
+                            key={team.id}
+                            className="group relative bg-white rounded-xl shadow-lg hover:scale-105 transition-all! duration-300 cursor-pointer overflow-hidden"
+                            >
+                            {/* Accent bar */}
+                            <div className="h-2 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+                            {/* Card content */}
+                            <div className="p-5 flex flex-col justify-between border border-black
+                                md:h-40!
+                            ">
+                                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors
+                                    md:text-2xl!
+                                ">
+                                {team.title}
+                                </h3>
+
+                                <p className="text-gray-600 text-sm line-clamp-4 my-2">
+                                {team.description || "No description available."}
+                                </p>
+
+                            </div>
+
+                            {/* Hover overlay */}
+                            <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-5 transition-opacity rounded-xl"></div>
                             </div>
                         ))}
                     </div>

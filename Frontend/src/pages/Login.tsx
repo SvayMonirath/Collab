@@ -1,15 +1,43 @@
+import { useState } from "react";
+
 import { AuthNav } from "../components/AuthNav";
 import Collaboration from "../assets/collaboration.svg";
 import GoogleIcon from "../assets/googleIcon.png";
 import GithubIcon from "../assets/githubIcon.png";
 
+import type { LoginTypes } from "../types/loginTypes";
+import { useLogin } from "../hooks/authHooks";
+import { PopUpMessage } from "../components/popUpMessage";
+
 export function Login() {
+
+    const { login, loading, error, message } = useLogin();
+
+    const [formData, setFormData] = useState<LoginTypes>({
+        username: "",
+        password: ""
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        });
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await login(formData);
+    }
+
     return (
         <div>
             <AuthNav />
             <main className="bg-white min-h-screen flex flex-row justify-center! pb-20! pt-5!
                 md:pt-5! md:text-left! md:items-center! lg:justify-around!
             ">
+                { (message || error) && <PopUpMessage message={message} error={error} /> }
+
                 {/* input content */}
                 <div className="flex flex-col gap-4 w-full max-w-md px-4!
                     sm:mt-6 md:max-w-lg! md:px-6! lg:max-w-xl! lg:px-8!
@@ -26,7 +54,7 @@ export function Login() {
                         ">Name</label>
                         <input type="text" className="rounded-md! px-2! text-black!
                             sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
-                        " placeholder="Enter your name" id="name" />
+                        " placeholder="Enter your name" id="username" value={formData.username} onChange={handleChange} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <label htmlFor="" className="text-black! font-bold text-base ml-5
@@ -34,25 +62,27 @@ export function Login() {
                         ">Password</label>
                         <input type="password" className="rounded-md! px-2! text-black!
                             sm:p-3! md:p-4! text-sm! sm:text-base! md:text-lg!
-                        " placeholder="Enter your password" id="password" />
+                        " placeholder="Enter your password" id="password" value={formData.password} onChange={handleChange} />
                     </div>
 
                     <div className="flex flex-row justify-between mt-10 mb-4!
                         sm:mt-12! sm:mb-6! md:mt-14! md:mb-8!
                     ">
+                        {/* TODO[]: Add Remember Me */}
                         <div>
                             <input type="checkbox" id="remember" className="mr-2!"/>
                             <label htmlFor="remember" className="text-gray-600! text-xs!
                                 sm:text-sm! md:text-base!
                             ">Remember me</label>
                         </div>
+                        {/* TODO[]: Implement forgot password functionality */}
                         <div>
                             <a href="#" className="text-purple-700! font-semibold! hover:text-purple-900! text-xs!
                                 sm:text-sm! md:text-base!
                             ">Forgot Password?</a>
                         </div>
                     </div>
-                    <button className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
+                    <button onClick={handleSubmit} className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
                         sm:text-base! md:text-lg!
                     ">Log In</button>
                     <p className="text-gray-500 text-center text-sm opacity-80

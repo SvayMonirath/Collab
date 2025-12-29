@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useRegister } from "../hooks/registerHooks";
+import { useRegister } from "../hooks/authHooks";
 import type { RegisterTypes } from "../types/registerTypes";
 
 import { PopUpMessage } from "../components/popUpMessage";

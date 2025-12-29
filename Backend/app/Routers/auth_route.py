@@ -58,4 +58,4 @@ async def test_token(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return {"message": "Token is valid", "user": current_user}
 
-# TODO[]: Implement OAuth2
+# TODO[]: Implement OAuth

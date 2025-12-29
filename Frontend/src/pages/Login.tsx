@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import { AuthNav } from "../components/AuthNav";
 import Collaboration from "../assets/collaboration.svg";
@@ -37,7 +38,6 @@ export function Login() {
             <main className="bg-white min-h-screen flex flex-row justify-center! pb-20! pt-5!
                 md:pt-5! md:text-left! md:items-center! lg:justify-around!
             ">
-                { (message || error) && <PopUpMessage message={message} error={error} /> }
 
                 {/* input content */}
                 <div className="flex flex-col gap-4 w-full max-w-md px-4!
@@ -122,6 +122,8 @@ export function Login() {
                 {/* illustration */}
                 <img src={Collaboration} alt="Collaboration Illustration" className="hidden! lg:block! lg:size-[40rem] 2xl:size-[50rem] "/>
             </main>
+            { (message || error) && <PopUpMessage message={message} error={error} /> }
+
         </div>
     );
 }

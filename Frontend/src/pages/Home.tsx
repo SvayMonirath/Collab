@@ -49,7 +49,6 @@ export function Home() {
                         md:grid-cols-2! lg:grid-cols-3! gap-6! mt-8!
                     ">
                     {loading && <p>Loading teams...</p>}
-                        {error && <p style={{ color: "red" }}>{error}</p>}
 
                         {teams.length === 0 && !loading && <p>No teams found.</p>}
 

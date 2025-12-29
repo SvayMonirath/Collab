@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+
 import { House, Users, Calendar, NotebookText, LogOut } from "lucide-react";
 
 const active =
@@ -8,7 +9,20 @@ const active =
 const inactive =
   "w-8 h-8 text-gray-700! hover:bg-black! hover:text-white! hover:w-12 hover:h-12 hover:p-2 hover:rounded-xl transition-all duration-200 flex items-center justify-center";
 
-export const SideBar: React.FC = () => {
+export const SideBar = () => {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        if (sessionStorage.getItem("authToken")) {
+        sessionStorage.removeItem("authToken");
+        }
+
+        if (localStorage.getItem("authToken")) {
+        localStorage.removeItem("authToken");
+        }
+
+        navigate("/login", { state: { message: "You have been logged out." } });
+
+    }
   return (
     <aside className="hidden lg:flex lg:flex-col lg:justify-between lg:items-center lg:fixed lg:top-0 lg:left-0 lg:h-full lg:w-20 bg-white pt-40 shadow-md z-50">
 
@@ -44,7 +58,7 @@ export const SideBar: React.FC = () => {
 
       </div>
 
-      <LogOut className="w-8 h-8 text-gray-700 hover:text-red-600 cursor-pointer mb-10" />
+      <LogOut onClick={handleLogout} className="w-8 h-8 text-gray-700 hover:text-red-600 cursor-pointer mb-10" />
     </aside>
   );
 };

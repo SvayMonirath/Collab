@@ -9,7 +9,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children}) => {
     const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
 
     if (!token) {
-        <Navigate to="/login" replace />;
+        return <Navigate to="/login" replace />;
     }
     return <>{children}</>;
 }

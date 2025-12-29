@@ -142,3 +142,29 @@ async def get_joined_teams(
     joined_teams = result.scalars().all()
 
     return {"joined_teams": joined_teams}
+
+# --------------- Get all Team associated to User ---------------
+@team_router.get('/get_all_teams')
+async def get_all_teams(
+    db: AsyncSession = Depends(get_db),
+    # JWT Required
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    current_user_id = current_user.get("user_id")
+    owned_teams = await db.execute(select(Team).where(Team.owner_id == current_user_id))
+    owned_teams = owned_teams.scalars().all()
+
+    joined_teams = await db.execute(
+        select(Team).join(user_team_association).where(
+            user_team_association.c.user_id == current_user_id
+        )
+    )
+    joined_teams = joined_teams.scalars().all()
+
+    all_teams = owned_teams + joined_teams
+
+
+    return {"all_teams": all_teams}

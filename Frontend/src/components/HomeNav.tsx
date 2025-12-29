@@ -1,0 +1,63 @@
+import React from "react";
+import { Bell } from "lucide-react";
+
+interface HomeNavProps {
+    onOpenCreateTeam: ()  => void;
+}
+
+export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam }) => {
+    const appName = import.meta.env.VITE_APP_NAME;
+    return (
+        <nav className="flex flex-row fixed border border-black justify-between items-center bg-white! min-w-screen! shadow-md! py-3! px-2! z-[100]!
+            md:px-6! md:py-4! lg:py-6! lg:px-10!
+        ">
+            <h1 className="text-black! font-bold text-lg!
+                sm:text-2xl! lg:text-4xl!
+            ">{appName}</h1>
+
+            <div className="flex flex-row space-x-12">
+                <div className="flex flex-row space-x-5">
+                    {/* Create Team Button */}
+                    <button onClick={onOpenCreateTeam} className="hidden! bg-white! text-black! px-4! py-2! rounded-lg! hover:bg-gray-200! transition-all! duration-200!
+                        lg:inline-block!
+                    " >Create Team</button>
+                    {/* Join Team Button */}
+                    <button className="hidden! bg-purple-700! text-white! px-4! py-2! rounded-lg! font-bold! hover:bg-purple-800! transition-all! duration-200!
+                        lg:inline-block!
+                    ">Join Teams</button>
+                </div>
+
+                <div className="flex flex-row space-x-4 items-center
+                    md:space-x-4!
+                ">
+                    {/* Notification Icon */}
+                    <Bell className="w-5! h-5! text-gray-600! hover:cursor-pointer!
+                        md:w-7! md:h-7!
+                    " />
+
+                    {/* profile or hamburger menu */}
+                    <div className="hidden! border-2! border-gray-400! rounded-full! w-8! h-8! bg-gray-300! cursor-pointer!
+                        md:w-12! md:h-12! lg:inline-block!
+                    ">
+                    </div>
+
+                    {/* hamburger menu for mobile */}
+                    <div className="flex flex-col space-y-1! hover:cursor-pointer!
+                        lg:hidden! cursor-pointer
+                    ">
+                        <div className="w-6! h-0.5! bg-gray-600!
+                            md:w-8! md:h-1!
+                        "></div>
+                        <div className="w-6! h-0.5! bg-gray-600!
+                            md:w-8! md:h-1!
+                        "></div>
+                        <div className="w-6! h-0.5! bg-gray-600!
+                            md:w-8! md:h-1!
+                        "></div>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    );
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { registerUser } from "../api/authAPI";
 import { LoginUser } from "../api/authAPI";
@@ -6,7 +7,9 @@ import { LoginUser } from "../api/authAPI";
 import type { LoginTypes } from "../types/loginTypes";
 import type { RegisterTypes } from "../types/registerTypes";
 
+
 export function useRegister() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
@@ -28,7 +31,9 @@ export function useRegister() {
 
         setLoading(false);
         setMessage("Registration successful! You can now log in.");
-        setTimeout(() => { setMessage(null); }, 3000);
+        setTimeout(() => { setMessage(null); }, 1500);
+
+        navigate("/login");
 
         return response;
     }
@@ -37,6 +42,7 @@ export function useRegister() {
 }
 
 export function useLogin() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
@@ -68,7 +74,10 @@ export function useLogin() {
             sessionStorage.setItem("authToken", token);
         }
 
-        // TODO[]: Redirect to Main
+        // TODO[X]: Redirect to Main
+        setTimeout(() => { setMessage(null); }, 1500);
+
+        navigate("/home");
 
         return response;
     }

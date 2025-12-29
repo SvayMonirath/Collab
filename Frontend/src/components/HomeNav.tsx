@@ -3,9 +3,10 @@ import { Bell } from "lucide-react";
 
 interface HomeNavProps {
     onOpenCreateTeam: ()  => void;
+    onOpenJoinTeam?: ()  => void;
 }
 
-export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam }) => {
+export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTeam }) => {
     const appName = import.meta.env.VITE_APP_NAME;
     return (
         <nav className="flex flex-row fixed border border-black justify-between items-center bg-white! min-w-screen! shadow-md! py-3! px-2! z-[100]!
@@ -22,7 +23,7 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam }) => {
                         lg:inline-block!
                     " >Create Team</button>
                     {/* Join Team Button */}
-                    <button className="hidden! bg-purple-700! text-white! px-4! py-2! rounded-lg! font-bold! hover:bg-purple-800! transition-all! duration-200!
+                    <button onClick={onOpenJoinTeam} className="hidden! bg-purple-700! text-white! px-4! py-2! rounded-lg! font-bold! hover:bg-purple-800! transition-all! duration-200!
                         lg:inline-block!
                     ">Join Teams</button>
                 </div>

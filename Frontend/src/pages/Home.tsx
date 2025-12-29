@@ -1,29 +1,45 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-
 import { HomeNav } from "../components/HomeNav"
 import { SideBar } from "../components/asideBar";
+
 import { CreateTeamModal } from "../components/HomeComponents";
+import { JoinTeamModal } from "../components/HomeComponents";
 import { useCreateTeam } from "../hooks/teamHooks";
+import { useJoinTeam } from "../hooks/teamHooks";
 import { PopUpMessage } from "../components/popUpMessage";
 import { useUserTeams } from "../hooks/teamHooks";
 
 import type { CreateTeamSchemas } from "../types/teamTypes";
+import type { JoinTeamSchemas } from "../types/teamTypes";
 
 
 export function Home() {
-    const [isModalOpen, setIsModalOpen] = useState(false); // modal state
-    const { create, loading, error, message } = useCreateTeam();
-    const { teams, loading: teamsLoading, error: teamsError } = useUserTeams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+    const { create, loading: createLoading, error: createError, message: createMessage } = useCreateTeam();
+    const { teams, loading: teamsLoading, error: teamsError, refetch: refetchTeams } = useUserTeams();
+    const { join, loading: joinLoading, error: joinError, message: joinMessage } = useJoinTeam();
 
     const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
         const result = await create(teamData);
+        if (result) {
+            refetchTeams();
+        }
+        return result;
+    }
+
+    const handleJoinTeam = async (joinData: JoinTeamSchemas) => {
+        const result = await join(joinData);
+        if (result) {
+            refetchTeams();
+        }
         return result;
     }
 
     return (
       <div>
-        <HomeNav onOpenCreateTeam={() => setIsModalOpen(true)} />
+        <HomeNav onOpenCreateTeam={() => setIsModalOpen(true)} onOpenJoinTeam={() => setIsJoinModalOpen(true)} />
         <main className="flex flex-row ">
             {/* SIDE BAR */}
             <SideBar />
@@ -42,15 +58,15 @@ export function Home() {
 
                         <button className="bg-white! text-black! text-sm! flex flex-row gap-3 justify-center items-center
                             md:text-base! lg:text-lg! px-4! py-2! rounded-lg
-                        "><span><Plus /></span><span className="hidden! md:inline-block!">Join Team</span>
+                        " onClick={() => setIsJoinModalOpen(true)}><span><Plus /></span><span className="hidden! md:inline-block!">Join Team</span>
                         </button>
                     </div>
                     <div id="yourTeamContainer" className="grid grid-cols-1!
                         md:grid-cols-2! lg:grid-cols-3! gap-6! mt-8!
                     ">
-                    {loading && <p>Loading teams...</p>}
+                    {teamsLoading && <p>Loading teams...</p>}
 
-                        {teams.length === 0 && !loading && <p>No teams found.</p>}
+                        {teams.length === 0 && !teamsLoading && <p>No teams found.</p>}
 
                         {teams.map((team) => (
                             <div
@@ -91,13 +107,20 @@ export function Home() {
             </section>
         </main>
 
-        { (message || error) && <PopUpMessage message={message} error={error} /> }
+        { (createMessage || createError) && <PopUpMessage message={createMessage} error={createError} /> }
+        { (joinMessage || joinError) && <PopUpMessage message={joinMessage} error={joinError} /> }
 
         {isModalOpen && <CreateTeamModal
             onClose={() => setIsModalOpen(false)}
             onCreate={handleCreateTeam}
-            loading={loading}
+            loading={createLoading}
             />}
+
+        {isJoinModalOpen && <JoinTeamModal
+            onClose={() => setIsJoinModalOpen(false)}
+            onJoin={handleJoinTeam}
+            loading={joinLoading}
+        />}
 
       </div>
     );

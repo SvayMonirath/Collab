@@ -1,4 +1,5 @@
 import type { CreateTeamSchemas } from "../types/teamTypes";
+import type { JoinTeamSchemas } from "../types/teamTypes";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -49,5 +50,29 @@ export async function getUserTeams() {
 
     } catch (err) {
         console.error("Error fetching user teams:", err);
+    }
+}
+
+export async function joinTeam(joinData: JoinTeamSchemas) {
+    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    try {
+        const res = await fetch(`${BACKEND_URL}/teams/join/${joinData.team_code}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            return { error: errorData.detail || "Failed to join team" };
+        }
+
+        const data = await res.json();
+        return data;
+
+    } catch (err) {
+        console.error("Error joining team:", err);
     }
 }

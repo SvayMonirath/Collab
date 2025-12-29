@@ -3,3 +3,6 @@ export interface CreateTeamSchemas {
     description?: string;
 }
 
+export interface JoinTeamSchemas {
+    team_code: string;
+}

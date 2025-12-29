@@ -15,7 +15,8 @@ export function Login() {
 
     const [formData, setFormData] = useState<LoginTypes>({
         username: "",
-        password: ""
+        password: "",
+        rememberMe: false
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,9 +69,9 @@ export function Login() {
                     <div className="flex flex-row justify-between mt-10 mb-4!
                         sm:mt-12! sm:mb-6! md:mt-14! md:mb-8!
                     ">
-                        {/* TODO[]: Add Remember Me */}
+                        {/* TODO[X]: Add Remember Me */}
                         <div>
-                            <input type="checkbox" id="remember" className="mr-2!"/>
+                            <input type="checkbox" id="remember" className="mr-2!" checked={formData.rememberMe} onChange={(e) => setFormData({...formData, rememberMe: e.target.checked})} />
                             <label htmlFor="remember" className="text-gray-600! text-xs!
                                 sm:text-sm! md:text-base!
                             ">Remember me</label>
@@ -84,7 +85,7 @@ export function Login() {
                     </div>
                     <button onClick={handleSubmit} className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
                         sm:text-base! md:text-lg!
-                    ">Log In</button>
+                    ">{loading ? "Loading..." : "Log In"}</button>
                     <p className="text-gray-500 text-center text-sm opacity-80
                         md:text-base!
                     ">Or Login With</p>

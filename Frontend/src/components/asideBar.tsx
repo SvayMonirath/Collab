@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { House, Users, Calendar, NotebookText, LogOut } from "lucide-react";
@@ -26,7 +25,7 @@ export const SideBar = () => {
   return (
     <aside className="hidden lg:flex lg:flex-col lg:justify-between lg:items-center lg:fixed lg:top-0 lg:left-0 lg:h-full lg:w-20 bg-white pt-40 shadow-md z-50">
 
-      <div className="flex flex-col items-center space-y-16">
+      <div className="flex flex-col items-center space-y-8">
 
         <NavLink
           to="/home"
@@ -36,7 +35,7 @@ export const SideBar = () => {
         </NavLink>
 
         <NavLink
-          to="/users"
+          to="/teams"
           className={({ isActive }) => (isActive ? active : inactive)}
         >
           <Users />

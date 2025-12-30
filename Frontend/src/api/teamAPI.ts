@@ -45,11 +45,11 @@ export async function getUserTeams() {
         }
 
         const data = await res.json();
-        console.log("Fetched user teams:", data);
+        console.log("Fetched user all teams:", data);
         return data;
 
     } catch (err) {
-        console.error("Error fetching user teams:", err);
+        console.error("Error fetching user all teams:", err);
     }
 }
 
@@ -70,11 +70,11 @@ export async function getLatestTeams() {
         }
 
         const data = await res.json();
-        console.log("Fetched user teams:", data);
+        console.log("Fetched user latest teams:", data);
         return data;
 
     } catch (err) {
-        console.error("Error fetching user teams:", err);
+        console.error("Error fetching user latest teams:", err);
     }
 }
 

@@ -33,8 +33,8 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
                 ">
                     {/* Notification Icon */}
                     {/* TODO[]: Implement Show Notification */}
-                    <Bell className="w-5! h-5! text-gray-600! hover:cursor-pointer!
-                        md:w-7! md:h-7!
+                    <Bell className="w-4! h-4! text-gray-600! hover:cursor-pointer!
+                        md:w-6! md:h-6!
                     " />
 
                     {/* profile or hamburger menu */}

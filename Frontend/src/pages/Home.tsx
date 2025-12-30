@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Clock, Target, Zap } from "lucide-react";
+import { LogIn, Clock, Target, Zap } from "lucide-react";
 import { HomeNav } from "../components/HomeNav"
 import { SideBar } from "../components/asideBar";
 
@@ -8,8 +8,8 @@ import { JoinTeamModal } from "../components/HomeComponents";
 import { useCreateTeam } from "../hooks/teamHooks";
 import { useJoinTeam } from "../hooks/teamHooks";
 import { PopUpMessage } from "../components/popUpMessage";
-import { useUserTeams } from "../hooks/teamHooks";
-import { Navigate } from "react-router-dom";
+import { useUserLatestTeams } from "../hooks/teamHooks";
+import { useNavigate } from "react-router-dom";
 
 import type { CreateTeamSchemas } from "../types/teamTypes";
 import type { JoinTeamSchemas } from "../types/teamTypes";
@@ -19,8 +19,10 @@ export function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
     const { create, loading: createLoading, error: createError, message: createMessage } = useCreateTeam();
-    const { teams, loading: teamsLoading, error: teamsError, refetch: refetchTeams } = useUserTeams();
+    const { teams, loading: teamsLoading, error: teamsError, refetch: refetchTeams } = useUserLatestTeams();
     const { join, loading: joinLoading, error: joinError, message: joinMessage } = useJoinTeam();
+
+    const navigate = useNavigate();
 
     const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
         const result = await create(teamData);
@@ -55,10 +57,10 @@ export function Home() {
                     <div className="grid grid-cols-1
                         md:grid-cols-3! gap-6! mt-6!
                     ">
-                        <div className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! hover:shadow-lg! transition-all! duration-200!
+                        <div className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! shadow-xl transition-all! duration-200!
                             md:p-4! lg:p-6!
                         ">
-                            <Clock className="w-4! h-4! text-gray-600!
+                            <Clock className="w-4! h-4! text-black!
                                 lg:w-7! lg:h-7!
                             " />
                             <p className="text-gray-500! text-sm! mt-2
@@ -72,10 +74,10 @@ export function Home() {
                                  lg:text-lg!
                             ">Message</div>
                         </div>
-                        <div className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! hover:shadow-lg! transition-all! duration-200!
+                        <div className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! shadow-xl transition-all! duration-200!
                             md:p-4! lg:p-6!
                         ">
-                            <Target className="w-4! h-4! text-gray-600!
+                            <Target className="w-4! h-4! text-black!
                                 lg:w-7! lg:h-7!
                             " />
                             <p className="text-gray-500! text-sm! mt-2
@@ -89,10 +91,10 @@ export function Home() {
                                  lg:text-lg!
                             ">Message</div>
                         </div>
-                        <div className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! hover:shadow-lg! transition-all! duration-200!
+                        <div className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! shadow-xl transition-all! duration-200!
                             md:p-4! lg:p-6!
                         ">
-                            <Zap className="w-4! h-4! text-gray-600!
+                            <Zap className="w-4! h-4! text-black!
                                 lg:w-7! lg:h-7!
                             " />
                             <p className="text-gray-500! text-sm! mt-2
@@ -122,7 +124,7 @@ export function Home() {
 
                             <button className="bg-white! text-black! text-sm! flex flex-row gap-2 justify-center items-center
                                 md:text-base! px-4! py-2! rounded-lg
-                            " onClick={() => setIsJoinModalOpen(true)}><span><Plus /></span><span className="hidden! md:inline-block!">Join Team</span>
+                            " onClick={() => setIsJoinModalOpen(true)}><span><LogIn /></span><span className="hidden! md:inline-block!">Join Team</span>
                             </button>
                         </div>
                         <div id="yourTeamContainer" className="grid grid-cols-1!
@@ -132,36 +134,20 @@ export function Home() {
 
                             {teams.length === 0 && !teamsLoading && <p>No teams found.</p>}
                             {teams.map((team) => (
-                                <div
-                                key={team.id}
-                                className="group relative bg-white rounded-lg shadow-lg hover:scale-105 transition-all! duration-300 cursor-pointer overflow-hidden"
-                                >
-                                {/* Accent bar */}
-                                <div className="h-2 w-full bg-slate-600"></div>
-
-                                {/* Card content */}
-                                <div className="p-5 flex flex-col justify-between border border-black
-                                    md:h-40!
+                                <div key={team.id} className="p-4! bg-white! rounded-lg! border border-gray-300! cursor-pointer!
+                                    hover:scale-105! hover:border-purple-700! transition-all! duration-200!
                                 ">
-                                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors
-                                        md:text-2xl!
-                                    ">
-                                    {team.title}
-                                    </h3>
-
-                                    <p className="text-gray-600 text-sm line-clamp-4 my-2">
-                                    {team.description || "No description available."}
-                                    </p>
-
-                                </div>
-
-                                {/* Hover overlay */}
-                                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-5 transition-opacity rounded-xl"></div>
+                                    <h3 className="text-lg! font-semibold! text-black!
+                                        md:text-xl! lg:text-2xl!
+                                    ">{team.title}</h3>
+                                    <p className="text-gray-600! mt-2!
+                                        md:text-base! lg:text-lg!
+                                    ">{team.description || "No description available."}</p>
                                 </div>
                             ))}
                             {teams.length > 0 && !teamsLoading && (<div className="flex items-center hover:">
                                 <button
-                                    onClick={() => <Navigate to="/teams" />}
+                                    onClick={() => navigate("/teams")}
                                     className="mt-6 bg-purple-700! text-white text-sm! px-3! py-2! rounded-lg hover:bg-purple-800! transition-colors! duration-200!"
                                 >
                                     Show More
@@ -170,7 +156,7 @@ export function Home() {
                         </div>
 
                     </div>
-                    <div className="hidden! bg-yellow-300! lg:inline-block! lg:w-[30%] text-black! pt-10!
+                    <div className="hidden! bg-white! border border-gray-300! lg:inline-block! lg:w-[30%] text-black! pt-10!
                         lg:pt-20!
                     ">
                         placeholder for calendar

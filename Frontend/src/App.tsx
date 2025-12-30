@@ -3,6 +3,8 @@ import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Home } from './pages/Home';
+import { TeamsPage } from './pages/Teams';
+
 import { PrivateRoute } from './components/privateRoute';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -21,6 +23,11 @@ function App() {
           <Route path="/home" element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          } />
+          <Route path="/teams" element={
+            <PrivateRoute>
+              <TeamsPage />
             </PrivateRoute>
           } />
         </Routes>

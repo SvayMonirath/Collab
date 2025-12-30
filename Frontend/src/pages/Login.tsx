@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 
 import { AuthNav } from "../components/AuthNav";
 import Collaboration from "../assets/collaboration.svg";

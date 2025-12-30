@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { createTeam } from "../api/teamAPI";
+import { createTeam, getUserTeams } from "../api/teamAPI";
 import { getLatestTeams } from "../api/teamAPI";
 import { joinTeam } from "../api/teamAPI";
 
@@ -37,7 +37,7 @@ export function useCreateTeam() {
     return { create, loading, error, message };
 }
 
-export function useUserTeams() {
+export function useUserLatestTeams() {
     const [teams, setTeams] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -79,6 +79,48 @@ export function useUserTeams() {
             setError("Failed to fetch teams.");
         }
 
+        setLoading(false);
+    } };
+}
+
+export function useUserTeams() {
+    const [teams, setTeams] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchTeams = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await getUserTeams();
+                if (res?.error) {
+                    setError(res.error);
+                } else {
+                    setTeams(res.all_teams || []);
+                }
+            } catch{
+                setError("Failed to fetch teams.");
+            }
+            setLoading(false);
+        };
+
+        fetchTeams();
+    }, [])
+
+    return { teams, loading, error, refetch: async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await getUserTeams();
+            if (res?.error) {
+                setError(res.error);
+            } else {
+                setTeams(res.all_teams || []);
+            }
+        } catch{
+            setError("Failed to fetch teams.");
+        }
         setLoading(false);
     } };
 }

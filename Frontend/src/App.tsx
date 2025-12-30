@@ -17,7 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* TODO[]: MAKE these AUTHENTICATED ROUTES  */}
+          {/* TODO[X]: MAKE these AUTHENTICATED ROUTES  */}
           <Route path="/home" element={
             <PrivateRoute>
               <Home />

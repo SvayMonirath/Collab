@@ -1,12 +1,14 @@
 import random
 import string
+from datetime import datetime
 
 from sqlalchemy import (
     Column,
     Integer,
     String,
     ForeignKey,
-    Table
+    Table,
+    DateTime,   
 )
 from sqlalchemy.orm import relationship
 
@@ -66,6 +68,8 @@ class Team(Base):
     description = Column(String, nullable=True)
     code = Column(String, unique=True, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+
+    create_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     owner = relationship("User", back_populates="owned_teams")
     members = relationship("User", secondary=user_team_association, back_populates="teams")

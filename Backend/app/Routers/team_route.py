@@ -168,3 +168,35 @@ async def get_all_teams(
 
 
     return {"all_teams": all_teams}
+
+# --------------- Get the 3 latest Team associated to User ---------------
+@team_router.get('/get_latest_teams')
+async def get_latest_teams(
+    db: AsyncSession = Depends(get_db),
+    # JWT Required
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    current_user_id = current_user.get("user_id")
+    owned_teams = await db.execute(
+        select(Team).where(Team.owner_id == current_user_id).order_by(Team.create_at.desc()).limit(3)
+    )
+    owned_teams = owned_teams.scalars().all()
+
+    joined_teams = await db.execute(
+        select(Team).join(user_team_association).where(
+            user_team_association.c.user_id == current_user_id
+        ).order_by(Team.create_at.desc()).limit(3)
+    )
+    joined_teams = joined_teams.scalars().all()
+
+    all_teams = owned_teams + joined_teams
+    # Sort all teams by created_at descending and limit to 3
+    all_teams.sort(key=lambda x: x.create_at, reverse=True)
+    latest_teams = all_teams[:3]
+
+    print("Latest Teams(route):", latest_teams)
+
+    return {"latest_teams": latest_teams}

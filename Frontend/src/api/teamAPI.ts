@@ -53,6 +53,31 @@ export async function getUserTeams() {
     }
 }
 
+export async function getLatestTeams() {
+    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    try {
+        const res = await fetch(`${BACKEND_URL}/teams/get_latest_teams`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        })
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            return { error: errorData.detail || "Failed to fetch teams" };
+        }
+
+        const data = await res.json();
+        console.log("Fetched user teams:", data);
+        return data;
+
+    } catch (err) {
+        console.error("Error fetching user teams:", err);
+    }
+}
+
 export async function joinTeam(joinData: JoinTeamSchemas) {
     const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {

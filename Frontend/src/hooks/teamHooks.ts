@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { createTeam } from "../api/teamAPI";
-import { getUserTeams } from "../api/teamAPI";
+import { getLatestTeams } from "../api/teamAPI";
 import { joinTeam } from "../api/teamAPI";
 
 import type { CreateTeamSchemas } from "../types/teamTypes";
@@ -48,11 +48,11 @@ export function useUserTeams() {
             setError(null);
 
             try {
-                const res = await getUserTeams();
+                const res = await getLatestTeams();
                 if (res?.error) {
                     setError(res.error);
                 } else {
-                    setTeams(res.all_teams || []);
+                    setTeams(res.latest_teams || []);
                 }
             } catch{
                 setError("Failed to fetch teams.");
@@ -69,11 +69,11 @@ export function useUserTeams() {
         setError(null);
 
         try {
-            const res = await getUserTeams();
+            const res = await getLatestTeams();
             if (res?.error) {
                 setError(res.error);
             } else {
-                setTeams(res.all_teams || []);
+                setTeams(res.latest_teams || []);
             }
         } catch{
             setError("Failed to fetch teams.");

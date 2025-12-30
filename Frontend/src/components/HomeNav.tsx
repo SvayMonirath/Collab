@@ -9,10 +9,10 @@ interface HomeNavProps {
 export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTeam }) => {
     const appName = import.meta.env.VITE_APP_NAME;
     return (
-        <nav className="flex flex-row fixed border border-black justify-between items-center bg-white! min-w-screen! shadow-md! py-3! px-2! z-[100]!
+        <nav className="flex flex-row fixed border justify-between items-center bg-white! min-w-screen! py-3! px-2! z-[100]!
             md:px-6! md:py-4! lg:py-6! lg:px-10!
         ">
-            <h1 className="text-black! font-bold text-lg!
+            <h1 className="text-black! font-extrabold text-lg!
                 sm:text-2xl! lg:text-4xl!
             ">{appName}</h1>
 
@@ -32,17 +32,20 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
                     md:space-x-4!
                 ">
                     {/* Notification Icon */}
+                    {/* TODO[]: Implement Show Notification */}
                     <Bell className="w-5! h-5! text-gray-600! hover:cursor-pointer!
                         md:w-7! md:h-7!
                     " />
 
                     {/* profile or hamburger menu */}
+                    {/* TODO[]: Implement Profile Page */}
                     <div className="hidden! border-2! border-gray-400! rounded-full! w-8! h-8! bg-gray-300! cursor-pointer!
                         md:w-12! md:h-12! lg:inline-block!
                     ">
                     </div>
 
                     {/* hamburger menu for mobile */}
+                    {/* TODO[]: Implement Mobile Drop down menu */}
                     <div className="flex flex-col space-y-1! hover:cursor-pointer!
                         lg:hidden! cursor-pointer
                     ">

@@ -17,18 +17,29 @@ export function Landing() {
         <div className="min-h-screen flex flex-col items-center bg-white!">
           {/* Hero section */}
           <h1
-            className="text-black! text-lg! mt-8 font-bold
-                md:text-4xl! md:mt-16
-                lg:text-5xl! lg:mt-20"
+            className="text-black! text-2xl! text-center px-5 mt-24 font-bold
+                md:text-4xl! md:mt-28!
+                lg:text-5xl! lg:mt-30!
+            "
           >
             Live Transcription <span className="text-purple-700">+</span> AI
             Summaries
           </h1>
-          <Link to="/register" className="bg-slate-700 text-white! px-6! py-3! rounded-md! mt-6!
-                hover:scale-110 transition-all! duration-300!
-                md:text-lg! md:px-8! md:py-4! md:mt-10!
-                lg:text-xl! lg:px-10! lg:py-5! lg:mt-12!
+          <p className="hidden! text-gray-500! text-sm! m-2! font-base text-center
+                md:text-base! md:px-20! md:m-8! md:inline-block!
+                lg:text-lg! lg:px-40! lg:m-8!
             ">
+            Record meetings, get instant transcripts, and let AI extract
+            decisions, tasks, and calendar events automatically.
+          </p>
+          <Link
+            to="/register"
+            className="hidden! bg-slate-700 text-white! px-4! py-2! text-sm! rounded-md! mt-6!
+                hover:scale-110 transition-all! duration-300!
+                md:text-base! md:px-6! md:py-3! md:mt-10! md:inline-block!
+                lg:text-lg! lg:px-8! lg:py-4! lg:mt-12!
+            "
+          >
             Get Started
           </Link>
 
@@ -237,7 +248,8 @@ export function Landing() {
                   </div>
                 </div>
                 <p className="text-gray-500! text-sm! mt-4 text-center md:text-base!">
-                    Your conversations are transcribed in real time, so no one misses a detail.
+                  Your conversations are transcribed in real time, so no one
+                  misses a detail.
                 </p>
               </div>
               {/* section3  */}
@@ -285,7 +297,8 @@ export function Landing() {
                   </div>
                 </div>
                 <p className="text-gray-500! text-sm! mt-4 text-center md:text-base!">
-                    Quickly approve suggestions and keep your team aligned and on track.
+                  Quickly approve suggestions and keep your team aligned and on
+                  track.
                 </p>
               </div>
             </div>
@@ -293,11 +306,11 @@ export function Landing() {
         </div>
 
         <footer className="min-w-full">
-            <div className="bg-gray-800! text-white! py-6! flex flex-col items-center!">
-                <p className="text-sm!">
-                    &copy; {new Date().getFullYear()} Collab. All rights reserved.
-                </p>
-            </div>
+          <div className="bg-gray-800! text-white! py-6! flex flex-col items-center!">
+            <p className="text-sm!">
+              &copy; {new Date().getFullYear()} Collab. All rights reserved.
+            </p>
+          </div>
         </footer>
       </div>
     );

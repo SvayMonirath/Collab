@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const UnAuthNav: React.FC = () => {
     const appName = import.meta.env.VITE_APP_NAME;
     return (
-        <nav className="flex flex-row fixed min-w-full justify-between items-center p-4 bg-linear-to-r from-white via-gray-200 to-white shadow-md">
+        <nav className="flex flex-row fixed min-w-full justify-between items-center p-4 bg-linear-to-r from-white via-gray-200 to-white shadow-md z-[100]!">
             <div className="text-gray-800 font-extrabold text-xl!
                 md:text-2xl! lg:text-3xl!
             ">{appName}</div>
-            <div className="flex flex-row items-center gap-7!
+            <div className="flex flex-row items-center
                 md:gap-6! lg:gap-8!
                 text-sm! md:text-base! lg:text-lg!
             ">

@@ -16,33 +16,45 @@ export function Landing() {
       <div className="min-h-screen flex flex-col items-center bg-white!">
         {/* Hero section */}
         <h1
-          className="text-black! text-2xl! text-center px-5 mt-24 font-bold
-                md:text-4xl! md:mt-28!
-                lg:text-5xl! lg:mt-30!
+          className="text-black! text-3xl! text-center px-5 mt-28 font-bold
+                md:text-6xl! md:mt-32!
+                lg:text-7xl! lg:mt-40!
             "
         >
           Live Transcription <span className="text-purple-700">+</span> AI
           Summaries
         </h1>
         <p
-          className="hidden! text-gray-500! text-sm! m-2! font-base text-center
+          className="hidden! text-gray-500! text-sm! m-2! font-base max-w-6xl! text-center
                 md:text-base! md:px-20! md:m-8! md:inline-block!
-                lg:text-lg! lg:px-40! lg:m-8!
+                lg:text-xl! lg:px-40! lg:m-8!
             "
         >
           Record meetings, get instant transcripts, and let AI extract
           decisions, tasks, and calendar events automatically.
         </p>
-        <Link
-          to="/register"
-          className="hidden! bg-slate-700 text-white! px-4! py-2! text-sm! rounded-md! mt-6!
-                hover:scale-110 transition-all! duration-300!
-                md:text-base! md:px-6! md:py-3! md:mt-10! md:inline-block!
-                lg:text-lg! lg:px-8! lg:py-4! lg:mt-12!
-            "
-        >
-          Get Started
-        </Link>
+        <div className="flex flex-row gap-4 mt-4">
+          <Link
+            to="/register"
+            className="hidden! bg-slate-700 text-white! px-4! py-2! text-sm! rounded-md! mt-6!
+                  hover:scale-110 transition-all! duration-300!
+                  md:text-base! md:px-6! md:py-3! md:mt-10! md:inline-block!
+                  lg:text-lg! lg:px-8! lg:py-4! lg:mt-12!
+              "
+          >
+            Get Started
+          </Link>
+          <Link
+            to=""
+            className="hidden! border border-slate-700 text-slate-700! px-4! py-2! text-sm! rounded-md! mt-6!
+                  hover:scale-110 transition-all! duration-300!
+                  md:text-base! md:px-6! md:py-3! md:mt-10! md:inline-block!
+                  lg:text-lg! lg:px-8! lg:py-4! lg:mt-12!
+              "
+          >
+            Learn More
+          </Link>
+        </div>
 
         {/* placeholder for image of landing page */}
         <div

@@ -1,38 +1,53 @@
-import './App.css'
-import { Landing } from './pages/Landing';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
-import { Home } from './pages/Home';
-import { TeamsPage } from './pages/Teams';
+import "./App.css";
+import { Landing } from "./pages/Main/Landing";
+import { Login } from "./pages/Main/Login";
+import { Register } from "./pages/Main/Register";
+import { MainHome } from "./pages/Main/Home";
+import { TeamsPage } from "./pages/Main/Teams";
+import { TeamHome } from "./pages/TeamsPages/TeamHome";
 
-import { PrivateRoute } from './components/privateRoute';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { PrivateRoute } from "./components/privateRoute";
 
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
-    return (
-      <Router>
-        <Routes>
-          {/* Unauthenticated Routes */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+  return (
+    <Router>
+      <Routes>
+        {/* Unauthenticated Routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-          {/* TODO[X]: MAKE these AUTHENTICATED ROUTES  */}
-          <Route path="/home" element={
+        {/* TODO[X]: MAKE these AUTHENTICATED ROUTES  */}
+        <Route
+          path="/home"
+          element={
             <PrivateRoute>
-              <Home />
+              <MainHome />
             </PrivateRoute>
-          } />
-          <Route path="/teams" element={
+          }
+        />
+        <Route
+          path="/ShowTeams"
+          element={
             <PrivateRoute>
               <TeamsPage />
             </PrivateRoute>
-          } />
-        </Routes>
-      </Router>
-    );
+          }
+        />
+        <Route
+          path="/TeamHome/:teamID"
+          element={
+            <PrivateRoute>
+              <TeamHome />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

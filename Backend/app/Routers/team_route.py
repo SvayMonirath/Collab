@@ -200,3 +200,19 @@ async def get_latest_teams(
     print("Latest Teams(route):", latest_teams)
 
     return {"latest_teams": latest_teams}
+
+@team_router.get('/get_team/{team_id}')
+async def get_team_by_id(
+    team_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    team = await db.execute(select(Team).where(Team.id == team_id))
+    team = team.scalar_one_or_none()
+    if team is None:
+        raise HTTPException(status_code=404, detail="Team not found")
+
+    return {"team": team}

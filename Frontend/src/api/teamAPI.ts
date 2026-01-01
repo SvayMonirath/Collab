@@ -78,6 +78,32 @@ export async function getLatestTeams() {
     }
 }
 
+export async function getTeamById(teamID: string) {
+    const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+
+    try {
+        // @team_router.get('/get_team/{team_id}')
+        const res = await fetch(`${BACKEND_URL}/teams/get_team/${teamID}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            return { error: errorData.detail || "Failed to fetch team by ID" };
+        }
+
+        const data = await res.json();
+        return data;
+
+    } catch(err) {
+        console.error("Error fetching team by ID:", err);
+    }
+}
+
 export async function joinTeam(joinData: JoinTeamSchemas) {
     const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {

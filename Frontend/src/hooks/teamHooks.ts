@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { createTeam, getUserTeams } from "../api/teamAPI";
 import { getLatestTeams } from "../api/teamAPI";
 import { joinTeam } from "../api/teamAPI";
+import { getTeamById } from "../api/teamAPI";
 
 import type { CreateTeamSchemas } from "../types/teamTypes";
 import type { JoinTeamSchemas } from "../types/teamTypes";
@@ -123,6 +124,38 @@ export function useUserTeams() {
         }
         setLoading(false);
     } };
+}
+
+export function useTeamById(teamID: string) {
+    const [team, setTeam] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!teamID) return;
+
+        const fetchTeam = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const res = await getTeamById(teamID);
+                if (res?.error) {
+                    setError(res.error);
+                } else {
+                    setTeam(res.team || null);
+                }
+
+            } catch {
+                setError("Failed to fetch team.");
+            }
+
+            setLoading(false);
+        }
+        fetchTeam();
+    }, [teamID])
+
+    return { team, loading, error };
 }
 
 export function useJoinTeam() {

@@ -163,7 +163,7 @@ export function MainHome() {
           >
             <div
               className="bg-white! w-[100%] px-10 lg:w-[70%] lg:pl-28! text-black! pt-12!
-                        sm:pt-16! lg:pt-30! lg:px-16!
+                        sm:pt-16! lg:pt-20! lg:px-16!
                     "
             >
               <div className="flex flex-row min-w-full justify-between items-center">

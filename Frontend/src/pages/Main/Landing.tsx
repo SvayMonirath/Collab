@@ -173,7 +173,10 @@ export function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900! text-white! py-8 flex flex-col items-center">
+      <footer className="bg-white! text-gray-700! py-8 flex flex-row items-center justify-between px-12!
+        sm:px-16! lg:px-32!
+      ">
+        <p className="text-lg font-bold">SAMAKI</p>
         <p className="text-sm">&copy; {new Date().getFullYear()} Collab. All rights reserved.</p>
       </footer>
     </div>

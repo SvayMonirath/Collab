@@ -8,316 +8,173 @@ import AiSuggestion from "../../assets/AI_suggestion.svg";
 import UnAuthNav from "../../components/unAuthNav";
 
 export function Landing() {
+  const features = [
+    {
+      icon: <Phone className="text-purple-700! w-8 h-8" />,
+      title: "Live Transcription",
+      description: "Convert speech to text in real-time with high accuracy.",
+    },
+    {
+      icon: <Captions className="text-green-500! w-8 h-8" />,
+      title: "Real-Time Transcription",
+      description:
+        "Every word is transcribed as it is spoken, ensuring you never miss a detail.",
+    },
+    {
+      icon: <Brain className="text-red-500! w-8 h-8" />,
+      title: "AI Summarization",
+      description:
+        "Automatically generate concise summaries of your meetings to capture key points and action items.",
+    },
+    {
+      icon: <Users className="text-blue-500! w-8 h-8" />,
+      title: "Team Collaboration",
+      description:
+        "Collaborate seamlessly with your team through shared notes, comments, and real-time updates.",
+    },
+    {
+      icon: <Search className="text-indigo-500! w-8 h-8" />,
+      title: "Search Functionality",
+      description:
+        "Quickly find specific information within your transcriptions and summaries using our powerful search tools.",
+    },
+  ];
+
+  const steps = [
+    {
+      id: 1,
+      title: "Start a Call",
+      description:
+        "Invite team members or friends and begin a call instantly—no third-party tools needed.",
+      img: CallingAmico,
+      alt: "Calling Illustration",
+    },
+    {
+      id: 2,
+      title: "Live Transcription",
+      description:
+        "Your conversations are transcribed in real time, so no one misses a detail.",
+      img: LiveTranscript,
+      alt: "Live Transcription Illustration",
+    },
+    {
+      id: 3,
+      title: "AI Suggestion",
+      description:
+        "After the meeting, get actionable AI suggestions like assigning tasks or updating your calendar.",
+      img: AiSuggestion,
+      alt: "AI Suggestion Illustration",
+    },
+    {
+      id: 4,
+      title: "Approve & Stay Organized",
+      description:
+        "Quickly approve suggestions and keep your team aligned and on track.",
+      img: ReviewApprove,
+      alt: "Review & Approve Illustration",
+    },
+  ];
+
   return (
-    <div className="">
+    <div className="relative overflow-hidden">
       <UnAuthNav />
 
-      {/* Main section */}
-      <div className="min-h-screen flex flex-col items-center bg-white!">
-        {/* Hero section */}
-        <h1
-          className="text-black! text-3xl! text-center px-5 mt-28 font-bold
-                md:text-6xl! md:mt-32!
-                lg:text-7xl! lg:mt-40!
-            "
-        >
-          Live Transcription <span className="text-purple-700">+</span> AI
-          Summaries
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-purple-50 px-6 text-center
+        pt-32! sm:pt-0!
+      ">
+        <h1 className="text-3xl! md:text-6xl! lg:text-7xl! font-extrabold text-transparent bg-clip-text bg-black! leading-tight">
+          Live Transcription <span className="text-purple-700">+</span> AI Summaries
         </h1>
-        <p
-          className="hidden! text-gray-500! text-sm! m-2! font-base max-w-6xl! text-center
-                md:text-base! md:px-20! md:m-8! md:inline-block!
-                lg:text-xl! lg:px-40! lg:m-8!
-            "
-        >
-          Record meetings, get instant transcripts, and let AI extract
-          decisions, tasks, and calendar events automatically.
+        <p className="mt-6 text-gray-600! max-w-2xl text-base! md:text-lg! lg:text-xl!">
+          Record meetings, get instant transcripts, and let AI extract decisions, tasks, and calendar events automatically.
         </p>
-        <div className="flex flex-row gap-4 mt-4">
+
+        <div className="flex flex-col sm:flex-row gap-4 mt-8">
           <Link
             to="/register"
-            className="hidden! bg-slate-700 text-white! px-4! py-2! text-sm! rounded-md! mt-6!
-                  hover:scale-110 transition-all! duration-300!
-                  md:text-base! md:px-6! md:py-3! md:mt-10! md:inline-block!
-                  lg:text-lg! lg:px-8! lg:py-4! lg:mt-12!
-              "
+            className="px-6 py-3 bg-purple-700 text-white! rounded-lg font-semibold shadow-lg hover:scale-105 transition-transform! duration-300!"
           >
             Get Started
           </Link>
           <Link
             to=""
-            className="hidden! border border-slate-700 text-slate-700! px-4! py-2! text-sm! rounded-md! mt-6!
-                  hover:scale-110 transition-all! duration-300!
-                  md:text-base! md:px-6! md:py-3! md:mt-10! md:inline-block!
-                  lg:text-lg! lg:px-8! lg:py-4! lg:mt-12!
-              "
+            className="px-6 py-3 border border-purple-700 text-purple-700! rounded-lg font-semibold hover:bg-purple-50! transition-colors! duration-300"
           >
             Learn More
           </Link>
         </div>
 
-        {/* placeholder for image of landing page */}
-        <div
-          className="relative flex flex-col justify-center items-center gap-3 mt-10 min-w-screen
-                    md:mt-16! md:gap-5 md:flex-row
-                    lg:mt-20! lg:gap-7
-                "
-        >
-          <div
-            className="w-[12rem] h-[5rem] bg-gray-200! border-2 border-dashed border-gray-400! flex justify-center items-center shadow-xl shadow-gray-300!
-                        md:w-[15rem]! md:h-[10rem]! md:rotate-[-5deg] md:mt-5!
-                        lg:w-[25rem]! lg:h-[15rem]! lg:mt-10!
-                    "
-          >
-            <span className="text-black!">Landing Page Image Placeholder</span>
-          </div>
-          <div
-            className="w-[12rem] h-[5rem] bg-gray-200! border-2 border-dashed border-gray-400! flex justify-center items-center shadow-xl shadow-gray-300!
-                        md:w-[15rem]! md:h-[10rem]!
-                        lg:w-[25rem]! lg:h-[15rem]!
-                    "
-          >
-            <span className="text-black!">Landing Page Image Placeholder</span>
-          </div>
-          <div
-            className="w-[12rem] h-[5rem] bg-gray-200! border-2 border-dashed border-gray-400! flex justify-center items-center shadow-xl shadow-gray-300!
-                        md:w-[15rem]! md:h-[10rem]! md:rotate-[5deg] md:mt-5!
-                        lg:w-[25rem]! lg:h-[15rem]! lg:mt-10!
-                    "
-          >
-            <span className="text-black!">Landing Page Image Placeholder</span>
-          </div>
+        {/* Hero Images */}
+        <div className="flex flex-wrap justify-center gap-6 mt-12">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className={`w-56 h-36 md:w-72 md:h-48 lg:w-96 lg:h-60 bg-white shadow-2xl rounded-xl transform ${i === 1 ? "-rotate-3" : i === 3 ? "rotate-3" : ""} transition-transform duration-500 hover:scale-105 flex items-center justify-center`}
+            >
+              <span className="text-gray-400 font-semibold">Landing Page Image</span>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* Feature Section */}
-        <h1
-          className="mt-12 text-black! text-lg! px-10! py-5! font-bold text-center
-                md:mt-28! md:text-3xl!
-                lg:mt-32! lg:text-4xl!
-                "
-        >
-          Powerful Features to Enhance Your Experience
-        </h1>
-        <p
-          className="text-gray-500 text-xs! text-center px-10!
-                md:text-lg! md:px-20!
-                lg:text-xl! lg:px-40!
-                "
-        >
-          From live audio transcription to AI-generated summaries, our platform
-          offers a range of tools designed to improve your productivity and
-          collaboration.
+      {/* Features Section */}
+      <section className="py-20 px-6 bg-white">
+        <h2 className="text-black! text-3xl! md:text-4xl! lg:text-5xl! font-bold text-center mb-4">
+          Powerful Features
+        </h2>
+        <p className="text-gray-600! text-center max-w-3xl mx-auto mb-12">
+          From live audio transcription to AI-generated summaries, our platform offers a range of tools designed to improve your productivity and collaboration.
         </p>
 
-        {/* display feature */}
-        <div
-          className="grid grid-cols-1 gap-6 mt-10 px-5
-                    md:grid-cols-2! md:gap-8! md:px-20!
-                    lg:grid-cols-3! lg:gap-10! lg:px-40!"
-        >
-          <div className=" border border-purple-700! rounded-lg! p-6! shadow-md! flex flex-col ! hover:scale-105! transition-transform! duration-300!">
-            <Phone
-              className="text-purple-700! mb-4! w-5! h-5!
-                            md:w-6! md:h-6!
-                            lg:w-8! lg:h-8!
-                        "
-            />
-            <h2 className="text-black! font-semibold! text-lg! mb-2!">
-              Live Transcription
-            </h2>
-            <p className="text-gray-500! text-sm!">
-              Convert speech to text in real-time with high accuracy.
-            </p>
-          </div>
-          <div className=" border border-green-700! rounded-lg! p-6! shadow-md! flex flex-col ! hover:scale-105! transition-transform! duration-300!">
-            <Captions
-              className="text-green-700! mb-4! w-5! h-5!
-                            md:w-6! md:h-6!
-                            lg:w-8! lg:h-8!
-                        "
-            />
-            <h2 className="text-black! font-semibold! text-lg! mb-2!">
-              Real-Time Transcription
-            </h2>
-            <p className="text-gray-500! text-sm!">
-              Every word is transcribed as it is spoken, ensuring you never miss
-              a detail.
-            </p>
-          </div>
-          <div className=" border border-red-700! rounded-lg! p-6! shadow-md! flex flex-col ! hover:scale-105! transition-transform! duration-300!">
-            <Brain
-              className="text-red-700! mb-4! w-5! h-5!
-                            md:w-6! md:h-6!
-                            lg:w-8! lg:h-8!
-                        "
-            />
-            <h2 className="text-black! font-semibold! text-lg! mb-2!">
-              AI Summarization
-            </h2>
-            <p className="text-gray-500! text-sm!">
-              Automatically generate concise summaries of your meetings to
-              capture key points and action items.
-            </p>
-          </div>
-          <div className=" border border-blue-700! rounded-lg! p-6! shadow-md! flex flex-col ! hover:scale-105! transition-transform! duration-300!">
-            <Users
-              className="text-blue-700! mb-4! w-5! h-5!
-                            md:w-6! md:h-6!
-                            lg:w-8! lg:h-8!
-                        "
-            />
-            <h2 className="text-black! font-semibold! text-lg! mb-2!">
-              Team Collaboration
-            </h2>
-            <p className="text-gray-500! text-sm!">
-              Collaborate seamlessly with your team through shared notes,
-              comments, and real-time updates.
-            </p>
-          </div>
-          <div className=" border border-indigo-700! rounded-lg! p-6! shadow-md! flex flex-col ! hover:scale-105! transition-transform! duration-300!">
-            <Search
-              className="text-indigo-700! mb-4! w-5! h-5!
-                            md:w-6! md:h-6!
-                            lg:w-8! lg:h-8!
-                        "
-            />
-            <h2 className="text-black! font-semibold! text-lg! mb-2!">
-              Search Functionality
-            </h2>
-            <p className="text-gray-500! text-sm!">
-              Quickly find specific information within your transcriptions and
-              summaries using our powerful search tools.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/70! backdrop-blur-md shadow-lg hover:scale-105 transition-transform! duration-300!"
+            >
+              <div className="p-4 rounded-full bg-purple-100 mb-4">{feature.icon}</div>
+              <h3 className="font-semibold text-xl mb-2 text-black!">{feature.title}</h3>
+              <p className="text-gray-600!">{feature.description}</p>
+            </div>
+          ))}
         </div>
+      </section>
 
-        <div
-          className="flex flex-col md:flex-row items-center min-w-screen mt-20 mb-20 px-5 gap-10
-                md:mt-48! md:px-16
-            "
-        >
-          {/* Text Section */}
-          <div className="md:w-1/4 flex flex-col justify-center">
-            <h1 className="text-3xl! md:text-4xl! lg:text-5xl! font-bold text-black mb-4 pl-10 md:pl-2">
+      {/* How It Works Section */}
+      <section className="py-20 px-6 bg-purple-50!">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
+          <div className="lg:w-1/3">
+            <h2 className="text-3xl! md:text-4xl! lg:text-5xl! font-bold mb-4 text-black">
               See How It Works
-            </h1>
-            <p className="text-gray-600 text-sm! md:text-sm! lg:text-xl! pl-10 md:pl-2">
-              Explore our intuitive interface and powerful features designed to
-              enhance your productivity.
+            </h2>
+            <p className="text-gray-600! text-base! md:text-lg! lg:text-xl!">
+              Explore our intuitive interface and powerful features designed to enhance your productivity.
             </p>
           </div>
-          {/* Placeholder for video/demo image */}
-          <div
-            className="grid grid-cols-1 w-2/3 gap-4
-                md:grid-cols-2 md:w-3/4"
-          >
-            <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
-              {/* from asset */}
-              <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
-                <img
-                  src={CallingAmico}
-                  alt="Calling Illustration"
-                  className="size-32 lg:size-40"
-                />
-                <div className="flex flex-row justify-between items-center gap-1">
-                  <div className="flex text-purple-700! font-bold text-xl bg-purple-700/20 rounded-full p-2 w-10 h-10 items-center justify-center lg:text-2xl! lg:w-20 lg:h-auto">
-                    1
-                  </div>
-                  i
-                  <div className="text-black! text-lg! md:text-xl! lg:text-2xl! w-full">
-                    Start a Call
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-500! text-sm! mt-4 text-center md:text-base!">
-                Invite team members or friends and begin a call instantly—no
-                third-party tools needed.
-              </p>
-            </div>
 
-            {/* section2  */}
-            <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
-              {/* from asset */}
-              <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
+          <div className="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {steps.map((step) => (
+              <div
+                key={step.id}
+                className="flex flex-col items-center text-center p-6 rounded-2xl bg-white hover:scale-105 transition-transform! duration-300!"
+              >
                 <img
-                  src={LiveTranscript}
-                  alt="Live Transcription Illustration"
-                  className="size-32 lg:size-40 "
+                  src={step.img}
+                  alt={step.alt}
+                  className="w-32 h-32 md:w-36 md:h-36 lg:w-44 lg:h-44 mb-4"
                 />
-                <div className="flex flex-row justify-between items-center gap-1">
-                  <div className="flex text-purple-700! font-bold text-xl bg-purple-700/20 rounded-full p-2 w-10 h-10 items-center justify-center lg:text-2xl! lg:w-20 lg:h-auto">
-                    2
-                  </div>
-                  i
-                  <div className="text-black! text-lg! md:text-xl! lg:text-2xl! w-full">
-                    Live Transcription
-                  </div>
-                </div>
+                <h3 className="font-semibold text-xl mb-2 text-black!">{step.title}</h3>
+                <p className="text-gray-600">{step.description}</p>
               </div>
-              <p className="text-gray-500! text-sm! mt-4 text-center md:text-base!">
-                Your conversations are transcribed in real time, so no one
-                misses a detail.
-              </p>
-            </div>
-            {/* section3  */}
-            <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
-              {/* from asset */}
-              <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
-                <img
-                  src={AiSuggestion}
-                  alt="AI Suggestion Illustration"
-                  className="size-32 lg:size-40 "
-                />
-                <div className="flex flex-row justify-between items-center gap-1">
-                  <div className="flex text-purple-700! font-bold text-xl bg-purple-700/20 rounded-full p-2 w-10 h-10 items-center justify-center lg:text-2xl! lg:w-20 lg:h-auto">
-                    3
-                  </div>
-                  i
-                  <div className="text-black! text-lg! md:text-xl! lg:text-2xl! w-full">
-                    AI Suggestion
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-500! text-sm! mt-4 text-center md:text-base!">
-                After the meeting, get actionable AI suggestions like assigning
-                tasks or updating your calendar.
-              </p>
-            </div>
-
-            {/* section4  */}
-            <div className="flex flex-col  border border-purple-700! rounded-lg! shadow-md! p-4! items-center">
-              {/* from asset */}
-              <div className="flex flex-col font-semibold! justify-center mt-4 gap-4">
-                <img
-                  src={ReviewApprove}
-                  alt="Review & Approve Illustration"
-                  className="size-32 lg:size-40 "
-                />
-                <div className="flex flex-row justify-between items-center gap-1">
-                  <div className="flex text-purple-700! font-bold text-xl bg-purple-700/20 rounded-full p-2 w-10 h-10 items-center justify-center lg:text-2xl! lg:w-20 lg:h-auto">
-                    4
-                  </div>
-                  i
-                  <div className="text-black! text-lg! md:text-xl! lg:text-2xl! w-full">
-                    Approve & Stay Organized
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-500! text-sm! mt-4 text-center md:text-base!">
-                Quickly approve suggestions and keep your team aligned and on
-                track.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <footer className="min-w-full">
-        <div className="bg-gray-800! text-white! py-6! flex flex-col items-center!">
-          <p className="text-sm!">
-            &copy; {new Date().getFullYear()} Collab. All rights reserved.
-          </p>
-        </div>
+      {/* Footer */}
+      <footer className="bg-gray-900! text-white! py-8 flex flex-col items-center">
+        <p className="text-sm">&copy; {new Date().getFullYear()} Collab. All rights reserved.</p>
       </footer>
     </div>
   );

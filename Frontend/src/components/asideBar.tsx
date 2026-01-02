@@ -57,7 +57,7 @@ export const SideBar = () => {
 
       </div>
 
-      <LogOut onClick={handleLogout} className="w-8 h-8 text-gray-700 hover:text-red-600 cursor-pointer mb-10" />
+      <LogOut onClick={handleLogout} className="w-6 h-6 text-gray-700 hover:text-red-600 cursor-pointer mb-10" />
     </aside>
   );
 };

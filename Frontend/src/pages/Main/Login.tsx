@@ -34,8 +34,8 @@ export function Login() {
     <div>
       <AuthNav />
       <main
-        className="bg-white min-h-screen flex flex-row justify-center! pb-20! pt-5!
-                md:pt-5! md:text-left! md:items-center! lg:justify-around!
+        className="bg-white min-h-screen flex flex-row justify-center! pt-5!
+                md:pt-5! md:text-left! md:pb-36 lg:pb-40! md:items-center! lg:justify-around!
             "
       >
         {/* input content */}

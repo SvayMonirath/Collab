@@ -15,7 +15,7 @@ const UnAuthNav: React.FC = () => {
                 <Link to="/login" className="!text-gray-800
                     hover:bg-purple-700! hover:text-white! px-4! py-2! rounded-md! transition-colors! duration-300!
                 ">Login</Link>
-                <Link to="/register" className="flex justify-center items-center px-4 py-2 rounded-md bg-slate-700 text-white! hover:opacity-70! transition-opacity! duration-300!">Sign up</Link>
+                <Link to="/register" className="flex justify-center items-center px-4 py-2 rounded-md bg-purple-700 text-white! hover:opacity-70! transition-opacity! duration-300!">Sign up</Link>
             </div>
         </nav>
     );

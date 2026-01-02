@@ -35,8 +35,8 @@ export function Register() {
     <div>
       <AuthNav />
       <main
-        className="bg-white min-h-screen flex flex-row justify-center! pb-20! pt-5! relative
-                md:pt-5! md:text-left! md:items-center! lg:justify-around!
+        className="bg-white min-h-screen flex flex-row justify-center! pt-5! sm:pt-0! sm:pb-30! relative
+                 md:text-left! md:items-center! lg:justify-around!
             "
       >
         {(message || error) && <PopUpMessage message={message} error={error} />}

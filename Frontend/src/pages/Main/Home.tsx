@@ -177,7 +177,7 @@ export function MainHome() {
 
                 <button
                   className="bg-white! text-black! text-sm! flex flex-row gap-2 justify-center items-center
-                                md:text-base! px-4! py-2! rounded-lg
+                                md:text-base! px-6! py-2! rounded-lg
                             "
                   onClick={() => setIsJoinModalOpen(true)}
                 >
@@ -214,7 +214,7 @@ export function MainHome() {
                         </p>
                       </div>
 
-                      <div className="mt-4 flex items-center justify-between text-purple-600 font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="opacity-0! mt-4 flex items-center justify-between text-purple-600 font-semibold opacity-80 group-hover:opacity-100! transition-opacity! duration-300!">
                         <span>Open →</span>
                       </div>
                     </div>

@@ -5,7 +5,7 @@ import { SideBar } from "../../components/asideBar";
 import { DefaultAuthNav } from "../../components/DefaultNav";
 import { useUserTeams } from "../../hooks/teamHooks";
 
-export function TeamsPage() {
+export function MainTeams() {
   const {
     teams,
     loading: teamsLoading,
@@ -18,7 +18,7 @@ export function TeamsPage() {
   return (
     <div>
       <DefaultAuthNav />
-      <main className="flex flex-row min-h-screen! bg-gray-100!">
+      <main className="flex flex-row min-h-screen! bg-white!">
         {/* SIDE BAR */}
         <SideBar />
         {/* TEAMS CONTENT */}
@@ -90,57 +90,50 @@ export function TeamsPage() {
             {teams.map((team) => (
               <div
                 key={team.id}
-                className="flex flex-col justify-between p-6 bg-white rounded-lg "
+                className="
+                  flex flex-col justify-between bg-white rounded-2xl shadow-sm hover:shadow-lg
+                  border border-gray-200 transition-all duration-300
+                  p-6 md:p-8 lg:p-10
+                "
               >
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-8! md:mb-12! md:text-2xl lg:text-3xl">
+                {/* Title and Description */}
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
                     {team.title}
                   </h3>
-                  <p className="text-gray-600 mt-2 mb-12! md:text-base lg:text-lg">
+                  <p className="text-gray-600 text-sm md:text-base lg:text-lg line-clamp-3">
                     {team.description || "No description available."}
                   </p>
+                </div>
 
-                  <div className="flex justify-between mt-4">
-                    {/* Member Count */}
-                    <div>
-                      <h2 className="text-black font-semibold text-base md:text-lg lg:text-xl">
-                        Count
-                      </h2>
-                      <p className="text-gray-500 text-sm md:text-base lg:text-lg">
-                        Members
-                      </p>
-                    </div>
+                {/* Stats Section */}
+                <div className="grid grid-cols-3 gap-4 mt-6">
+                  {/* Member Count */}
+                  <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
+                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.membersCount}</span>
+                    <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Members</span>
+                  </div>
 
-                    {/* Task Count */}
-                    <div>
-                      <h2 className="text-black font-semibold text-base md:text-lg lg:text-xl">
-                        Count
-                      </h2>
-                      <p className="text-gray-500 text-sm md:text-base lg:text-lg">
-                        Tasks
-                      </p>
-                    </div>
+                  {/* Task Count */}
+                  <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
+                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.tasksCount}</span>
+                    <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Tasks</span>
+                  </div>
 
-                    {/* Meeting Count */}
-                    <div>
-                      <h2 className="text-black font-semibold text-base md:text-lg lg:text-xl">
-                        Count
-                      </h2>
-                      <p className="text-gray-500 text-sm md:text-base lg:text-lg">
-                        Meetings
-                      </p>
-                    </div>
+                  {/* Meeting Count */}
+                  <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
+                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.meetingsCount}</span>
+                    <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Meetings</span>
                   </div>
                 </div>
 
-                {/* Button at the bottom */}
+                {/* Action Button */}
                 <button
-                  onClick={() => {
-                    navigate(`/TeamHome/${team.id}`);
-                  }}
-                  className="mt-6 bg-black text-white px-4 py-2 rounded-lg w-full font-semibold! hover:bg-gray-800! transition-colors! duration-200
-                                md:mt-12!
-                            "
+                  onClick={() => navigate(`/TeamHome/${team.id}`)}
+                  className="
+                    mt-6 w-full py-2 md:py-3 text-white font-semibold bg-purple-600 rounded-lg
+                    hover:bg-purple-700 transition-colors duration-200
+                  "
                 >
                   Enter Team
                 </button>

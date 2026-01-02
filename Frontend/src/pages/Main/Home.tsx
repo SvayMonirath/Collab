@@ -3,13 +3,16 @@ import { LogIn, Clock, Target, Zap } from "lucide-react";
 import { HomeNav } from "../../components/HomeNav";
 import { SideBar } from "../../components/asideBar";
 
-import { CreateTeamModal } from "../../components/HomeComponents";
-import { JoinTeamModal } from "../../components/HomeComponents";
+// Hooks
 import { useCreateTeam } from "../../hooks/teamHooks";
 import { useJoinTeam } from "../../hooks/teamHooks";
-import { PopUpMessage } from "../../components/popUpMessage";
 import { useUserLatestTeams } from "../../hooks/teamHooks";
+import { useCurrentUser } from "../../hooks/userHooks";
+// Components
+import { PopUpMessage } from "../../components/popUpMessage";
 import { useNavigate } from "react-router-dom";
+import { CreateTeamModal } from "../../components/HomeComponents";
+import { JoinTeamModal } from "../../components/HomeComponents";
 
 import type { CreateTeamSchemas } from "../../types/teamTypes";
 import type { JoinTeamSchemas } from "../../types/teamTypes";
@@ -35,6 +38,11 @@ export function MainHome() {
     error: joinError,
     message: joinMessage,
   } = useJoinTeam();
+  const {
+    user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUser();
 
   const navigate = useNavigate();
 
@@ -65,118 +73,87 @@ export function MainHome() {
         <SideBar />
 
         <div className="flex flex-col flex-1!">
-          {/* OverView */}
-          {/* TODO[]: Add OverView functionality with fetches from backend */}
-          <div
-            className="px-10! lg:px-16! bg-white! pt-10!
-                    sm:pt-16! lg:pt-20! lg:pb-6! lg:pl-32!
-                "
-          >
-            <h1 className="font-semibold text-xl! text-gray-500!">OVERVIEW</h1>
-            <div
-              className="grid grid-cols-1
-                        md:grid-cols-3! gap-6! mt-6!
+          {/* Welcoming */}
+          <div className="bg-white! pt-10! px-10! sm:pt-16! lg:pt-20! lg:px-28!">
+            <h1
+              className="font-bold text-xl! text-black! sm:px-8! lg:px-10!
+                        sm:text-3xl! lg:text-4xl! mb-2!
                     "
             >
-              <div
-                className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! shadow-xl transition-all! duration-200!
-                            md:p-4! lg:p-6!
-                        "
-              >
-                <Clock
-                  className="w-4! h-4! text-black!
-                                lg:w-7! lg:h-7!
-                            "
-                />
-                <p
-                  className="text-gray-500! text-sm! mt-2
-                                md:text-base! lg:text-lg!
-                            "
-                >
-                  Weekly Meetings
-                </p>
-                <h2
-                  className="text-lg font-semibold text-black!
-                                md:text-xl! lg:text-2xl!
-                            "
-                >
-                  PlaceHolder
-                </h2>
+              Welcome, {user ? user.username : "User"}!
+            </h1>
+            <p
+              className="text-gray-500! text-sm! sm:px-8! lg:px-10!
+                        sm:text-lg! lg:text-xl! mb-6!
+                    "
+            >
+              Here's a summary of your team's activities and progress.
+            </p>
+          </div>
 
-                <div
-                  className="absolute top-2 right-2 text-green-700! text-sm!
-                                 lg:text-lg!
-                            "
-                >
-                  Message
-                </div>
-              </div>
-              <div
-                className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! shadow-xl transition-all! duration-200!
-                            md:p-4! lg:p-6!
-                        "
-              >
-                <Target
-                  className="w-4! h-4! text-black!
-                                lg:w-7! lg:h-7!
-                            "
-                />
-                <p
-                  className="text-gray-500! text-sm! mt-2
-                                md:text-base! lg:text-lg!
-                            "
-                >
-                  Open Tasks
-                </p>
-                <h2
-                  className="text-lg font-semibold text-black!
-                                md:text-xl! lg:text-2xl!
-                            "
-                >
-                  PlaceHolder
-                </h2>
+          {/* OverView */}
+          {/* TODO[]: Add OverView functionality with fetches from backend */}
+          <div className="bg-white! px-6! sm:px-10! lg:px-16! pt-10! sm:pt-16! lg:px-32! lg:pt-20! lg:pb-6!">
+            {/* Heading */}
+            <h1 className="text-gray-500! font-semibold text-lg! sm:text-xl! lg:text-2xl! tracking-wide!">
+              OVERVIEW
+            </h1>
 
-                <div
-                  className="absolute top-2 right-2 text-red-700! text-sm!
-                                 lg:text-lg!
-                            "
-                >
-                  Message
-                </div>
-              </div>
-              <div
-                className="p-2 flex flex-col relative gap-3 border border-gray-300! rounded-lg! shadow-xl transition-all! duration-200!
-                            md:p-4! lg:p-6!
-                        "
-              >
-                <Zap
-                  className="w-4! h-4! text-black!
-                              lg:w-7! lg:h-7!
-                          "
-                />
-                <p
-                  className="text-gray-500! text-sm! mt-2
-                                md:text-base! lg:text-lg!
-                            "
-                >
-                  AI Summarizes
-                </p>
-                <h2
-                  className="text-lg font-semibold text-black!
-                                md:text-xl! lg:text-2xl!
-                            "
-                >
-                  PlaceHolder
-                </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
 
+              {/* Cards Data */}
+              {[
+                {
+                  icon: <Clock className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
+                  label: "Weekly Meetings",
+                  value: "0",
+                  status: { text: "On Track", color: "bg-green-100 text-green-700" },
+                  iconBg: "bg-purple-600",
+                },
+                {
+                  icon: <Target className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
+                  label: "Open Tasks",
+                  value: "0",
+                  status: { text: "Overdue", color: "bg-red-100 text-red-700" },
+                  iconBg: "bg-red-600",
+                },
+                {
+                  icon: <Zap className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
+                  label: "AI Summarizes",
+                  value: "0",
+                  status: { text: "New Insights", color: "bg-yellow-100 text-yellow-700" },
+                  iconBg: "bg-yellow-500",
+                },
+              ].map((card, idx) => (
                 <div
-                  className="absolute top-2 right-2 text-green-700! text-sm!
-                                 lg:text-lg!
-                            "
+                  key={idx}
+                  className="relative flex flex-col p-6 rounded-2xl bg-white "
                 >
-                  Message
+                  {/* Icon */}
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${card.iconBg}`}>
+                    {card.icon}
+                  </div>
+
+                  {/* Label */}
+                  <p className="mt-4 text-gray-500 font-medium text-sm lg:text-base">{card.label}</p>
+
+                  {/* Value */}
+                  <h2 className="mt-1 text-2xl lg:text-3xl font-bold text-gray-900">{card.value}</h2>
+
+                  {/* Status badge */}
+                  <div className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-semibold ${card.status.color}`}>
+                    {card.status.text}
+                  </div>
+
+                  {/* Optional: subtle progress bar */}
+                  <div className="mt-4 h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${card.iconBg}`}
+                      style={{ width: `${Math.min(card.value * 8, 100)}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -210,47 +187,52 @@ export function MainHome() {
                   <span className="hidden! md:inline-block!">Join Team</span>
                 </button>
               </div>
-              <div
-                id="yourTeamContainer"
-                className="grid grid-cols-1!
-                            md:grid-cols-2! lg:grid-cols-3! gap-6! mt-8!
-                        "
-              >
-                {teamsLoading && <p>Loading teams...</p>}
 
-                {teams.length === 0 && !teamsLoading && <p>No teams found.</p>}
+              {/* Latest Teams CARDS  */}
+              <div className="grid gap-6 mt-10! sm:grid-cols-2 lg:grid-cols-3">
                 {teams.map((team) => (
                   <div
                     key={team.id}
                     onClick={() => navigate(`/TeamHome/${team.id}`)}
-                    className="p-4! bg-white! rounded-lg! border border-gray-300! cursor-pointer!
-                                    hover:scale-105! hover:border-purple-700! transition-all! duration-200!
-                                "
+                    className="
+                      group relative cursor-pointer overflow-hidden rounded-2xl
+                      bg-white! border border-gray-100!
+                      transition-all duration-300
+                      hover:-translate-y-1
+                    "
                   >
-                    <h3
-                      className="text-lg! font-semibold! text-black!
-                                        md:text-xl! lg:text-2xl!
-                                    "
-                    >
-                      {team.title}
-                    </h3>
-                    <p
-                      className="text-gray-600! mt-2!
-                                        md:text-base! lg:text-lg!
-                                    "
-                    >
-                      {team.description || "No description available."}
-                    </p>
+                    {/* subtle top color accent */}
+                    <div className="h-1 w-full bg-purple-600"></div>
+
+                    <div className="p-6 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors duration-300">
+                          {team.title}
+                        </h3>
+                        <p className="mt-2 text-gray-600 text-sm leading-relaxed">
+                          {team.description || "No description available."}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 flex items-center justify-between text-purple-600 font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                        <span>Open →</span>
+                      </div>
+                    </div>
                   </div>
                 ))}
+
+                {/* Show More Card */}
                 {teams.length > 0 && !teamsLoading && (
-                  <div className="flex items-center hover:">
-                    <button
-                      onClick={() => navigate("/teams")}
-                      className="mt-6 bg-purple-700! text-white text-sm! px-3! py-2! rounded-lg hover:bg-purple-800! transition-colors! duration-200!"
-                    >
-                      Show More
-                    </button>
+                  <div
+                    onClick={() => navigate("/MainTeams")}
+                    className="
+                      flex cursor-pointer items-center justify-center rounded-2xl
+                      border-2 border-dashed border-gray-300 p-6 text-gray-500
+                      transition-all duration-300
+                      hover:border-purple-600 hover:text-purple-700 hover:bg-purple-50
+                    "
+                  >
+                    <span className="text-sm font-semibold">Show more teams +</span>
                   </div>
                 )}
               </div>

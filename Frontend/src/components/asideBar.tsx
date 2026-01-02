@@ -35,7 +35,7 @@ export const SideBar = () => {
         </NavLink>
 
         <NavLink
-          to="/ShowTeams"
+          to="/MainTeams"
           className={({ isActive }) => (isActive ? active : inactive)}
         >
           <Users />

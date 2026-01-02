@@ -1,5 +1,5 @@
 import React from "react";
-import { Bell } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 
 interface HomeNavProps {
     onOpenCreateTeam: ()  => void;
@@ -49,15 +49,9 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
                     <div className="flex flex-col space-y-1! hover:cursor-pointer!
                         lg:hidden! cursor-pointer
                     ">
-                        <div className="w-6! h-0.5! bg-gray-600!
-                            md:w-8! md:h-1!
-                        "></div>
-                        <div className="w-6! h-0.5! bg-gray-600!
-                            md:w-8! md:h-1!
-                        "></div>
-                        <div className="w-6! h-0.5! bg-gray-600!
-                            md:w-8! md:h-1!
-                        "></div>
+                        <Menu className="w-4! h-4! text-gray-600!
+                            sm:w-6! sm:h-6!
+                        " />
                     </div>
 
                 </div>

@@ -3,7 +3,7 @@ import { Landing } from "./pages/Main/Landing";
 import { Login } from "./pages/Main/Login";
 import { Register } from "./pages/Main/Register";
 import { MainHome } from "./pages/Main/Home";
-import { TeamsPage } from "./pages/Main/Teams";
+import { MainTeams } from "./pages/Main/Teams";
 import { TeamHome } from "./pages/TeamsPages/TeamHome";
 
 
@@ -30,10 +30,10 @@ function App() {
           }
         />
         <Route
-          path="/ShowTeams"
+          path="/MainTeams"
           element={
             <PrivateRoute>
-              <TeamsPage />
+              <MainTeams />
             </PrivateRoute>
           }
         />

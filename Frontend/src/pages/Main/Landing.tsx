@@ -157,7 +157,7 @@ export function Landing() {
             {steps.map((step) => (
               <div
                 key={step.id}
-                className="flex flex-col items-center text-center p-6 rounded-2xl bg-white hover:scale-105 transition-transform! duration-300!"
+                className="flex flex-col items-center p-6 rounded-2xl bg-white hover:scale-105 transition-transform! duration-300!"
               >
                 <img
                   src={step.img}

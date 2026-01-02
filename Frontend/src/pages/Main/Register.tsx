@@ -35,7 +35,7 @@ export function Register() {
     <div>
       <AuthNav />
       <main
-        className="bg-white min-h-screen flex flex-row justify-center! pt-5! sm:pt-0! sm:pb-30! relative
+        className="bg-white min-h-screen flex flex-row justify-center!  sm:pb-30! pt-0! relative
                  md:text-left! md:items-center! lg:justify-around!
             "
       >
@@ -44,7 +44,7 @@ export function Register() {
         <img
           src={VideoCall}
           alt="Video Call Illustration"
-          className="hidden! lg:block! size-[30rem] lg:size-[35rem] 2xl:size-[40rem]"
+          className="hidden! lg:block! -rotate-3! hover:rotate-0! transition-transform! duration-500!  lg:size-[20rem] 2xl:size-[35rem] "
         />
         {/* input content */}
         <div
@@ -158,7 +158,7 @@ export function Register() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-2 px-4 rounded-md
                         sm:text-base! md:text-lg!
                     "
           >
@@ -171,8 +171,8 @@ export function Register() {
           >
             Or Register With
           </p>
-          <div className="flex flex-row justify-around mt-2!">
-            <div className="flex flex-row gap-2 hover:cursor-pointer! items-center text-center">
+          <div className="flex flex-row justify-center gap-6 mt-2!">
+            <div className="flex flex-row gap-2 hover:cursor-pointer! hover:scale-105! transition-all! duration-200 items-center text-center bg-black! p-2 px-6 rounded-md">
               <img
                 src={GoogleIcon}
                 alt="Google Icon"
@@ -181,24 +181,24 @@ export function Register() {
                             "
               />
               <span
-                className="text-black! text-base!
-                                sm:text-xl! md:text-2xl!
+                className="text-white! text-base! font-bold!
+                                sm:text-xl!
                             "
               >
                 Google
               </span>
             </div>
-            <div className="flex flex-row gap-2 hover:cursor-pointer! items-center text-center">
+            <div className="flex flex-row gap-2 hover:cursor-pointer! hover:scale-105! transition-all! duration-200 items-center text-center bg-black! p-2 px-6 rounded-md">
               <img
                 src={GithubIcon}
                 alt="Github Icon"
-                className="w-6 h-6
+                className="w-6 h-6 invert!
                                 md:w-8! md:h-8!
                             "
               />
               <span
-                className="text-black! text-base!
-                                sm:text-xl! md:text-2xl!
+                className="text-white! text-base font-bold!
+                                sm:text-xl!
                             "
               >
                 Github

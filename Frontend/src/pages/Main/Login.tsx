@@ -138,7 +138,7 @@ export function Login() {
           </div>
           <button
             onClick={handleSubmit}
-            className="bg-purple-700 text-white font-semibold py-2 px-4 rounded-md
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-2 px-4 rounded-md
                         sm:text-base! md:text-lg!
                     "
           >
@@ -151,8 +151,8 @@ export function Login() {
           >
             Or Login With
           </p>
-          <div className="flex flex-row justify-around mt-2!">
-            <div className="flex flex-row gap-2 hover:cursor-pointer! items-center text-center">
+          <div className="flex flex-row justify-center gap-6 mt-2!">
+            <div className="flex flex-row gap-2 hover:cursor-pointer! hover:scale-105! transition-all! duration-200 items-center text-center bg-black! p-2 px-6 rounded-md">
               <img
                 src={GoogleIcon}
                 alt="Google Icon"
@@ -161,24 +161,24 @@ export function Login() {
                             "
               />
               <span
-                className="text-black! text-base!
-                                sm:text-xl! md:text-2xl!
+                className="text-white! text-base! font-bold!
+                                sm:text-xl!
                             "
               >
                 Google
               </span>
             </div>
-            <div className="flex flex-row gap-2 hover:cursor-pointer! items-center text-center">
+            <div className="flex flex-row gap-2 hover:cursor-pointer! hover:scale-105! transition-all! duration-200 items-center text-center bg-black! p-2 px-6 rounded-md">
               <img
                 src={GithubIcon}
                 alt="Github Icon"
-                className="w-6 h-6
+                className="w-6 h-6 invert!
                                 md:w-8! md:h-8!
                             "
               />
               <span
-                className="text-black! text-base!
-                                sm:text-xl! md:text-2xl!
+                className="text-white! text-base font-bold!
+                                sm:text-xl!
                             "
               >
                 Github
@@ -206,7 +206,7 @@ export function Login() {
         <img
           src={Collaboration}
           alt="Collaboration Illustration"
-          className="hidden! lg:block! lg:size-[40rem] 2xl:size-[50rem] "
+          className="hidden! lg:block! lg:size-[20rem] 2xl:size-[35rem] rotate-5! hover:rotate-0! transition-transform! duration-500!"
         />
       </main>
       {(message || error) && <PopUpMessage message={message} error={error} />}

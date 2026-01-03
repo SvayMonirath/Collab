@@ -8,7 +8,7 @@ from sqlalchemy import (
     String,
     ForeignKey,
     Table,
-    DateTime,   
+    DateTime,
 )
 from sqlalchemy.orm import relationship
 
@@ -78,3 +78,4 @@ class Team(Base):
         characters = string.ascii_letters + string.digits
         self.code = ''.join(random.choice(characters) for _ in range(length))
 
+#  TODO[]: Write A Meeting Model for setting up meetings within teams

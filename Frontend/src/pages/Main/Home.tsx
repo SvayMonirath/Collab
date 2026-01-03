@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogIn, Clock, Target, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 import { HomeNav } from "../../components/HomeNav";
 import { SideBar } from "../../components/asideBar";
 
@@ -10,7 +12,6 @@ import { useUserLatestTeams } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
 // Components
 import { PopUpMessage } from "../../components/popUpMessage";
-import { useNavigate } from "react-router-dom";
 import { CreateTeamModal } from "../../components/HomeComponents";
 import { JoinTeamModal } from "../../components/HomeComponents";
 
@@ -45,6 +46,7 @@ export function MainHome() {
   } = useCurrentUser();
 
   const navigate = useNavigate();
+
 
   const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
     const result = await create(teamData);

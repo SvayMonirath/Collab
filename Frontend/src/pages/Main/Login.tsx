@@ -104,7 +104,6 @@ export function Login() {
                         sm:mt-12! sm:mb-6! md:mt-14! md:mb-8!
                     "
           >
-            {/* TODO[X]: Add Remember Me */}
             <div>
               <input
                 type="checkbox"

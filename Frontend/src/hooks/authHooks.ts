@@ -74,7 +74,6 @@ export function useLogin() {
             sessionStorage.setItem("authToken", token);
         }
 
-        // TODO[X]: Redirect to Main
         setTimeout(() => { setMessage(null); }, 1500);
 
         navigate("/home");

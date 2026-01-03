@@ -66,7 +66,7 @@ export async function getLatestTeams() {
 
         if (!res.ok) {
             const errorData = await res.json();
-            return { error: errorData.detail || "Failed to fetch teams" };
+            return { error: errorData.detail || "Failed to fetch teams"};
         }
 
         const data = await res.json();
@@ -93,7 +93,7 @@ export async function getTeamById(teamID: string) {
 
         if (!res.ok) {
             const errorData = await res.json();
-            return { error: errorData.detail || "Failed to fetch team by ID" };
+            return { error: errorData.detail || "Failed to fetch team by ID", status: res.status };
         }
 
         const data = await res.json();

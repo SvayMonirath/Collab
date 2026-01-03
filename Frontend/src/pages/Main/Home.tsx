@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { LogIn, Clock, Target, Zap } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { HomeNav } from "../../components/HomeNav";
 import { SideBar } from "../../components/asideBar";
@@ -46,7 +46,19 @@ export function MainHome() {
   } = useCurrentUser();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectError = location.state?.error || null;
+  const [showRedirectError, setShowRedirectError] = useState<string | null>(redirectError);
 
+  useEffect(() => {
+    if(redirectError) {
+      setShowRedirectError(redirectError);
+      setTimeout(() => {
+        setShowRedirectError(null);
+      }, 3000);
+    }
+
+  }, [redirectError]);
 
   const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
     const result = await create(teamData);
@@ -256,6 +268,10 @@ export function MainHome() {
       {(joinMessage || joinError) && (
         <PopUpMessage message={joinMessage} error={joinError} />
       )}
+
+      {
+        showRedirectError && <PopUpMessage message="" error={showRedirectError} />
+      }
 
       {isModalOpen && (
         <CreateTeamModal

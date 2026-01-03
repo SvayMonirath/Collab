@@ -25,7 +25,7 @@ export const PopUpMessage: React.FC<{ message: string, error: string }> = ({ mes
             </svg>
 
             {/* Message text */}
-            <span className="flex-1 text-black!">{error}</span>
+            <span className="flex-1 text-red-800! font-bold">{error}</span>
             </div>
         ) : (
             <div
@@ -44,7 +44,7 @@ export const PopUpMessage: React.FC<{ message: string, error: string }> = ({ mes
             </svg>
 
             {/* Message text */}
-            <span className="flex-1 text-black!">{message}</span>
+            <span className="flex-1 text-green-800! font-bold">{message}</span>
             </div>
         )}
         </div>

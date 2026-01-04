@@ -1,11 +1,28 @@
 import { Settings, CirclePlus, LogIn } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Components
+import { CreateTeamModal } from "../../components/HomeComponents";
+import { JoinTeamModal } from "../../components/HomeComponents";
 import { SideBar } from "../../components/asideBar";
-import { DefaultAuthNav } from "../../components/DefaultNav";
+import { HomeNav } from "../../components/HomeNav";
+
+// Hooks
+import { useCurrentUser } from "../../hooks/userHooks";
+import { useCreateTeam } from "../../hooks/teamHooks";
+import { useJoinTeam } from "../../hooks/teamHooks";
 import { useUserTeams } from "../../hooks/teamHooks";
 
+// Types
+import type { CreateTeamSchemas, JoinTeamSchemas } from "../../types/teamTypes";
+
+
 export function MainTeams() {
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+
   const {
     teams,
     loading: teamsLoading,
@@ -14,10 +31,34 @@ export function MainTeams() {
   } = useUserTeams();
 
   const navigate = useNavigate();
+  const { create, loading: createLoading } = useCreateTeam();
+  const { join, loading: joinLoading } = useJoinTeam();
+
+  const {
+    user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUser();
+
+  const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
+    const result = await create(teamData);
+    if (result) {
+      refetchTeams();
+    }
+    return result;
+  };
+
+  const handleJoinTeam = async (joinData: JoinTeamSchemas) => {
+    const result = await join(joinData);
+    if (result) {
+      refetchTeams();
+    }
+    return result;
+  };
 
   return (
     <div>
-      <DefaultAuthNav />
+      <HomeNav onOpenCreateTeam={() => setIsCreateModalOpen(true)} onOpenJoinTeam={() => setIsJoinModalOpen(true)} Username={user?.username || ""} Email={user?.email || ""}/>
       <main className="flex flex-row min-h-screen! bg-white!">
         {/* SIDE BAR */}
         <SideBar />
@@ -39,30 +80,6 @@ export function MainTeams() {
               <p className="hidden! text-gray-500! sm:inline-block! sm:text-base! lg:text-lg!">
                 Manage your teams workspaces
               </p>
-            </div>
-
-            <div className="flex flex-row gap-3 lg:gap-4!">
-              <button
-                className="text-sm!  bg-white! text-black! px-4! py-2! rounded-lg! font-medium!
-                                md:text-base! lg:text-lg!
-                            "
-              >
-                <span className="lg:hidden!">
-                  <CirclePlus />
-                </span>
-                <span className="hidden! lg:inline-block!">Create Team</span>
-              </button>
-
-              <button
-                className="text-sm! bg-purple-700! text-white! px-4! py-2! rounded-lg! font-bold! hover:bg-purple-800! transition-all! duration-200!
-                                md:text-base! lg:text-lg!
-                            "
-              >
-                <span className="lg:hidden!">
-                  <LogIn />
-                </span>
-                <span className="hidden! lg:inline-block!">Join Team</span>
-              </button>
             </div>
           </div>
           {/* TODO[]: Implement Teams Page */}
@@ -142,6 +159,22 @@ export function MainTeams() {
           </div>
         </div>
       </main>
+    {isCreateModalOpen && (
+      <CreateTeamModal
+        onClose={() => setIsCreateModalOpen(false)}
+        onCreate={handleCreateTeam}
+        loading={createLoading}
+      />
+    )}
+
+    {isJoinModalOpen && (
+      <JoinTeamModal
+        onClose={() => setIsJoinModalOpen(false)}
+        onJoin={handleJoinTeam}
+        loading={joinLoading}
+      />
+    )}
+
     </div>
   );
 }

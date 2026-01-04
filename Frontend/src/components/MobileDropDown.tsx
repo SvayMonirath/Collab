@@ -24,6 +24,9 @@ const handleLogout = async () => {
   window.location.href = "/login";
 }
 
+const isActiveStyle = "text-black! bg-black! text-white! p-3! rounded-lg! transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!";
+const isInactiveStyle = "text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!";
+
 export const MobileDropDown: React.FC<MobileDropDownProps> = ({
   showMobileMenu,
   onOpenCreateTeam,
@@ -81,7 +84,7 @@ export const MobileDropDown: React.FC<MobileDropDownProps> = ({
       <div className="flex flex-col gap-4!">
         <NavLink
           to="/home"
-          className="text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
+          className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
             <House className="size-5!" />
@@ -90,7 +93,7 @@ export const MobileDropDown: React.FC<MobileDropDownProps> = ({
         </NavLink>
         <NavLink
           to="/MainTeams"
-          className="text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
+          className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
             <Users className="size-5!" />
@@ -99,7 +102,7 @@ export const MobileDropDown: React.FC<MobileDropDownProps> = ({
         </NavLink>
         <NavLink
           to="/MainCalendar"
-          className="text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
+          className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
             <Calendar className="size-5!" />
@@ -108,7 +111,8 @@ export const MobileDropDown: React.FC<MobileDropDownProps> = ({
         </NavLink>
         <NavLink
           to="/MainCalendar"
-          className="text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
+          className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
+
         >
           <span>
             <NotebookText className="size-5!" />

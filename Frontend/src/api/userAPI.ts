@@ -2,13 +2,12 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export async function getCurrentUser() {
 
-    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {
         const res = await fetch(`${BACKEND_URL}/users/me`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
             }
         })
         if (!res.ok) {

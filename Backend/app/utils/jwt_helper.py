@@ -1,7 +1,7 @@
 import os
 
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends
+from fastapi import Depends, HTTPException, Request
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from dotenv import load_dotenv
@@ -27,8 +27,15 @@ def verify_jwt_token(token: str):
     except JWTError:
         return None
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(request: Request):
+    token = request.cookies.get("accessToken")
+
+    if not token:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
     payload = verify_jwt_token(token)
     if payload is None:
         return None
     return {"user_id": payload.get("user_id"), "username": payload.get("username")}
+
+# TODO[]: Secure token by storing it in a HTTP-only cookie instead of local storage.

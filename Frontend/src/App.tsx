@@ -20,7 +20,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* TODO[X]: MAKE these AUTHENTICATED ROUTES  */}
         <Route
           path="/home"
           element={

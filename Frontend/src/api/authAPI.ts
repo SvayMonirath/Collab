@@ -33,6 +33,7 @@ export async function LoginUser(loginData: LoginTypes) {
     try {
         const res = await fetch(`${BACKEND_URL}/auth/login`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -51,5 +52,56 @@ export async function LoginUser(loginData: LoginTypes) {
 
     } catch(err) {
         console.error("Login failed:", err);
+    }
+}
+
+export async function LogoutUser() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const data = await res.json();
+
+        console.log("Logout response:", data);
+
+        if (!res.ok) {
+            return { error: data.detail };
+        }
+
+        return data;
+    } catch(err) {
+        console.error("Logout failed:", err);
+        return { error: "Logout failed" };
+    }
+}
+
+export async function checkAuthStatus() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/auth/status`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const data = await res.json();
+
+        console.log("Auth status response:", data);
+
+        if (!res.ok) {
+            return { error: data.detail || "Failed to check auth status" };
+        }
+
+        return data;
+
+    } catch(err) {
+        console.error("Check auth status failed:", err);
+        return { error: "Check auth status failed" };
     }
 }

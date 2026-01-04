@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogIn, Clock, Target, Zap } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import { HomeNav } from "../../components/HomeNav";
 import { SideBar } from "../../components/asideBar";
 
@@ -10,7 +12,6 @@ import { useUserLatestTeams } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
 // Components
 import { PopUpMessage } from "../../components/popUpMessage";
-import { useNavigate } from "react-router-dom";
 import { CreateTeamModal } from "../../components/HomeComponents";
 import { JoinTeamModal } from "../../components/HomeComponents";
 
@@ -45,6 +46,19 @@ export function MainHome() {
   } = useCurrentUser();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectError = location.state?.error || null;
+  const [showRedirectError, setShowRedirectError] = useState<string | null>(redirectError);
+
+  useEffect(() => {
+    if(redirectError) {
+      setShowRedirectError(redirectError);
+      setTimeout(() => {
+        setShowRedirectError(null);
+      }, 3000);
+    }
+
+  }, [redirectError]);
 
   const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
     const result = await create(teamData);
@@ -67,6 +81,8 @@ export function MainHome() {
       <HomeNav
         onOpenCreateTeam={() => setIsModalOpen(true)}
         onOpenJoinTeam={() => setIsJoinModalOpen(true)}
+        Username={user ? user.username : ""}
+        Email={user ? user.email : ""}
       />
       <main className="flex flex-row min-w-screen! pt-10! bg-gray-100!">
         {/* SIDE BAR */}
@@ -254,6 +270,10 @@ export function MainHome() {
       {(joinMessage || joinError) && (
         <PopUpMessage message={joinMessage} error={joinError} />
       )}
+
+      {
+        showRedirectError && <PopUpMessage message="" error={showRedirectError} />
+      }
 
       {isModalOpen && (
         <CreateTeamModal

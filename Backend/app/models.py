@@ -72,16 +72,3 @@ class Team(Base):
         characters = string.ascii_letters + string.digits
         self.code = ''.join(random.choice(characters) for _ in range(length))
 
-# Meeting Model
-class Meeting(Base):
-    __tablename__ = "meetings"
-    id = Column(Integer, primary_key=True)
-    team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
-    host_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    status = Column(String, nullable=False, default="inactive")
-
-    started_at = Column(DateTime, nullable=False)
-    ended_at = Column(DateTime, nullable=True)
-
-    team = relationship("Team", backref="meetings")
-    host = relationship("User", backref="hosted_meetings")

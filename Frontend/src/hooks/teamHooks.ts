@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { createTeam, getUserTeams } from "../api/teamAPI";
 import { getLatestTeams } from "../api/teamAPI";
@@ -130,6 +131,7 @@ export function useTeamById(teamID: string) {
     const [team, setTeam] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!teamID) return;
@@ -141,6 +143,9 @@ export function useTeamById(teamID: string) {
             try {
                 const res = await getTeamById(teamID);
                 if (res?.error) {
+                    if (res.status === 403) {
+                        navigate("/home", { state: { error: "You are not authorized to view this team." } });
+                    }
                     setError(res.error);
                 } else {
                     setTeam(res.team || null);
@@ -153,7 +158,7 @@ export function useTeamById(teamID: string) {
             setLoading(false);
         }
         fetchTeam();
-    }, [teamID])
+    }, [teamID, navigate]);
 
     return { team, loading, error };
 }

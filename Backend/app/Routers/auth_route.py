@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from ..Database.database import get_db
-from ..utils.jwt_helper import create_jwt_token, get_current_user
+from ..utils.jwt_helper import JWT_ACCESS_TOKEN_EXPIRE_MINUTES, create_jwt_token, get_current_user
 from ..models import User
 from ..Schemas.auth_schemas import RegisterInput, LoginInput
 
@@ -39,7 +39,7 @@ async def register(user_input: RegisterInput, db: AsyncSession = Depends(get_db)
 
 # --------------- Login Endpoint ---------------
 @auth_router.post("/login")
-async def login(login_input: LoginInput, db: AsyncSession = Depends(get_db)):
+async def login(login_input: LoginInput, response: Response, db: AsyncSession = Depends(get_db)):
     user = await db.execute(select(User).where(
         User.username == login_input.username
     ))
@@ -48,8 +48,24 @@ async def login(login_input: LoginInput, db: AsyncSession = Depends(get_db)):
     if not user or not user.verify_password(login_input.password):
         raise HTTPException(status_code=401, detail="Invalid email/username or password")
 
+    # token last 7 days if rememberMe is true else default expire time
+    expire_minute = 7*24*60 if login_input.rememberMe else JWT_ACCESS_TOKEN_EXPIRE_MINUTES
     token = create_jwt_token({"user_id": user.id, "username": user.username})
-    return {"access_token": token, "message": "Login successful"}
+    response.set_cookie(key="accessToken", value=token, httponly=True, secure=True, samesite="lax", max_age=expire_minute * 60)
+    return {"message": "Login successful"}
+
+# --------------- Logout Endpoint ---------------
+@auth_router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="accessToken")
+    return {"message": "Logout successful"}
+
+# -------------- Check Authentication Status ---------------
+@auth_router.get("/status")
+async def check_auth_status(current_user: dict = Depends(get_current_user)):
+    if current_user is None:
+        return {"is_authenticated": False}
+    return {"is_authenticated": True, "user": current_user}
 
 # --------------- Test Access Token ---------------
 @auth_router.get("/test-token")
@@ -57,5 +73,6 @@ async def test_token(current_user: dict = Depends(get_current_user)):
     if current_user is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return {"message": "Token is valid", "user": current_user}
+
 
 # TODO[]: Implement OAuth

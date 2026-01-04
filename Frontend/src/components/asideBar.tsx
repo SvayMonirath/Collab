@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
-
 import { House, Users, Calendar, NotebookText, LogOut } from "lucide-react";
+
+import { LogoutUser } from "../api/authAPI";
 
 const active =
   "w-12 h-12 p-2 bg-black text-white! rounded-xl flex items-center justify-center transition-all duration-200";
@@ -10,15 +11,8 @@ const inactive =
 
 export const SideBar = () => {
     const navigate = useNavigate();
-    const handleLogout = () => {
-        if (sessionStorage.getItem("authToken")) {
-        sessionStorage.removeItem("authToken");
-        }
-
-        if (localStorage.getItem("authToken")) {
-        localStorage.removeItem("authToken");
-        }
-
+    const handleLogout = async () => {
+        await LogoutUser();
         navigate("/login", { state: { message: "You have been logged out." } });
 
     }

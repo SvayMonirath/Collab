@@ -4,13 +4,12 @@ import type { JoinTeamSchemas } from "../types/teamTypes";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export async function createTeam(teamData: CreateTeamSchemas) {
-    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {
         const res = await fetch(`${BACKEND_URL}/teams/create`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify(teamData),
         });
@@ -29,13 +28,12 @@ export async function createTeam(teamData: CreateTeamSchemas) {
 }
 
 export async function getUserTeams() {
-    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {
         const res = await fetch(`${BACKEND_URL}/teams/get_all_teams`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
         })
 
@@ -54,19 +52,18 @@ export async function getUserTeams() {
 }
 
 export async function getLatestTeams() {
-    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {
         const res = await fetch(`${BACKEND_URL}/teams/get_latest_teams`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
         })
 
         if (!res.ok) {
             const errorData = await res.json();
-            return { error: errorData.detail || "Failed to fetch teams" };
+            return { error: errorData.detail || "Failed to fetch teams"};
         }
 
         const data = await res.json();
@@ -79,21 +76,20 @@ export async function getLatestTeams() {
 }
 
 export async function getTeamById(teamID: string) {
-    const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
 
     try {
         // @team_router.get('/get_team/{team_id}')
         const res = await fetch(`${BACKEND_URL}/teams/get_team/${teamID}`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
         });
 
         if (!res.ok) {
             const errorData = await res.json();
-            return { error: errorData.detail || "Failed to fetch team by ID" };
+            return { error: errorData.detail || "Failed to fetch team by ID", status: res.status };
         }
 
         const data = await res.json();
@@ -105,13 +101,12 @@ export async function getTeamById(teamID: string) {
 }
 
 export async function joinTeam(joinData: JoinTeamSchemas) {
-    const token =  localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
     try {
         const res = await fetch(`${BACKEND_URL}/teams/join/${joinData.team_code}`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
         });
 

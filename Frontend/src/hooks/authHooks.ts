@@ -64,17 +64,9 @@ export function useLogin() {
         setLoading(false);
         setMessage("Login successful! Redirecting...");
 
-        const token = response.access_token;
-
         console.log("Remember Me:", loginData.rememberMe);
 
-        if(loginData.rememberMe) {
-            localStorage.setItem("authToken", token);
-        } else {
-            sessionStorage.setItem("authToken", token);
-        }
 
-        // TODO[X]: Redirect to Main
         setTimeout(() => { setMessage(null); }, 1500);
 
         navigate("/home");

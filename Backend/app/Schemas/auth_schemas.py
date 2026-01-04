@@ -11,4 +11,5 @@ class LoginInput(BaseModel):
     # You can use either username or email to login
     username: str
     password: str
+    rememberMe: bool = False
 

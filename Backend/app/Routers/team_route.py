@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 
 from ..Database.database import get_db
 from ..models import Team, User, user_team_association
@@ -210,9 +211,17 @@ async def get_team_by_id(
     if current_user is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    team = await db.execute(select(Team).where(Team.id == team_id))
+    team = await db.execute(select(Team).options(selectinload(Team.members)).where(Team.id == team_id))
     team = team.scalar_one_or_none()
     if team is None:
         raise HTTPException(status_code=404, detail="Team not found")
+
+    user_id = current_user.get("user_id")
+
+    is_owner = team.owner_id == user_id
+    is_member = any(member.id == user_id for member in team.members)
+
+    if not is_owner and not is_member:
+        raise HTTPException(status_code=403, detail="You are not authorized to view this team")
 
     return {"team": team}

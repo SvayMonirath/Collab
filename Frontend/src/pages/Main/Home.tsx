@@ -81,6 +81,8 @@ export function MainHome() {
       <HomeNav
         onOpenCreateTeam={() => setIsModalOpen(true)}
         onOpenJoinTeam={() => setIsJoinModalOpen(true)}
+        Username={user ? user.username : ""}
+        Email={user ? user.email : ""}
       />
       <main className="flex flex-row min-w-screen! pt-10! bg-gray-100!">
         {/* SIDE BAR */}

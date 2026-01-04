@@ -6,7 +6,7 @@ import { Bell, Menu, CirclePlus, LogIn, House, Users, Calendar, NotebookText, Lo
 // API
 import { LogoutUser } from "../api/authAPI";
 // Components
-import { MobileDropDown } from "./MobileDropDown";
+import { MainMobileDropDown } from "./MobileDropDown";
 
 interface HomeNavProps {
     onOpenCreateTeam: ()  => void;
@@ -103,7 +103,7 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
         </nav>
 
         {/* MOBILE DROPDOWN MENU */}
-        <MobileDropDown
+        <MainMobileDropDown
           showMobileMenu={showMobileMenu}
           onOpenCreateTeam={onOpenCreateTeam}
           onOpenJoinTeam={onOpenJoinTeam}

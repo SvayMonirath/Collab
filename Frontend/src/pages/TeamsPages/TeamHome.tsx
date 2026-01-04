@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-
-import { TeamSideBar } from "../../components/TeamSideBar";
-import { useTeamById } from "../../hooks/teamHooks";
 import { Menu, Plus } from "lucide-react";
 
-export function TeamHome() {
+// Components
+import { TeamSideBar } from "../../components/TeamSideBar";
+import { TeamMobileDropDown } from "../../components/MobileDropDown";
+// Hooks
+import { useTeamById } from "../../hooks/teamHooks";
+import { useCurrentUser } from "../../hooks/userHooks";
 
+export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
     const { team, loading, error } = useTeamById(teamID);
+    const { user, loading: userLoading, error: userError } = useCurrentUser();
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     return (
         <div>
@@ -25,11 +30,11 @@ export function TeamHome() {
                         sm:text-base! sm:inline-block! lg:text-lg!
                         ">{ team?.description ? team.description : "Team Home Page - Manage your team workspace here." }</p>
                     </div>
-                    <div className="inline-block! lg:hidden!">
+                    <div className="inline-block! lg:hidden! z-[100]!">
                         {/* hamburger icon */}
                         <Menu className="w-4! h-4! text-black! cursor-pointer! hover:text-gray-700!
                             sm:size-6!
-                        "/>
+                        " onClick={() => setShowMobileMenu(!showMobileMenu)}/>
                     </div>
 
                 </div>
@@ -51,6 +56,14 @@ export function TeamHome() {
                     </div>
                 </div>
             </main>
+
+            <TeamMobileDropDown
+                showMobileMenu={showMobileMenu}
+                TeamID={teamID}
+                Username={user?.username || ""}
+                Email={user?.email || ""}
+            />
+
         </div>
     );
 }

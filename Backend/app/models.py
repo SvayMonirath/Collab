@@ -17,9 +17,7 @@ from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
-# ======================================================
 # Association Table (User <-> Team Membership)
-# ======================================================
 user_team_association = Table(
     "user_team_association",
     Base.metadata,
@@ -27,9 +25,7 @@ user_team_association = Table(
     Column("team_id", Integer, ForeignKey("teams.id"), primary_key=True),
 )
 
-# ======================================================
 # User Model
-# ======================================================
 class User(Base):
     __tablename__ = "users"
 
@@ -58,9 +54,7 @@ class User(Base):
     def verify_password(self, password: str) -> bool:
         return pwd_context.verify(password, self.hash_password)
 
-# ======================================================
 # Team Model
-# ======================================================
 class Team(Base):
     __tablename__ = "teams"
     id = Column(Integer, primary_key=True)
@@ -78,4 +72,15 @@ class Team(Base):
         characters = string.ascii_letters + string.digits
         self.code = ''.join(random.choice(characters) for _ in range(length))
 
-#  TODO[]: Write A Meeting Model for setting up meetings within teams
+# Meeting Model
+class Meeting(Base):
+    __tablename__ = "meetings"
+    id = Column(Integer, primary_key=True)
+    team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
+    host_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    status = Column(String, nullable=False)  # e.g., "active", "ended"
+    started_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    ended_at = Column(DateTime, nullable=True)
+
+    team = relationship("Team", backref="meetings")
+    host = relationship("User", backref="hosted_meetings")

@@ -5,7 +5,7 @@ import { Register } from "./pages/Main/Register";
 import { MainHome } from "./pages/Main/Home";
 import { MainTeams } from "./pages/Main/Teams";
 import { TeamHome } from "./pages/TeamsPages/TeamHome";
-
+import { MeetingAudioCallPage } from "./pages/MeetingPages/AudioCallPage";
 
 import { PrivateRoute } from "./components/privateRoute";
 
@@ -41,6 +41,14 @@ function App() {
           element={
             <PrivateRoute>
               <TeamHome />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/meeting/:meetingID"
+          element={
+            <PrivateRoute>
+              <MeetingAudioCallPage />
             </PrivateRoute>
           }
         />

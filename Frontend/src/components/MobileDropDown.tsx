@@ -10,6 +10,7 @@ import {
   CirclePlus,
   DoorOpen,
   BookUser,
+  LayoutTemplate,
 } from "lucide-react";
 import { LogoutUser } from "../api/authAPI";
 
@@ -63,7 +64,7 @@ export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
       </div>
 
       {/* Join/Create Button */}
-      <div className="flex flex-row gap-2! justify-center sm:gap-12! items-center! mt-8!">
+      <div className="flex flex-row gap-2! justify-center sm:gap-4! items-center! mt-8!">
         <button
           onClick={onOpenCreateTeam}
           className="px-2! py-1! border-b! hover:scale-110! transition-all! duration-200! sm:px-3! sm:py-2! rounded-t-lg! font-bold! flex justify-center items-center gap-2"
@@ -190,7 +191,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
-            <House className="size-5!" />
+            <LayoutTemplate className="size-5!" />
           </span>
           <span className="font-normal!">Home</span>
         </NavLink>

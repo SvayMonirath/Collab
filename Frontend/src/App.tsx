@@ -45,7 +45,7 @@ function App() {
           }
         />
         <Route
-          path="/meeting/:meetingID"
+          path="/meeting"
           element={
             <PrivateRoute>
               <MeetingAudioCallPage />

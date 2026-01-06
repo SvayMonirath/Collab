@@ -37,8 +37,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children}) => {
     }
 
     if (isAuthenticated === null) {
-        // Optionally, render a loading indicator while checking auth status
-        return <div>Loading...</div>;
+        return <div className="bg-white flex justify-center items-center ">Loading...</div>;
     }
 
     if (isAuthenticated === false) {

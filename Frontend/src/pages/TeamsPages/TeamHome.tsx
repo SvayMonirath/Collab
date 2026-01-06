@@ -28,7 +28,7 @@ export function TeamHome() {
                         <h1 className="text-lg! text-black! font-mono font-bold
                         sm:text-xl! lg:text-2xl!
                         ">{team?.title}</h1>
-                        <p className="hidden! text-gray-500! text-sm! mt-2
+                        <p className="hidden! text-gray-500! text-sm!
                         sm:text-base! sm:inline-block! lg:text-lg!
                         ">{ team?.description ? team.description : "Team Home Page - Manage your team workspace here." }</p>
                     </div>
@@ -58,13 +58,12 @@ export function TeamHome() {
                     ].map((stat, index) => (
                         <div
                             key={index}
-                            // give me a better backround design better than that this is ugly and dont fit the productivity vibe
-                            className={`flex flex-col border-2 border-black! rounded-2xl! shadow-xl! p-3! md:p-6! md:py-4! lg:gap-4!
-                                hover:shadow-md! transition-all! duration-300!
+                            className={`flex flex-col border-2 border-black! rounded-2xl! p-3! md:p-6! md:py-4! lg:gap-4!
+                                 transition-all! duration-300!
                             `}
                         >
                             <div className="flex flex-row justify-between items-center">
-<span className="text-black/60! font-bold! text-xs! sm:text-xs! md:text-base! lg:text-md!">
+                                <span className="text-black/60! font-bold! text-xs! sm:text-xs! md:text-base! lg:text-md!">
                                     {stat.label}
                                 </span>
                                 <span className={`hidden! ${stat.iconColor} p-2! rounded-lg! font-medium! lg:inline-block! `}>
@@ -86,8 +85,7 @@ export function TeamHome() {
 
                             < Coffee className="w-12! h-12! text-black! mb-2!
                                 lg:w-20! lg:h-20! sm:mb-4!
-
-                            " />k
+                            " />
                             <h2 className="text-black! font-bold! text-xl! mb-2! text-center!
                                 sm:text-2xl! sm:mb-4!
                                 lg:text-3xl! lg:mb-6!
@@ -100,17 +98,17 @@ export function TeamHome() {
                             {/* Join/View History Button */}
                             <div className="flex flex-row gap-4!">
                                 {/* TODO[]: Implement start meeting either Schedule or Instant */}
-                                <button  className="bg-purple-700! hover:bg-purple-800! text-white! font-semibold! rounded-2xl! px-4! py-4! mt-4! flex flex-row items-center gap-2! transition-all! duration-200
+                                <button  className="bg-purple-700! hover:bg-purple-800! text-white! rounded-2xl! px-4! py-4! mt-4! flex flex-row items-center gap-2! transition-all! duration-200
                                     md:px-4! md:py-4! md:mt-6! md:text-lg md:gap-4!
                                     lg:px-6! lg:py-3! lg:mt-8! lg:text-xl!
                                 ">
                                     <Video className="w-4! h-4! text-white!
                                         sm:w-6! sm:h-6!
-                                    " /> <span className="text-sm! font-medium
+                                    " /> <span className="text-sm!
                                         sm:text-base! md:text-xl!
                                     ">Start Meeting</span>
                                 </button>
-                                <button  className="hidden! sm:flex! flex-row! hover:border-2! hover:border-purple-800! bg-white! text-black! font-semibold! rounded-2xl! px-4! py-4! mt-4!  items-center gap-2! transition-all! duration-200
+                                <button  className="hidden! sm:flex! flex-row! hover:border-2! hover:border-purple-800! bg-white! text-black! rounded-2xl! px-4! py-4! mt-4!  items-center gap-2! transition-all! duration-200
                                     md:px-4! md:py-4! md:mt-6! md:text-lg md:gap-4!
                                     lg:px-6! lg:py-3! lg:mt-8! lg:text-xl!
                                 ">
@@ -129,10 +127,12 @@ export function TeamHome() {
 
                         </div>
                     </section>
-                    <div className="hidden! p-8! bg-white! flex-1 lg:inline-block!">
+
+                    {/* Aside Bar */}
+                    <aside className="hidden! p-8! bg-white! flex-1 lg:inline-block!">
 
                         {/* Meeting Action */}
-                        <div className="flex flex-col bg-gradient-to-r from-blue-500! to-blue-600! min-w-full! px-4! py-6! rounded-4xl! shadow-lg! text-white! gap-3!
+                        <div className="flex flex-col bg-gradient-to-r from-blue-500! to-blue-600! min-w-full! px-6! py-6! rounded-4xl! shadow-lg! text-white! gap-3!
                             hover:shadow-xl! transition-all! duration-300!
                         ">
                             <Phone className="size-12! mb-2! bg-blue-300/50! p-3! rounded-2xl! fill-white!" />
@@ -141,7 +141,7 @@ export function TeamHome() {
                             {/* TODO[]: Implement Start Meeting either Schedule or Instant */}
                             <button className="bg-white! text-blue-700! rounded-2xl! px-4! py-2! hover:bg-blue-100!">Launch Now</button>
                         </div>
-                    </div>
+                    </aside>
                 </div>
             </main>
 

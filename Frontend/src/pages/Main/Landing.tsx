@@ -80,7 +80,7 @@ export function Landing() {
       <UnAuthNav />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-purple-50 px-6 text-center
+      <section className="min-h-screen flex flex-col items-center justify-center bg-white! px-6 text-center
         pt-32! sm:pt-0!
       ">
         <h1 className="text-3xl! md:text-6xl! lg:text-7xl! font-extrabold text-transparent bg-clip-text bg-black! leading-tight">
@@ -93,13 +93,13 @@ export function Landing() {
         <div className="flex flex-col sm:flex-row gap-4 mt-8">
           <Link
             to="/register"
-            className="px-6 py-3 bg-purple-700 text-white! rounded-lg font-semibold shadow-lg hover:scale-105 transition-transform! duration-300!"
+            className="px-6 py-3 bg-purple-700 text-white! font-bold! rounded-lg  shadow-lg hover:scale-105 transition-transform! duration-300!"
           >
             Get Started
           </Link>
           <Link
             to=""
-            className="px-6 py-3 border border-purple-700 text-purple-700! rounded-lg font-semibold hover:bg-purple-50! transition-colors! duration-300"
+            className="px-6 py-3 border border-purple-700 font-bold! text-purple-700! rounded-lg hover:bg-purple-50! transition-colors! duration-300"
           >
             Learn More
           </Link>
@@ -142,7 +142,7 @@ export function Landing() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 px-6 bg-purple-50!">
+      <section className="py-20 px-6 bg-white!">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
           <div className="lg:w-1/3">
             <h2 className="text-3xl! md:text-4xl! lg:text-5xl! font-bold mb-4 text-black">

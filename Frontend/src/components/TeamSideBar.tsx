@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { BookCheck, Calendar, DoorOpen, House, Users } from "lucide-react";
+import { BookCheck, Calendar, DoorOpen, House, LayoutTemplate, Users } from "lucide-react";
 
 const active =
   "w-12 h-12 p-2 bg-black text-white! rounded-xl flex items-center justify-center transition-all duration-200";
@@ -18,7 +18,7 @@ export const TeamSideBar: React.FC = () => {
             to="/TeamHome"
             className={({ isActive }) => (isActive ? active : inactive)}
             >
-            <House />
+            <LayoutTemplate />
             </NavLink>
 
             <NavLink

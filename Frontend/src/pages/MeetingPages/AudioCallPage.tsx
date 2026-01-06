@@ -8,7 +8,11 @@ export function MeetingAudioCallPage() {
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [showParticipants, setShowParticipants] = useState<boolean>(true);
 
-    const showParticipantsBtn = showParticipants ? <PanelRightClose className="text-black!"/> : <PanelRightOpen className="text-black!"/>;
+    const showParticipantsBtn = showParticipants ? (
+      <PanelRightClose className="text-black! absolute! top-4! left-4! cursor-pointer!" onClick={() => setShowParticipants(false)} />
+    ) : (
+      <PanelRightOpen className="text-black! absolute! top-4! left-4! cursor-pointer!" onClick={() => setShowParticipants(true)} />
+    );
 
     const [showTask, setShowTask] = useState<boolean>(true);
     const [showTranscript, setShowTranscript] = useState<boolean>(false);
@@ -22,7 +26,7 @@ export function MeetingAudioCallPage() {
                 {/* Nav */}
                 <AudioCallNav />
 
-                <div className="flex flex-col min-w-screen! h-full! bg-red-400! mt-28!  lg:flex-row!">
+                <div className="flex flex-col min-w-screen! h-full! bg-red-400! mt-24! lg:flex-row!">
                     {/* Main Section */}
                     <div className="flex flex-row flex-1! h-full! ">
                         {/* Participant Container */}
@@ -38,13 +42,13 @@ export function MeetingAudioCallPage() {
                                 <input type="text" placeholder="Search Participants" className="w-full! border! border-gray-300! rounded-lg! px-2! py-1! text-sm! sm:text-base! focus:outline-none! focus:ring-2! focus:ring-purple-600! text-gray-700!"/>
                             </div>
                         </div>
+
                         {/* Activity Section */}
                         <div className="bg-white! w-full! h-full! relative! border-t-3! border-gray-300!">
-                            <button onClick={() => setShowParticipants(!showParticipants)} className="absolute! top-4! left-0!flex flex-row items-center border-none! bg-transparent! gap-2!">
-                                {showParticipantsBtn}
-                            </button>
+                            {showParticipantsBtn}
                         </div>
                     </div>
+
                     {/* Task/Transcript */}
                     <div className="bg-white! h-1/2! sm:h-1/3! lg:h-full! lg:w-1/3! border-l-3! border-t-3! border-gray-300!">
                         <nav className="flex flex-row w-full! bg-white! justify-between! items-center! border-b-3! border-gray-300! gap-8! ">

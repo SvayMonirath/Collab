@@ -76,6 +76,7 @@ class Team(Base):
 class Meeting(Base):
     __tablename__ = "meetings"
     id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=True)
     team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
     host_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     status = Column(String, nullable=False)  # e.g., "active", "ended"

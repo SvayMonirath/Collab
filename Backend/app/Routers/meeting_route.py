@@ -1,13 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy.future import select
 from datetime import datetime
 
+
 from ..Database.database import get_db
 from ..models import Team, Meeting
 from ..utils.jwt_helper import get_current_user
+from ..Schemas.meeting_schemas import MeetingCreateSchema
 
+meeting_router = APIRouter(prefix="/meetings", tags=["Meetings"])
 # --------------- CSOT Meeting ---------------
 # central source of truth for meeting management
 
@@ -51,23 +54,26 @@ def get_meeting_state(meeting_id: int):
     state = _init_meeting_state(meeting_id)
     return state
 
-meeting_router = APIRouter(prefix="/meetings", tags=["Meetings"])
 
 # get meeting current state
 @meeting_router.get("/state/{meeting_id}")
-async def get_meeting_current_state(meeting_id: int, current_user: dict = Depends):
+async def get_meeting_current_state( meeting_id: int, current_user: dict = Depends):
     state = get_meeting_state(meeting_id)
     return state
 
 # start meeting
 @meeting_router.post("/start/{team_id}")
-async def start_meeting(team_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
+async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(...), db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
+
+    title = meeting_data.title
+    print("Meeting Title:", title)
+
     team = await db.execute(select(Team).where(Team.id == team_id).options(selectinload(Team.members)))
     team = team.scalar_one_or_none()
     if not team:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
 
-    current_user_id = current_user.get("id")
+    current_user_id = current_user.get("user_id")
 
     # check if owner or member
     is_member = any(member.id == current_user_id for member in team.members)
@@ -76,14 +82,14 @@ async def start_meeting(team_id: int, db: AsyncSession = Depends(get_db), curren
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team owner can start a meeting")
 
     current_time = datetime.utcnow()
-    meeting = Meeting(team_id=team_id, host_id=current_user_id, status="active", started_at=current_time)
+    meeting = Meeting(team_id=team_id, title=title, host_id=current_user_id, status="active", started_at=current_time)
     db.add(meeting)
     await db.commit()
     await db.refresh(meeting)
 
     start_meeting_state(meeting.id, current_user_id)
 
-    return {"message": f"Meeting started for team {team.title}"}
+    return {"message": f"Meeting started for team {team.title}", "meeting_id": meeting.id}
 
 # end meeting
 @meeting_router.post("/end/{meeting_id}")

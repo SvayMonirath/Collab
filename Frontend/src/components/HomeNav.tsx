@@ -1,10 +1,8 @@
 import { useState } from "react";
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Bell, Menu, CirclePlus, LogIn, House, Users, Calendar, NotebookText, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Bell, Menu} from "lucide-react";
 
-// API
-import { LogoutUser } from "../api/authAPI";
 // Components
 import { MainMobileDropDown } from "./MobileDropDown";
 
@@ -17,14 +15,7 @@ interface HomeNavProps {
 
 export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTeam, Username, Email}) => {
     const appName = import.meta.env.VITE_APP_NAME;
-    const navigate = useNavigate();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
-
-    const handleLogout = async () => {
-        await LogoutUser();
-        navigate("/login", { state: { message: "You have been logged out." } });
-
-    }
 
     return (
       <div className="fixed relative w-full bg-transparent">

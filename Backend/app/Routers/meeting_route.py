@@ -54,6 +54,7 @@ def get_meeting_state(meeting_id: int):
     state = _init_meeting_state(meeting_id)
     return state
 
+# --------------- Meeting Endpoints ---------------
 
 # get meeting current state
 @meeting_router.get("/state/{meeting_id}")
@@ -61,9 +62,14 @@ async def get_meeting_current_state( meeting_id: int, current_user: dict = Depen
     state = get_meeting_state(meeting_id)
     return state
 
+# TODO[X]: Start Meeting Completed
 # start meeting
 @meeting_router.post("/start/{team_id}")
 async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(...), db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    """
+        Goal: Start a meeting for a team
+        Conditions: Only team owner and team member can start a meeting
+    """
 
     title = meeting_data.title
     print("Meeting Title:", title)
@@ -75,13 +81,11 @@ async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(.
 
     current_user_id = current_user.get("user_id")
 
-    # check if owner or member
-    is_member = any(member.id == current_user_id for member in team.members)
-
-    if team.owner_id != current_user_id and not is_member:
+    if not isAuthorized(current_user_id, team):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team owner can start a meeting")
 
-    current_time = datetime.utcnow()
+    # use my navtive datetime
+    current_time = datetime.now()
     meeting = Meeting(team_id=team_id, title=title, host_id=current_user_id, status="active", started_at=current_time)
     db.add(meeting)
     await db.commit()
@@ -140,3 +144,34 @@ async def leave_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), cur
     leave(meeting_id, current_user_id)
 
     return {"message": f"User {current_user_id} left meeting {meeting_id}"}
+
+@meeting_router.get("/get_meetings/team/{team_id}")
+async def get_team_meetings(team_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    """
+        Goal: Get all meetings for a team and check if there are active meetings
+        Conditions: Only team members can view meetings
+    """
+
+    team = await db.execute(select(Team).where(Team.id == team_id).options(selectinload(Team.members)))
+    team = team.scalar_one_or_none()
+    if not team:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
+
+    current_user_id = current_user.get("user_id")
+
+    if not isAuthorized(current_user_id, team):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team members can view meetings")
+
+    meetings = await db.execute(select(Meeting).where(Meeting.team_id == team_id))
+    meetings = meetings.scalars().all()
+
+    return {"meetings": meetings}
+
+# --------------- Meeting Helper ---------------
+def isAuthorized(user_id: int, team: Team) -> bool:
+    if team.owner_id == user_id:
+        return True
+    for member in team.members:
+        if member.id == user_id:
+            return True
+    return False

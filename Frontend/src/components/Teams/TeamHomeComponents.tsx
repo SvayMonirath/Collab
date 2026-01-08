@@ -1,10 +1,72 @@
 import React from "react";
-import { Coffee, Video, History, CheckCircle2, CheckCircle, Plus, ThumbsUp, SquarePen, Phone, X } from "lucide-react";
+import { useState } from "react";
+import { Coffee, Video, History, CheckCircle2, CheckCircle, Plus, ThumbsUp, SquarePen, Phone, X, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+// hooks
+import { useCreateMeeting } from "../../hooks/meetingHooks";
+import type { CreateMeetingSchemas } from "../../types/meetingTypes";
 
 interface CreateMeetingModalProps {
     onClose?: () => void;
     onOpen?: () => void;
+    teamID?: string;
 }
+
+interface CurrentActiveMeetingProps {
+    activeMeeting: any;
+}
+
+export const CurrentActiveMeeting: React.FC<CurrentActiveMeetingProps> = ({ activeMeeting }) => {
+
+    const navigate = useNavigate();
+
+    return (
+        <div className="flex flex-col gap-2! sm:px-20!">
+            <div className="flex flex-row gap-3 items-center mb-4! px-5!">
+                <div className="bg-green-500! rounded-full size-2! animate-pulse!"></div><span className="text-sm! text-green-600! font-bold! ">LIVE NOW</span>
+            </div>
+            <div className="flex flex-col mx-8! sm:mx-12! min-w-full">
+                <h1 className="text-black! font-semibold! font-mono! text-2xl! sm:text-4xl! lg:text-5xl!">{activeMeeting.title}</h1>
+                {/* Format Time  */}
+                <h3 className="flex flex-row items-center! text-center! gap-2! text-black/60! font-medium! text-md! sm:text-lg!"><Clock className="size-4! sm:size-5!"/><span>{formatElapsedTime(activeMeeting.started_at)}</span></h3>
+
+                <button className="bg-blue-600! text-white! font-bold! flex flex-row items-center! rounded-2xl! mt-8! mx-5! justify-center! gap-3! size-fit sm:mt-15! hover:bg-blue-700! px-4! py-3! transition-all! duration-200!"
+                onClick={() => navigate(`/meeting/${activeMeeting.id}`)}
+                ><Video className="size-4! sm:size-5! "/><span className="text-sm! sm:text-base!">Join Meeting</span>
+                </button>
+            </div>
+        </div>
+    );
+}
+// Helper function to format elapsed time
+function formatElapsedTime(startTime: string, endTime: string = new Date().toISOString()) {
+  const start = new Date(startTime).getTime();
+  const end = new Date(endTime).getTime();
+  const diffSec = Math.floor((end - start) / 1000);
+
+  if (diffSec < 10) return "just now";
+  if (diffSec < 60) return `${diffSec} sec ago`;
+
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return `${diffMin} min ago`;
+
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr} hr ago`;
+
+  const diffDay = Math.floor(diffHr / 24);
+  if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? "s" : ""} ago`;
+
+  // fallback to full date
+  return new Date(startTime).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+
+
 
 
 export const CurrentlyActiveMeetingEmpty: React.FC<CreateMeetingModalProps> = ({ onOpen }) => {
@@ -185,25 +247,44 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
     );
 }
 
-export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose }) => {
+export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID }) => {
+    const [title , setTitle] = useState<string>("");
+    const { createNewMeeting, loading, error } = useCreateMeeting();
+
+    const handleCreateMeeting = async () => {
+        if(!title) return;
+        const meetingData: CreateMeetingSchemas = {
+            title: title,
+        };
+
+        const res = await createNewMeeting(teamID || "", meetingData);
+        if(res) {
+            onClose && onClose();
+        }
+    };
+
     return (
       <div className="fixed! inset-0! bg-black/50! backdrop-blur-md! flex! justify-center! items-center! z-[200]!">
         <div className="relative! bg-white! rounded-2xl! p-6! w-11/12! max-w-xl!">
           <h2 className="text-2xl! font-bold! mb-4! text-black!">
             Create New Meeting
           </h2>
-          <form className="flex flex-col gap-4!">
+          <form className="flex flex-col gap-4!" onSubmit={(e) => {
+            e.preventDefault();
+            }}>
             <input
               type="text"
               placeholder="Meeting Title"
               className="w-full! border! border-gray-300! rounded-lg! text-black! px-3! py-2! focus:outline-none! focus:ring-2! focus:ring-purple-600!"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             />
             <div className="flex flex-row justify-center! gap-4! mt-4!">
-              <button className="border border-black! bg-white! text-black! rounded-2xl! px-4! py-2! flex flex-row items-center gap-2! transition-all! duration-200 hover:bg-gray-100! hover:border-gray-700!">
+              <button className="border border-black! bg-white! text-black! rounded-2xl! px-4! py-2! flex flex-row items-center gap-2! transition-all! duration-200 hover:bg-gray-100! hover:border-gray-700!" >
                 <Plus className="w-5! h-5! text-black! mr-2!" />
                 <span>Schedule Meeting</span>
               </button>
-              <button className="bg-purple-700! hover:bg-purple-800! text-white! rounded-2xl! px-4! py-2! flex flex-row items-center gap-2! transition-all! duration-200">
+              <button className="bg-purple-700! hover:bg-purple-800! text-white! rounded-2xl! px-4! py-2! flex flex-row items-center gap-2! transition-all! duration-200" onClick={handleCreateMeeting} disabled={loading}>
                 <Video className="w-5! h-5! text-white!" />
                 <span>Start an instant meeting</span>
               </button>

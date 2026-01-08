@@ -3,20 +3,21 @@ import { useParams } from "react-router-dom";
 import { BookCheck,  Menu, Sparkle, UserPlus, Users, Video } from "lucide-react";
 
 // Components
-import { TeamSideBar } from "../../components/TeamSideBar";
+import { TeamSideBar } from "../../components/Teams/TeamSideBar";
 import { TeamMobileDropDown } from "../../components/MobileDropDown";
-import { CurrentlyActiveMeetingEmpty, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal } from "../../components/Teams/TeamHomeComponents";
+import { CurrentlyActiveMeetingEmpty, CurrentActiveMeeting, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal } from "../../components/Teams/TeamHomeComponents";
 // Hooks
 import { useTeamById } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
+import { useActiveMeeting } from "../../hooks/meetingHooks";
 
 export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
     const { team, loading, error } = useTeamById(teamID);
     const { user, loading: userLoading, error: userError } = useCurrentUser();
+    const { activeMeeting: ActiveMeeting, loading: meetingLoading, error: meetingError, meetings } = useActiveMeeting(teamID || "");
 
     const [showMobileMenu, setShowMobileMenu] = useState(false);
-    const [ActiveMeeting, setActiveMeeting] = useState(false);
     const [ShowTasks, setShowTasks] = useState(false);
     const [ShowReviews, setShowReviews] = useState(false);
 
@@ -87,7 +88,7 @@ export function TeamHome() {
                     <section className="flex flex-col flex-3">
 
                         {/* Currently Active Meeting */}
-                        {!ActiveMeeting && <CurrentlyActiveMeetingEmpty onOpen={() => setShowCreateMeetingModal(true)} />}
+                        {ActiveMeeting ? <CurrentActiveMeeting activeMeeting={ActiveMeeting} /> : <CurrentlyActiveMeetingEmpty onOpen={() => setShowCreateMeetingModal(true)} />  }
 
                         {/* line break */}
                         <hr className=" border-t border-gray-300 my-6" />
@@ -119,7 +120,7 @@ export function TeamHome() {
 
             {showCreateMeetingModal && <CreateMeetingModal onClose={() => {
                 setShowCreateMeetingModal(false);
-            }} />}
+            } } teamID={teamID} />}
         </div>
     );
 }

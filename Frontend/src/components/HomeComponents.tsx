@@ -1,8 +1,6 @@
 import React from "react";
 import { useState } from "react";
 
-import { PopUpMessage } from "./popUpMessage";
-
 interface CreateTeamModalProps {
     onClose: () => void;
     onCreate: (teamData: { title: string; description?: string }) => Promise<any>;

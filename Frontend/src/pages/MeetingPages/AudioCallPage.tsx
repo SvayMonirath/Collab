@@ -1,8 +1,18 @@
 import { useState } from "react";
 import { MessageSquareDot, Mic, Mic2, PanelRightClose, PanelRightOpen, Phone, Search, Sparkles } from "lucide-react";
+import { useParams } from "react-router-dom";
+
+// COMPONENTS
 import { AudioCallNav } from "../../components/AudioCallNav";
+// Hooks
+import { useMeetingByID, useLeaveMeeting } from "../../hooks/meetingHooks";
+
 
 export function MeetingAudioCallPage() {
+
+    const meetingID = useParams<{ meetingID: string }>().meetingID || "";
+    const { meeting, meetingState,  loading: meetingLoading, error: meetingError } = useMeetingByID(meetingID);
+    const { leave, loading: leaveLoading, error: leaveError } = useLeaveMeeting(meetingID, meeting?.team_id || "");
 
     const [participantCount, setParticipantCount] = useState<number>(0);
     const [showSearch, setShowSearch] = useState<boolean>(false);
@@ -24,7 +34,7 @@ export function MeetingAudioCallPage() {
         <div className="flex flex-row min-w-screen min-h-screen! bg-white! overflow-hidden!">
             <main className="">
                 {/* Nav */}
-                <AudioCallNav />
+                <AudioCallNav  meetingTitle={meeting?.title} />
 
                 <div className="flex flex-col min-w-screen! h-full! bg-red-400! mt-24! lg:flex-row!">
                     {/* Main Section */}
@@ -34,7 +44,7 @@ export function MeetingAudioCallPage() {
                         <div className={`flex flex-col bg-white! p-6! lg:w-80! h-full!  sm:w-1/3! lg:w-1/6! ${showParticipants ? "inline-block!" : "hidden!"} border-r-3! border-t-3! border-gray-300!`}>
                             {/* Participant Count and Search Box */}
                             <div className="flex flex-row justify-between items-center mb-6! gap-16! sm:gap-24! lg:gap-28!">
-                                <span className="text-black! font-bold!  text-xs! sm:text-base! lg:text-lg!">PARTICIPANTS ({participantCount})</span>
+                                <span className="text-black! font-bold!  text-xs! sm:text-base! lg:text-lg!">PARTICIPANTS ({meetingState?.participants_count})</span>
                                 < Search className="size-2! sm:size-4! text-gray-600! cursor-pointer!" onClick={() => setShowSearch(!showSearch)}/>
                             </div>
 
@@ -78,7 +88,7 @@ export function MeetingAudioCallPage() {
                 <button className="text-black! bg-transparent! rounded-full! hover:border hover:border-purple-700!"><Mic className="size-5! lg:size-6!"/></button>
                 <button className="text-black! bg-transparent! rounded-full! hover:border hover:border-purple-700!"><MessageSquareDot className="size-5! lg:size-6!"/></button>
                 <span className="text-gray-400!">|</span>
-                <button className="ml-3! text-white! font-bold! rounded-full! bg-red-600! hover:bg-red-700! flex flex-row! gap-5!"><Phone className="fill-white rotate-135 size-5! lg:size-6!"/><span >Leave</span></button>
+                <button onClick={leave} className="ml-3! text-white! font-bold! rounded-full! bg-red-600! hover:bg-red-700! flex flex-row! gap-5!"><Phone className="fill-white rotate-135 size-5! lg:size-6!"/><span >Leave</span></button>
             </div>
         </div>
     );

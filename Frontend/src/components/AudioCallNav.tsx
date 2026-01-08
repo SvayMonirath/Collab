@@ -3,7 +3,6 @@ import { AudioLines, Settings, UserPlus } from "lucide-react";
 
 interface AudioCallNavProps {
     meetingTitle?: string;
-
 }
 
 export const AudioCallNav: React.FC<AudioCallNavProps> = ({ meetingTitle }) => {

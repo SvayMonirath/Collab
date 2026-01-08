@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { useCreateMeeting } from "../../hooks/meetingHooks";
 import type { CreateMeetingSchemas } from "../../types/meetingTypes";
 
+// components
+import { useJoinMeeting } from "../../hooks/meetingHooks";
+
 interface CreateMeetingModalProps {
     onClose?: () => void;
     onOpen?: () => void;
@@ -20,6 +23,7 @@ interface CurrentActiveMeetingProps {
 export const CurrentActiveMeeting: React.FC<CurrentActiveMeetingProps> = ({ activeMeeting }) => {
 
     const navigate = useNavigate();
+    const { join, loading, error } = useJoinMeeting(activeMeeting.id);
 
     return (
         <div className="flex flex-col gap-2! sm:px-20!">
@@ -32,8 +36,8 @@ export const CurrentActiveMeeting: React.FC<CurrentActiveMeetingProps> = ({ acti
                 <h3 className="flex flex-row items-center! text-center! gap-2! text-black/60! font-medium! text-md! sm:text-lg!"><Clock className="size-4! sm:size-5!"/><span>{formatElapsedTime(activeMeeting.started_at)}</span></h3>
 
                 <button className="bg-blue-600! text-white! font-bold! flex flex-row items-center! rounded-2xl! mt-8! mx-5! justify-center! gap-3! size-fit sm:mt-15! hover:bg-blue-700! px-4! py-3! transition-all! duration-200!"
-                onClick={() => navigate(`/meeting/${activeMeeting.id}`)}
-                ><Video className="size-4! sm:size-5! "/><span className="text-sm! sm:text-base!">Join Meeting</span>
+                onClick={() => join()}>
+                  <Video className="size-4! sm:size-5! "/><span className="text-sm! sm:text-base!">Join Meeting</span>
                 </button>
             </div>
         </div>
@@ -64,9 +68,6 @@ function formatElapsedTime(startTime: string, endTime: string = new Date().toISO
     year: "numeric",
   });
 }
-
-
-
 
 
 export const CurrentlyActiveMeetingEmpty: React.FC<CreateMeetingModalProps> = ({ onOpen }) => {

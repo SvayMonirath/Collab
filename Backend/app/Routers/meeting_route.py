@@ -20,7 +20,6 @@ def _init_meeting_state(meeting_id: int):
     global meeting_state
     if meeting_id not in meeting_state:
         meeting_state[meeting_id] = {
-            "host_id": None,
             "participants_count": 0,
             "participants": [],
             "is_active": False,
@@ -30,9 +29,9 @@ def _init_meeting_state(meeting_id: int):
 
 def start_meeting_state(meeting_id: int, host_id: int):
     state = _init_meeting_state(meeting_id)
-    state["host_id"] = host_id
     state["is_active"] = True
     state["participants_count"] = 1
+    state["participants"].append({"user_id": host_id, "username": "Host"})
 
 def end_meeting_state(meeting_id: int):
     state = _init_meeting_state(meeting_id)
@@ -60,7 +59,7 @@ def get_meeting_state(meeting_id: int):
 @meeting_router.get("/state/{meeting_id}")
 async def get_meeting_current_state( meeting_id: int, current_user: dict = Depends):
     state = get_meeting_state(meeting_id)
-    return state
+    return {"meeting_state": state}
 
 # TODO[X]: Start Meeting Completed
 # start meeting
@@ -143,6 +142,14 @@ async def leave_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), cur
     current_user_id = current_user.get("id")
     leave(meeting_id, current_user_id)
 
+    state = get_meeting_state(meeting_id)
+    if state["participants_count"] == 0:
+        meeting.status = "inactive"
+        meeting.ended_at = datetime.utcnow()
+        await db.commit()
+        await db.refresh(meeting)
+        end_meeting_state(meeting_id)
+
     return {"message": f"User {current_user_id} left meeting {meeting_id}"}
 
 @meeting_router.get("/get_meetings/team/{team_id}")
@@ -166,6 +173,31 @@ async def get_team_meetings(team_id: int, db: AsyncSession = Depends(get_db), cu
     meetings = meetings.scalars().all()
 
     return {"meetings": meetings}
+
+@meeting_router.get("/get_meeting/{meeting_id}")
+async def get_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    """
+        Goal: Get meeting details by meeting ID
+        Conditions: Only team members can view meeting details
+    """
+
+    meeting = await db.execute(select(Meeting).where(Meeting.id == meeting_id))
+    meeting = meeting.scalar_one_or_none()
+    if not meeting:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Meeting not found")
+
+    team = await db.execute(select(Team).where(Team.id == meeting.team_id).options(selectinload(Team.members)))
+    team = team.scalar_one_or_none()
+    if not team:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
+
+    current_user_id = current_user.get("user_id")
+
+    if not isAuthorized(current_user_id, team):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team members can view meeting details")
+
+    return {"meeting": meeting}
+
 
 # --------------- Meeting Helper ---------------
 def isAuthorized(user_id: int, team: Team) -> bool:

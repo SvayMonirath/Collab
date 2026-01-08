@@ -40,7 +40,7 @@ export function TeamHome() {
                     </div>
                     {/* Invite Member */}
 
-                    {/* TODO[]: Implement Inviting Non Members to the team  */}
+                    {/* todo[]: Implement Inviting Non Members to the team  */}
                     <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-not-allowed! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
                         md:px-3! md:py-2! md:gap-2! hover:bg-blue-600! hover:text-white! transition-all! duration-200!
                     ">

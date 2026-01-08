@@ -74,7 +74,7 @@ export function Login() {
                                 sm:text-sm! md:text-base!
                             ">Remember me</label>
                         </div>
-                        {/* TODO[]: Implement forgot password functionality */}
+                        {/* todo[]: Implement forgot password functionality */}
                         <div>
                             <a href="#" className="text-purple-700! font-semibold! hover:text-purple-900! text-xs!
                                 sm:text-sm! md:text-base!

@@ -82,7 +82,7 @@ export function MainTeams() {
               </p>
             </div>
           </div>
-          {/* TODO[]: Implement Teams Page */}
+          {/* todo[]: Implement Teams Page */}
 
           <div
             className="flex flex-row justify-between items-center mb-5! text-center!

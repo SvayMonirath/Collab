@@ -61,7 +61,7 @@ async def get_meeting_current_state( meeting_id: int, current_user: dict = Depen
     state = get_meeting_state(meeting_id)
     return {"meeting_state": state}
 
-# TODO[X]: Start Meeting Completed
+# todo[x]: Start Meeting Completed
 # start meeting
 @meeting_router.post("/start/{team_id}")
 async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(...), db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):

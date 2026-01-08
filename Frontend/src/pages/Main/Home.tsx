@@ -108,7 +108,7 @@ export function MainHome() {
           </div>
 
           {/* OverView */}
-          {/* TODO[]: Add OverView functionality with fetches from backend */}
+          {/* todo[]: Add OverView functionality with fetches from backend */}
           <div className="bg-white! px-6! sm:px-10! lg:px-16! pt-10! sm:pt-12! lg:px-32! lg:pt-16! lg:pb-6!">
             {/* Heading */}
             <h1 className="text-gray-500! font-semibold text-lg! sm:text-xl! lg:text-2xl! tracking-wide!">

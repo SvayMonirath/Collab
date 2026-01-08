@@ -95,7 +95,7 @@ export const CurrentlyActiveMeetingEmpty: React.FC<CreateMeetingModalProps> = ({
 
       {/* Join/View History Button */}
       <div className="flex flex-row gap-4!">
-        {/* TODO[]: Implement start meeting either Schedule or Instant */}
+        {/* todo[]: Implement start meeting either Schedule */}
         <button
           className="bg-purple-700! hover:bg-purple-800! text-white! rounded-2xl! px-4! py-4! mt-4! flex flex-row items-center gap-2! transition-all! duration-200
             md:px-4! md:py-4! md:mt-6! md:text-lg md:gap-4!
@@ -165,7 +165,7 @@ export const ShowTasksEmpty: React.FC = () => {
                     You have no pending task.
                 </p>
 
-                {/* TODO[]: Implement Add Tas */}
+                {/* todo[]: Implement Add Task */}
                 <button className="flex flex-row gap-2! font-bold! text-sm! text-orange-500! bg-transparent! items-center mt-3! px-4! py-2! rounded-xl! hover:border hover:border-orange-500! transition-all! duration-200
 
                     sm:text-base! sm:gap-3! sm:px-5! sm:py-3! sm:mt-4!
@@ -210,7 +210,7 @@ export const ShowReviewsEmpty: React.FC = () => {
                 >
                     Pending items will appear here.
                 </p>
-                {/* TODO[]: Implement Add Review */}
+                {/* todo[]: Implement Add Review */}
                 <h2 className="flex flex-row gap-2! font-base! text-sm! text-gray-500! bg-transparent! items-center mt-3! px-4! py-2!
 
                     sm:text-base! sm:gap-3! sm:px-5! sm:py-3! sm:mt-4!
@@ -240,7 +240,7 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
             Start a instant meeting or schedule one for
             later.
             </p>
-            {/* TODO[]: Implement Start Meeting either Schedule or Instant */}
+            {/* todo[]: Implement Start Meeting either Schedule or Instant */}
             <button className="bg-white! text-blue-700! rounded-2xl! px-4! py-2! hover:bg-blue-100!" onClick={onOpen}>
             Launch Now
             </button>

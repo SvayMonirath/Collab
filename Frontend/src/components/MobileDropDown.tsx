@@ -17,7 +17,7 @@ import {
 import { LogoutUser } from "../api/authAPI";
 
 // URL PATH
-import { MainHomeUrl, MainTeamsUrl, TeamHomeUrl } from "../urlPath";
+import { MainHomeUrl, MainTeamsUrl, TeamHomeUrl, TeamMeetingsUrl } from "../urlPath";
 
 interface MobileDropDownProps {
   showMobileMenu: boolean;
@@ -200,6 +200,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           </span>
           <span className="font-normal!">Home</span>
         </NavLink>
+        {/* todo[]: add team calender route  */}
         <NavLink
           to={`/TeamCalendar/${TeamID}`}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
@@ -209,6 +210,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           </span>
           <span className="font-normal!">Team Calendar</span>
         </NavLink>
+        {/* todo[]: add team tasks route  */}
         <NavLink
           to={`/TeamTasks/${TeamID}`}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
@@ -219,6 +221,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           </span>
           <span className="font-normal!">Tasks</span>
         </NavLink>
+        {/* todo[]: add team members route  */}
         <NavLink
           to={`/TeamMembers/${TeamID}`}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
@@ -228,9 +231,9 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           </span>
           <span className="font-normal!">Members</span>
         </NavLink>
-
+        {/* todo[]: add team meetings route  */}
         <NavLink
-          to={`/TeamMeetings/${TeamID}`}
+          to={`${TeamMeetingsUrl}/${TeamID}`}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>

@@ -25,7 +25,7 @@ export function TeamHome() {
 
     return (
         <div>
-            <TeamSideBar />
+            <TeamSideBar TeamID={teamID} />
             <main className="bg-white! min-h-screen p-6! py-3! lg:ml-20! lg:py-6!">
                 <div className="flex flex-row justify-between items-center mb-10!
                     sm:mb-14! lg:mb-16!

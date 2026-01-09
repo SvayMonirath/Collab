@@ -150,8 +150,8 @@ export function MainTeams() {
                 <button
                   onClick={() => navigate(`${TeamHomeUrl}/${team.id}`)}
                   className="
-                    mt-6 w-full py-2 md:py-3 text-white font-semibold bg-purple-600 rounded-lg
-                    hover:bg-purple-700 transition-colors duration-200
+                    mt-6 w-full py-2 md:py-3 text-white font-semibold bg-purple-600! rounded-lg
+                    hover:opacity-80! transition-opacity! duration-200!
                   "
                 >
                   Enter Team

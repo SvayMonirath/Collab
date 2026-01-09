@@ -85,7 +85,7 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ onClose, onCre
                         rounded-2xl!
                         px-5! py-4!
                         bg-white!
-                        text-black! text-lg!
+                        text-black text-lg!
                         border border-gray-300!
                         focus:outline-none!
                         focus:ring-2! focus:ring-purple-600!
@@ -108,7 +108,7 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ onClose, onCre
                         rounded-2xl!
                         px-5! py-4!
                         bg-white!
-                        text-black!
+                        text-black
                         border border-gray-300!
                         resize-none!
                         focus:outline-none!
@@ -143,8 +143,7 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ onClose, onCre
                         bg-gradient-to-r from-purple-600 to-indigo-600!
                         text-white! font-semibold!
                         shadow-lg!
-                        hover:bg-purple-600!
-                        transition-all!
+                        hover:opacity-80! transition-opacity! duration-200!
             ">
               {loading ? "Creating Team..." : "Create Team"}
             </button>
@@ -236,12 +235,12 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({ onClose, onJoin, l
             type="submit"
             disabled={loading}
             className="relative w-full!
-                      py-4!
+                      py-3!
                       rounded-2xl!
                       bg-gradient-to-r from-purple-600 to-indigo-600!
                       text-white! text-lg! font-semibold!
                       shadow-lg!
-                      hover:bg-purple-600!"
+                      hover:opacity-80! transition-opacity! duration-200!"
           >
             {loading ? "Joining Team..." : "Join Team"}
           </button>

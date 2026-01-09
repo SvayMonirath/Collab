@@ -37,5 +37,3 @@ async def get_current_user(request: Request):
     if payload is None:
         return None
     return {"user_id": payload.get("user_id"), "username": payload.get("username")}
-
-# todo[x]: Secure token by storing it in a HTTP-only cookie instead of local storage.

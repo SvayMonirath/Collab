@@ -1,6 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { BookCheck, Calendar, DoorOpen, House, LayoutTemplate, Users } from "lucide-react";
+import { BookCheck, Calendar, DoorOpen, House, LayoutTemplate, Users, Video } from "lucide-react";
+
+// Path URL
+import { MainHomeUrl } from "../../urlPath";
 
 const active =
   "w-12 h-12 p-2 bg-black text-white! rounded-xl flex items-center justify-center transition-all duration-200";
@@ -41,10 +44,18 @@ export const TeamSideBar: React.FC = () => {
             >
             <Users />
             </NavLink>
+
+            {/* todo[m]: Create Team Meetings page showing both active and upcoming meetings and inactive meetings */}
+            <NavLink
+            to="/TeamMeetings"
+            className={({ isActive }) => (isActive ? active : inactive)}
+            >
+            <Video />
+            </NavLink>
         </div>
 
         <NavLink
-            to="/home">
+            to={MainHomeUrl}>
             <DoorOpen  className="w-8 h-8 text-gray-700 hover:text-red-600 cursor-pointer mb-10" />
         </NavLink>
 

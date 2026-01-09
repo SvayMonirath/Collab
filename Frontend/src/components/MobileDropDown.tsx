@@ -12,7 +12,12 @@ import {
   BookUser,
   LayoutTemplate,
 } from "lucide-react";
+
+// API
 import { LogoutUser } from "../api/authAPI";
+
+// URL PATH
+import { MainHomeUrl, MainTeamsUrl, TeamHomeUrl } from "../urlPath";
 
 interface MobileDropDownProps {
   showMobileMenu: boolean;
@@ -93,7 +98,7 @@ export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
 
       <div className="flex flex-col gap-4!">
         <NavLink
-          to="/home"
+          to={MainHomeUrl}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
@@ -102,7 +107,7 @@ export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
           <span className="font-normal!">Home</span>
         </NavLink>
         <NavLink
-          to="/MainTeams"
+          to={MainTeamsUrl}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
@@ -187,7 +192,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
 
       <div className="flex flex-col gap-4!">
         <NavLink
-          to={`/TeamHome/${TeamID}`}
+          to={`${TeamHomeUrl}/${TeamID}`}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
         >
           <span>
@@ -212,7 +217,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           <span>
             <NotebookText className="size-5!" />
           </span>
-          <span className="font-normal!">Team Tasks</span>
+          <span className="font-normal!">Tasks</span>
         </NavLink>
         <NavLink
           to={`/TeamMembers/${TeamID}`}
@@ -221,7 +226,17 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           <span>
             <BookUser className="size-5!" />
           </span>
-          <span className="font-normal!">Teams</span>
+          <span className="font-normal!">Members</span>
+        </NavLink>
+
+        <NavLink
+          to={`/TeamMeetings/${TeamID}`}
+          className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}
+        >
+          <span>
+            <Users className="size-5!" />
+          </span>
+          <span className="font-normal!">Meetings</span>
         </NavLink>
       </div>
 
@@ -232,7 +247,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
       </h1>
       <div className="flex flex-col gap-4! mb-6!">
         <NavLink
-          to="/home"
+          to={MainHomeUrl}
           className="text-black! hover:bg-red-600! hover:font-bold! hover:border-2 hover:border-red-900/30! cursor-pointer! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
         >
           <span>

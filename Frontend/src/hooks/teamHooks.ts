@@ -9,6 +9,9 @@ import { getTeamById } from "../api/teamAPI";
 import type { CreateTeamSchemas } from "../types/teamTypes";
 import type { JoinTeamSchemas } from "../types/teamTypes";
 
+// Path URL
+import { MainHomeUrl } from "../urlPath";
+
 export function useCreateTeam() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -144,7 +147,7 @@ export function useTeamById(teamID: string) {
                 const res = await getTeamById(teamID);
                 if (res?.error) {
                     if (res.status === 403) {
-                        navigate("/home", { state: { error: "You are not authorized to view this team." } });
+                        navigate(MainHomeUrl, { state: { error: "You are not authorized to view this team." } });
                     }
                     setError(res.error);
                 } else {
@@ -159,6 +162,8 @@ export function useTeamById(teamID: string) {
         }
         fetchTeam();
     }, [teamID, navigate]);
+
+    console.log("Team from hook:", team);
 
     return { team, loading, error };
 }

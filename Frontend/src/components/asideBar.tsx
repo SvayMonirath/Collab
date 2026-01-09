@@ -3,6 +3,10 @@ import { House, Users, Calendar, NotebookText, LogOut } from "lucide-react";
 
 import { LogoutUser } from "../api/authAPI";
 
+// Path URL
+import { MainHomeUrl, MainTeamsUrl } from "../urlPath";
+
+
 const active =
   "w-12 h-12 p-2 bg-black text-white! rounded-xl flex items-center justify-center transition-all duration-200";
 
@@ -22,14 +26,14 @@ export const SideBar = () => {
       <div className="flex flex-col items-center space-y-8">
 
         <NavLink
-          to="/home"
+          to={MainHomeUrl}
           className={({ isActive }) => (isActive ? active : inactive)}
         >
           <House />
         </NavLink>
 
         <NavLink
-          to="/MainTeams"
+          to={MainTeamsUrl}
           className={({ isActive }) => (isActive ? active : inactive)}
         >
           <Users />

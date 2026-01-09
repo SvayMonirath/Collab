@@ -122,3 +122,4 @@ export async function joinTeam(joinData: JoinTeamSchemas) {
         console.error("Error joining team:", err);
     }
 }
+

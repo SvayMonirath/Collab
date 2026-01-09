@@ -13,7 +13,7 @@ import { useActiveMeeting } from "../../hooks/meetingHooks";
 
 export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
-    const { team, loading, error } = useTeamById(teamID);
+    const { team, loading, error } = useTeamById(teamID || "");
     const { user, loading: userLoading, error: userError } = useCurrentUser();
     const { activeMeeting: ActiveMeeting, loading: meetingLoading, error: meetingError, meetings } = useActiveMeeting(teamID || "");
 
@@ -40,7 +40,7 @@ export function TeamHome() {
                     </div>
                     {/* Invite Member */}
 
-                    {/* todo[]: Implement Inviting Non Members to the team  */}
+                    {/* todo[]: Inviting Non Members to the team  */}
                     <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-not-allowed! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
                         md:px-3! md:py-2! md:gap-2! hover:bg-blue-600! hover:text-white! transition-all! duration-200!
                     ">
@@ -58,7 +58,7 @@ export function TeamHome() {
                 {/* todo[m]: Fetch Team Info For updating Hero Overview */}
                 <div className="grid grid-cols-2 gap-4 lg:gap-8 md:grid-cols-4 min-w-full mb-10!">
                     {[
-                        { label: "Total Members", value: 0, icon: <Users /> , iconColor: "text-orange-700!", borderColor: "border-black!", bgColor: "bg-white!" },
+                        { label: "Total Members", value: team?.member_count, icon: <Users /> , iconColor: "text-orange-700!", borderColor: "border-black!", bgColor: "bg-white!" },
                         { label: "Pending Tasks", value: 0, icon: <BookCheck /> , iconColor: "text-green-600!", borderColor: "border-green-600!", bgColor: "bg-green-600/20!" },
                         { label: "Unreviewed Items", value: 0, icon: <Sparkle /> , iconColor: "text-purple-700!", borderColor: "border-purple-700!", bgColor: "bg-purple-700/20!" },
                         { label: "Upcoming Meetings", value: 0, icon: <Video /> , iconColor: "text-blue-700!", borderColor: "border-blue-700!", bgColor: "bg-blue-700/20!" },

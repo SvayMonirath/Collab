@@ -10,18 +10,20 @@ import { MeetingAudioCallPage } from "./pages/MeetingPages/AudioCallPage";
 import { PrivateRoute } from "./components/privateRoute";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { MainHomeUrl, MainTeamsUrl, TeamHomeUrl, MeetingAudioCallPageUrl, LandingUrl, LoginUrl, RegisterUrl } from "./urlPath";
 
 function App() {
+
   return (
     <Router>
       <Routes>
         {/* Unauthenticated Routes */}
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path={LandingUrl} element={<Landing />} />
+        <Route path={LoginUrl} element={<Login />} />
+        <Route path={RegisterUrl} element={<Register />} />
 
         <Route
-          path="/home"
+          path={MainHomeUrl}
           element={
             <PrivateRoute>
               <MainHome />
@@ -29,7 +31,7 @@ function App() {
           }
         />
         <Route
-          path="/MainTeams"
+          path={MainTeamsUrl}
           element={
             <PrivateRoute>
               <MainTeams />
@@ -37,21 +39,25 @@ function App() {
           }
         />
         <Route
-          path="/TeamHome/:teamID"
+          path={TeamHomeUrl}
           element={
             <PrivateRoute>
               <TeamHome />
             </PrivateRoute>
           }
         />
+
+        {/* Meetings Audio Page */}
         <Route
-          path="/meeting/:meetingID"
+          path={MeetingAudioCallPageUrl}
           element={
             <PrivateRoute>
               <MeetingAudioCallPage />
             </PrivateRoute>
           }
         />
+
+
       </Routes>
     </Router>
   );

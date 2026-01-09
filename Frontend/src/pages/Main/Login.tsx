@@ -123,7 +123,7 @@ export function Login() {
                 Remember me
               </label>
             </div>
-            {/* todo[]: Implement forgot password functionality */}
+            {/* todo[]: forgot password functionality */}
             <div>
               <a
                 href="#"

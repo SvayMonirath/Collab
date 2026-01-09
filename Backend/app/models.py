@@ -63,7 +63,7 @@ class Team(Base):
     code = Column(String, unique=True, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
-    create_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    create_at = Column(DateTime, default=datetime.now, nullable=False)
 
     owner = relationship("User", back_populates="owned_teams")
     members = relationship("User", secondary=user_team_association, back_populates="teams")
@@ -71,6 +71,7 @@ class Team(Base):
     def generate_team_code(self, length: int = 10) -> str:
         characters = string.ascii_letters + string.digits
         self.code = ''.join(random.choice(characters) for _ in range(length))
+
 
 # Meeting Model
 class Meeting(Base):

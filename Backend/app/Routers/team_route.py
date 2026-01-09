@@ -77,34 +77,32 @@ async def join_team(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
+    """
+        Goal: Allow a user to join a team using a team code
+        Conditions: User cannot be the owner of the team and cannot already be a member
+    """
     if current_user is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     current_user_id = current_user.get("user_id")
 
+    user = await db.get(User, current_user_id)
+
     # Fetch the team by code
-    team_result = await db.execute(select(Team).where(Team.code == team_code))
+    team_result = await db.execute(select(Team).options(selectinload(Team.members)).where(Team.code == team_code))
     team = team_result.scalar_one_or_none()
+
     if team is None:
         raise HTTPException(status_code=404, detail="Team not found")
 
     if team.owner_id == current_user_id:
         raise HTTPException(status_code=400, detail="You are the owner of this team")
 
-    # Check if the user is already a member
-    membership_result = await db.execute(
-        select(user_team_association)
-        .where(user_team_association.c.user_id == current_user_id)
-        .where(user_team_association.c.team_id == team.id)
-    )
-    membership = membership_result.first()
-    if membership:
+    if user in team.members:
         raise HTTPException(status_code=400, detail="You are already a member of this team")
 
-    # Add the user to the team
-    await db.execute(
-        user_team_association.insert().values(user_id=current_user_id, team_id=team.id)
-    )
+    team.members.append(user)
+
     await db.commit()
 
     return {"message": "Joined team successfully"}
@@ -208,6 +206,10 @@ async def get_team_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
+    """
+        Goal: Fetch a team by its ID
+        Conditions: user must be either the owner or a member of the team
+    """
     if current_user is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
@@ -224,4 +226,17 @@ async def get_team_by_id(
     if not is_owner and not is_member:
         raise HTTPException(status_code=403, detail="You are not authorized to view this team")
 
-    return {"team": team}
+    # get member count
+    member_count =  len(team.members)
+
+    team_data = {
+        "id": team.id,
+        "title": team.title,
+        "description": team.description,
+        "code": team.code,
+        "owner_id": team.owner_id,
+        "create_at": team.create_at,
+        "member_count": member_count
+    }
+
+    return {"team": team_data}

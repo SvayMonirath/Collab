@@ -60,7 +60,7 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
                     "
             >
               {/* Notification Icon */}
-              {/* todo[]: Implement Show Notification */}
+              {/* todo[]: Show Notification */}
               <Bell
                 className="w-4! h-4! text-gray-600! hover:cursor-pointer!
                             md:w-6! md:h-6!
@@ -68,7 +68,7 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
               />
 
               {/* profile or hamburger menu */}
-              {/* todo[]: Implement Profile Page */}
+              {/* todo[]: Profile Page */}
               <div
                 className="hidden! border-2! border-gray-400! rounded-full! w-8! h-8! bg-gray-300! cursor-pointer!
                             md:w-12! md:h-12! lg:inline-block!

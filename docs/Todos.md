@@ -14,6 +14,9 @@
 - [ ] Implement Audio Call Functionality using WebRTC or any other suitable library.
 - [ ] Audio Control System (Mute/Unmute, Volume Control) in Meeting Page.
 
+## Edge Case Tasks
+- [ ] User cannot manually join meeting by URL even if a member (this mess up the state)
+- [ ] User cannot manually enter a different page to leave team (this mess up the state)
 
 ## Later Tasks
 - [ ] Improve UI/UX Design for All Pages

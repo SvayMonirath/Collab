@@ -7,6 +7,8 @@ import type { CreateMeetingSchemas } from "../types/meetingTypes";
 // API
 import { createMeeting, getMeetingByID, getMeetingState, joinMeeting, leaveMeeting } from "../api/meetingAPI";
 import { getTeamMeetings } from "../api/meetingAPI";
+import { TeamHome } from "../pages/TeamsPages/TeamHome";
+import { MeetingAudioCallPageUrl, TeamHomeUrl } from "../urlPath";
 
 export function useCreateMeeting() {
     const navigate = useNavigate();
@@ -30,7 +32,7 @@ export function useCreateMeeting() {
         }
 
         setLoading(false);
-        navigate(`/meeting/${response.meeting_id}`);
+        navigate(`${MeetingAudioCallPageUrl}/${response.meeting_id}`);
 
 
         return response;
@@ -156,7 +158,7 @@ export function useJoinMeeting(meetingID: string) {
         }
 
         setLoading(false);
-        navigate(`/meeting/${meetingID}`);
+        navigate(`${MeetingAudioCallPageUrl}/${meetingID}`);
         return response;
     }
 
@@ -181,7 +183,7 @@ export function useLeaveMeeting(meetingID: string, teamID: string) {
         }
 
         setLoading(false);
-        navigate(`/TeamHome/${teamID}`);
+        navigate(`${TeamHomeUrl}/${teamID}`);
         return response;
     }
 

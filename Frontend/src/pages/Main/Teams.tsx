@@ -17,6 +17,8 @@ import { useUserTeams } from "../../hooks/teamHooks";
 // Types
 import type { CreateTeamSchemas, JoinTeamSchemas } from "../../types/teamTypes";
 
+import {  TeamHomeUrl } from "../../urlPath";
+
 
 export function MainTeams() {
 
@@ -82,7 +84,7 @@ export function MainTeams() {
               </p>
             </div>
           </div>
-          {/* todo[]: Implement Teams Page */}
+          {/* todo[x]: Teams Page */}
 
           <div
             className="flex flex-row justify-between items-center mb-5! text-center!
@@ -146,7 +148,7 @@ export function MainTeams() {
 
                 {/* Action Button */}
                 <button
-                  onClick={() => navigate(`/TeamHome/${team.id}`)}
+                  onClick={() => navigate(`${TeamHomeUrl}/${team.id}`)}
                   className="
                     mt-6 w-full py-2 md:py-3 text-white font-semibold bg-purple-600 rounded-lg
                     hover:bg-purple-700 transition-colors duration-200

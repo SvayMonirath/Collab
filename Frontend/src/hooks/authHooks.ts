@@ -6,6 +6,7 @@ import { LoginUser } from "../api/authAPI";
 
 import type { LoginTypes } from "../types/loginTypes";
 import type { RegisterTypes } from "../types/registerTypes";
+import { MainHomeUrl } from "../urlPath";
 
 
 export function useRegister() {
@@ -69,7 +70,7 @@ export function useLogin() {
 
         setTimeout(() => { setMessage(null); }, 1500);
 
-        navigate("/home");
+        navigate(MainHomeUrl);
 
         return response;
     }

@@ -3,7 +3,7 @@ import React from "react";
 export const PopUpMessage: React.FC<{ message: string, error: string }> = ({ message, error }) => {
     return (
         // if error show red if message show green
-        <div className="fixed top-10 left-0 w-full flex justify-center p-4 z-[9999] sm:top-20!">
+        <div className="fixed top-10 left-0 w-full flex justify-center p-4 z-[120]! sm:top-20!">
         {error ? (
             <div
             className="flex items-center gap-3 max-w-md w-full bg-red-700/20 border border-red-900/50 backdrop-blur-lg px-6 py-4 rounded-2xl text-red-800 text-center transform transition-all duration-500 ease-out translate-y-0 opacity-100"

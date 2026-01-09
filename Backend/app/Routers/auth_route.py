@@ -51,7 +51,14 @@ async def login(login_input: LoginInput, response: Response, db: AsyncSession = 
     # token last 7 days if rememberMe is true else default expire time
     expire_minute = 7*24*60 if login_input.rememberMe else JWT_ACCESS_TOKEN_EXPIRE_MINUTES
     token = create_jwt_token({"user_id": user.id, "username": user.username})
-    response.set_cookie(key="accessToken", value=token, httponly=True, secure=True, samesite="lax", max_age=expire_minute * 60)
+    response.set_cookie(
+        key="accessToken",
+        value=token,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        max_age=expire_minute * 60
+    )
     return {"message": "Login successful"}
 
 # --------------- Logout Endpoint ---------------

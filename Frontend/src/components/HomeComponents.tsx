@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import React from "react";
 import { useState } from "react";
 
@@ -194,58 +195,26 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({ onClose, onJoin, l
         const result = await onJoin({ team_code: teamCode });
         if (result) {
             setTeamCode("");
-            onClose();
         }
+        onClose();
     };
 
   return (
     <div
-      className="fixed inset-0 z-[9999]! flex items-center justify-center
-                    bg-gradient-to-br from-black/80 via-black/70 to-black/90!
-                    backdrop-blur-3xl!"
+      className="fixed inset-0 z-[9999]! flex items-center justify-center bg-black/50 backdrop-blur-md!"
     >
-      {/* Ambient Glows */}
-      <div
-        className="absolute -top-32! -left-32!
-                      w-[28rem]! h-[28rem]!
-                      bg-purple-600/30!
-                      blur-[140px]!
-                      rounded-full!"
-      />
-
-      <div
-        className="absolute bottom-0! right-0!
-                      w-[22rem]! h-[22rem]!
-                      bg-indigo-500/30!
-                      blur-[120px]!
-                      rounded-full!"
-      />
-
       {/* Modal Card */}
       <div
         className="relative w-11/12! max-w-lg!
                       rounded-3xl!
-                      bg-white/80! backdrop-blur-2xl!
+                      bg-white! backdrop-blur-2xl!
                       border border-white/30!
                       shadow-[0_25px_80px_-20px_rgba(0,0,0,0.5)]!
                       px-10! py-12!
                       flex flex-col gap-8!"
       >
         {/* Close */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5!
-                    w-9! h-9!
-                    rounded-full!
-                    flex items-center justify-center!
-                    bg-black/5!
-                    text-gray-600!
-                    hover:bg-black/10!
-                    hover:text-black!
-                    transition-all!"
-        >
-          ✕
-        </button>
+        <X className="w-6! h-6! text-black! cursor-pointer! hover:text-red-500! absolute top-5 right-5!" onClick={onClose} />
 
         {/* Header */}
         <div className="text-center flex flex-col gap-3!">
@@ -277,7 +246,7 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({ onClose, onJoin, l
               type="text"
               placeholder="TEAM-CODE"
               value={teamCode}
-              onChange={(e) => setTeamCode(e.target.value.toUpperCase())}
+              onChange={(e) => setTeamCode(e.target.value)}
               className="w-full!
                         rounded-2xl!
                         px-5! py-4!
@@ -290,12 +259,6 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({ onClose, onJoin, l
                         focus:border-purple-600!
                         transition-all!"
             />
-            <span
-              className="absolute -bottom-5! left-1/2! -translate-x-1/2!
-                            text-xs! text-gray-400!"
-            >
-              Case-insensitive
-            </span>
           </div>
 
           {/* CTA */}
@@ -308,10 +271,7 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({ onClose, onJoin, l
                       bg-gradient-to-r from-purple-600 to-indigo-600!
                       text-white! text-lg! font-semibold!
                       shadow-lg!
-                      hover:shadow-purple-600/40!
-                      hover:scale-[1.03]!
-                      active:scale-[0.97]!
-                      transition-all!"
+                      hover:bg-purple-600!"
           >
             {loading ? "Joining Team..." : "Join Team"}
           </button>

@@ -231,7 +231,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
           </span>
           <span className="font-normal!">Members</span>
         </NavLink>
-        {/* todo[]: add team meetings route  */}
+        {/* todo[x]: add team meetings route  */}
         <NavLink
           to={`${TeamMeetingsUrl}/${TeamID}`}
           className={({isActive}) => (isActive ? isActiveStyle : isInactiveStyle)}

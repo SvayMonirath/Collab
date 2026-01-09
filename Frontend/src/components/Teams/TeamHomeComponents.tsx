@@ -20,6 +20,11 @@ interface CurrentActiveMeetingProps {
     activeMeeting: any;
 }
 
+interface InviteMemberModalProps {
+  team: any;
+  onClose: () => void;
+}
+
 export const CurrentActiveMeeting: React.FC<CurrentActiveMeetingProps> = ({ activeMeeting }) => {
 
     const navigate = useNavigate();
@@ -295,4 +300,43 @@ export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose,
         </div>
       </div>
     );
+}
+
+export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onClose})  => {
+    return (
+      <div className="fixed! inset-0! bg-black/50! backdrop-blur-md! flex! justify-center! items-center! z-[200]!">
+        <div className="bg-white! p-10! rounded-2xl flex flex-col! w-11/12! max-w-xl!">
+            <div className="flex flex-row items-center justify-between! mb-4!">
+                <h2 className="text-lg! font-bold! text-black! sm:text-xl! lg:text-2xl!">Invite Members </h2>
+                <X className="w-6! h-6! text-black! cursor-pointer! hover:text-red-500!" onClick={onClose} />
+            </div>
+
+            <div className="flex flex-col gap-4! mt-8!">
+                <div className="flex flex-col! gap-2! mb-5!">
+                  <p className="text-gray-500! text-sm! sm:text-base! lg:text-lg! font-mono! font-bold!">JOIN VIA CODE</p>
+                  <p className="text-gray-500! text-sm! sm:text-base! lg:text-lg!">
+                      Share the invite link below to invite members to the team
+                  </p>
+                </div>
+                <div className="flex flex-row! border! border-gray-300! rounded-lg! overflow-hidden!">
+                    <input
+                        type="text"
+                        readOnly
+                        value={`${team.code}`}
+                        className="flex-grow! px-3! py-2! text-black! focus:outline-none!"
+                    />
+                    <button
+                        className="bg-purple-700! hover:bg-purple-800! text-white! px-4! py-2! transition-all! duration-200!"
+                        onClick={() => {
+                            navigator.clipboard.writeText(team.code);
+                        }}
+                    >
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+        </div>
+      </div>
+    )
 }

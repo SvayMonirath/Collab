@@ -5,7 +5,9 @@ import { BookCheck,  Menu, Sparkle, UserPlus, Users, Video } from "lucide-react"
 // Components
 import { TeamSideBar } from "../../components/Teams/TeamSideBar";
 import { TeamMobileDropDown } from "../../components/MobileDropDown";
-import { CurrentlyActiveMeetingEmpty, CurrentActiveMeeting, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal } from "../../components/Teams/TeamHomeComponents";
+import { CurrentlyActiveMeetingEmpty, CurrentActiveMeeting, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal, InviteMemberModal } from "../../components/Teams/TeamHomeComponents";
+
+
 // Hooks
 import { useTeamById } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
@@ -20,6 +22,7 @@ export function TeamHome() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [ShowTasks, setShowTasks] = useState(false);
     const [ShowReviews, setShowReviews] = useState(false);
+    const [showInviteMemberModal, setShowInviteMemberModal] = useState(false);
 
     const [showCreateMeetingModal, setShowCreateMeetingModal] = useState(false);
 
@@ -40,12 +43,13 @@ export function TeamHome() {
                     </div>
                     {/* Invite Member */}
 
-                    {/* todo[]: Inviting Non Members to the team  */}
-                    <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-not-allowed! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
+                    {/* todo[x]: Inviting Non Members to the team  */}
+                    <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
                         md:px-3! md:py-2! md:gap-2! hover:bg-blue-600! hover:text-white! transition-all! duration-200!
-                    ">
+                    " onClick={() => setShowInviteMemberModal(true)}>
                         <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite Member</span>
                     </div>
+
                     {/* Hamburger Menu */}
                     <div className="inline-block! lg:hidden! z-[100]! ml-4!">
                         {/* hamburger icon */}
@@ -122,6 +126,7 @@ export function TeamHome() {
             {showCreateMeetingModal && <CreateMeetingModal onClose={() => {
                 setShowCreateMeetingModal(false);
             } } teamID={teamID} />}
+            {showInviteMemberModal && <InviteMemberModal team={team} onClose={() => setShowInviteMemberModal(false)} />}
         </div>
     );
 }

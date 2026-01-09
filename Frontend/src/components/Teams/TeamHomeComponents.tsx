@@ -303,6 +303,17 @@ export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose,
 }
 
 export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onClose})  => {
+
+    const [message, setMessage] = useState<string>("");
+
+    const handleCopyLink = () => {
+        navigator.clipboard.writeText(team.code);
+        setMessage("Invite link copied to clipboard!");
+        setTimeout(() => {
+            setMessage("");
+        }, 2000);
+    }
+
     return (
       <div className="fixed! inset-0! bg-black/50! backdrop-blur-md! flex! justify-center! items-center! z-[200]!">
         <div className="bg-white! p-10! rounded-2xl flex flex-col! w-11/12! max-w-xl!">
@@ -311,6 +322,12 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onCl
                 <X className="w-6! h-6! text-black! cursor-pointer! hover:text-red-500!" onClick={onClose} />
             </div>
 
+            {message && (
+                <div className="text-white flex flex-row justify-center items-center font-bold! bg-green-700/40 border-2 border-green-900/20 rounded-lg p-2 mb-4!">
+                    {message}
+                </div>
+            )}
+
             <div className="flex flex-col gap-4! mt-8!">
                 <div className="flex flex-col! gap-2! mb-5!">
                   <p className="text-gray-500! text-sm! sm:text-base! lg:text-lg! font-mono! font-bold!">JOIN VIA CODE</p>
@@ -318,7 +335,7 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onCl
                       Share the invite link below to invite members to the team
                   </p>
                 </div>
-                <div className="flex flex-row! border! border-gray-300! rounded-lg! overflow-hidden!">
+                <div className="flex flex-col! border! border-gray-300! rounded-lg! overflow-hidden! sm:flex-row!">
                     <input
                         type="text"
                         readOnly
@@ -328,7 +345,7 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onCl
                     <button
                         className="bg-purple-700! hover:bg-purple-800! text-white! px-4! py-2! transition-all! duration-200!"
                         onClick={() => {
-                            navigator.clipboard.writeText(team.code);
+                            handleCopyLink();
                         }}
                     >
                         Copy

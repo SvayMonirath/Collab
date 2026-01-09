@@ -31,47 +31,19 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ onClose, onCre
     };
 
   return (
-    <div className="fixed inset-0 z-[9999]! flex items-center justify-center
-                    bg-gradient-to-br from-black/80 via-black/70 to-black/90!
-                    backdrop-blur-3xl!">
-
-      {/* Ambient Glows */}
-      <div className="absolute -top-40! left-1/4!
-                      w-[30rem]! h-[30rem]!
-                      bg-blue-500/25!
-                      blur-[150px]!
-                      rounded-full!" />
-
-      <div className="absolute bottom-0! right-0!
-                      w-[24rem]! h-[24rem]!
-                      bg-indigo-600/25!
-                      blur-[130px]!
-                      rounded-full!" />
+    <div className="fixed inset-0 z-[9999]! flex items-center justify-center backdrop-blur-md! bg-black/50!">
 
       {/* Modal Card */}
       <div className="relative w-11/12! max-w-xl!
                       rounded-3xl!
-                      bg-white/85! backdrop-blur-2xl!
+                      bg-white! backdrop-blur-2xl!
                       border border-white/30!
-                      shadow-[0_30px_90px_-25px_rgba(0,0,0,0.6)]!
+                      shadow-[0_25px_80px_-20px_rgba(0,0,0,0.5)]!
                       px-10! py-12!
                       flex flex-col gap-8!">
 
         {/* Close */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5!
-                    w-9! h-9!
-                    rounded-full!
-                    flex items-center justify-center!
-                    bg-black/5!
-                    text-gray-600!
-                    hover:bg-black/10!
-                    hover:text-black!
-                    transition-all!"
-        >
-          ✕
-        </button>
+        <X className="w-6! h-6! text-black! cursor-pointer! hover:text-red-500! absolute top-5 right-5!" onClick={onClose} />
 
         {/* Header */}
         <div className="text-center flex flex-col gap-3!">
@@ -171,11 +143,9 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ onClose, onCre
                         bg-gradient-to-r from-purple-600 to-indigo-600!
                         text-white! font-semibold!
                         shadow-lg!
-                        hover:shadow-blue-600/40!
-                        hover:scale-[1.03]!
-                        active:scale-[0.97]!
-                        transition-all!"
-            >
+                        hover:bg-purple-600!
+                        transition-all!
+            ">
               {loading ? "Creating Team..." : "Create Team"}
             </button>
           </div>

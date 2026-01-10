@@ -8,6 +8,9 @@ from ..models import Team, User, user_team_association
 from ..Schemas.team_schemas import CreateTeamInput
 from ..utils.jwt_helper import get_current_user
 
+from ..Services.team_service import TeamService
+from ..Repositories.team_repository import TeamRepository
+
 team_router = APIRouter(prefix="/teams", tags=["Teams"])
 
 # CRUD OPERATION FOR TEAMS
@@ -18,34 +21,20 @@ async def create_team(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    if current_user is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+    try:
+        team_repo = TeamRepository(db)
+        team_service = TeamService(team_repo)
+        if current_user is None:
+            raise HTTPException(status_code=401, detail="Unauthorized")
 
-    current_user_id = current_user.get("user_id")
-    current_user = await db.get(User, current_user_id)
+        user_id = current_user.get("user_id")
 
-    # check if user own a team
-    owned_team = await db.execute(
-        select(Team).where(
-            (Team.title == team_input.title) & (Team.owner_id == current_user_id)
-        )
-    )
+        await team_service.create_team(team_input, user_id)
+        return {"message": "Team created successfully"}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
 
 
-    if owned_team.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="You already own or are a member of a team with this title")
-
-    new_team = Team(
-        title=team_input.title,
-        description=team_input.description,
-        owner=current_user,
-    )
-    new_team.generate_team_code()
-
-    db.add(new_team)
-    await db.commit()
-    await db.refresh(new_team)
-    return {"message": "Team created successfully", "team_id": new_team.id, "team_code": new_team.code}
 
 # --------------- Delete Team ---------------
 @team_router.delete('/delete/{team_id}')
@@ -54,21 +43,19 @@ async def delete_team(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    if current_user is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+    try:
+        team_repo = TeamRepository(db)
+        team_service = TeamService(team_repo)
+        if current_user is None:
+            raise HTTPException(status_code=401, detail="Unauthorized")
 
-    current_user_id = current_user.get("user_id")
-
-    team = await db.get(Team, team_id)
-    if team is None:
-        raise HTTPException(status_code=404, detail="Team not found")
-
-    if team.owner_id != current_user_id:
-        raise HTTPException(status_code=403, detail="You are not the owner of this team")
-
-    await db.delete(team)
-    await db.commit()
-    return {"message": "Team deleted successfully"}
+        current_user_id = current_user.get("user_id")
+        await team_service.delete_team(team_id, current_user_id)
+        return {"message": "Team deleted successfully"}
+    except LookupError as le:
+        raise HTTPException(status_code=404, detail=str(le))
+    except PermissionError as pe:
+        raise HTTPException(status_code=403, detail=str(pe))
 
 # ---------------- Join Team ----------------
 @team_router.post('/join/{team_code}')
@@ -81,31 +68,20 @@ async def join_team(
         Goal: Allow a user to join a team using a team code
         Conditions: User cannot be the owner of the team and cannot already be a member
     """
-    if current_user is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+    try:
+        team_repo = TeamRepository(db)
+        team_service = TeamService(team_repo)
+        if current_user is None:
+            raise HTTPException(status_code=401, detail="Unauthorized")
 
-    current_user_id = current_user.get("user_id")
+        current_user_id = current_user.get("user_id")
+        team = await team_service.join_team_by_code(team_code, current_user_id)
 
-    user = await db.get(User, current_user_id)
-
-    # Fetch the team by code
-    team_result = await db.execute(select(Team).options(selectinload(Team.members)).where(Team.code == team_code))
-    team = team_result.scalar_one_or_none()
-
-    if team is None:
-        raise HTTPException(status_code=404, detail="Team not found")
-
-    if team.owner_id == current_user_id:
-        raise HTTPException(status_code=400, detail="You are the owner of this team")
-
-    if user in team.members:
-        raise HTTPException(status_code=400, detail="You are already a member of this team")
-
-    team.members.append(user)
-
-    await db.commit()
-
-    return {"message": "Joined team successfully"}
+        return {"message": "Successfully joined the team", "team_id": team.id}
+    except LookupError as le:
+        raise HTTPException(status_code=404, detail=str(le))
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
 
 
 # --------------- Get All Owned Team ---------------
@@ -117,11 +93,12 @@ async def get_owned_teams(
     if current_user is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+    team_repo = TeamRepository(db)
+    team_service = TeamService(team_repo)
     current_user_id = current_user.get("user_id")
-    result = await db.execute(select(Team).where(Team.owner_id == current_user_id))
-    owned_teams = result.scalars().all()
-
+    owned_teams = await team_service.get_owned_teams(current_user_id)
     return {"owned_teams": owned_teams}
+
 
 # --------------- Get Joined Teams ---------------
 @team_router.get('/get_joined_teams')
@@ -133,12 +110,9 @@ async def get_joined_teams(
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     current_user_id = current_user.get("user_id")
-    result = await db.execute(
-        select(Team).join(user_team_association).where(
-            user_team_association.c.user_id == current_user_id
-        )
-    )
-    joined_teams = result.scalars().all()
+    team_repo = TeamRepository(db)
+    team_service = TeamService(team_repo)
+    joined_teams = await team_service.get_joined_teams(current_user_id)
 
     return {"joined_teams": joined_teams}
 
@@ -153,18 +127,9 @@ async def get_all_teams(
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     current_user_id = current_user.get("user_id")
-    owned_teams = await db.execute(select(Team).where(Team.owner_id == current_user_id))
-    owned_teams = owned_teams.scalars().all()
-
-    joined_teams = await db.execute(
-        select(Team).join(user_team_association).where(
-            user_team_association.c.user_id == current_user_id
-        )
-    )
-    joined_teams = joined_teams.scalars().all()
-
-    all_teams = owned_teams + joined_teams
-
+    team_repo = TeamRepository(db)
+    team_service = TeamService(team_repo)
+    all_teams = await team_service.get_all_teams(user_id=current_user_id)
 
     return {"all_teams": all_teams}
 
@@ -179,24 +144,9 @@ async def get_latest_teams(
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     current_user_id = current_user.get("user_id")
-    owned_teams = await db.execute(
-        select(Team).where(Team.owner_id == current_user_id).order_by(Team.create_at.desc()).limit(3)
-    )
-    owned_teams = owned_teams.scalars().all()
-
-    joined_teams = await db.execute(
-        select(Team).join(user_team_association).where(
-            user_team_association.c.user_id == current_user_id
-        ).order_by(Team.create_at.desc()).limit(3)
-    )
-    joined_teams = joined_teams.scalars().all()
-
-    all_teams = owned_teams + joined_teams
-    # Sort all teams by created_at descending and limit to 3
-    all_teams.sort(key=lambda x: x.create_at, reverse=True)
-    latest_teams = all_teams[:3]
-
-    print("Latest Teams(route):", latest_teams)
+    team_repo = TeamRepository(db)
+    team_service = TeamService(team_repo)
+    latest_teams = await team_service.get_latest_teams(limit=3)
 
     return {"latest_teams": latest_teams}
 
@@ -210,33 +160,17 @@ async def get_team_by_id(
         Goal: Fetch a team by its ID
         Conditions: user must be either the owner or a member of the team
     """
-    if current_user is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+    try:
+        if current_user is None:
+            raise HTTPException(status_code=401, detail="Unauthorized")
 
-    team = await db.execute(select(Team).options(selectinload(Team.members)).where(Team.id == team_id))
-    team = team.scalar_one_or_none()
-    if team is None:
-        raise HTTPException(status_code=404, detail="Team not found")
+        user_id = current_user.get("user_id")
 
-    user_id = current_user.get("user_id")
-
-    is_owner = team.owner_id == user_id
-    is_member = any(member.id == user_id for member in team.members)
-
-    if not is_owner and not is_member:
-        raise HTTPException(status_code=403, detail="You are not authorized to view this team")
-
-    # get member count
-    member_count =  len(team.members)
-
-    team_data = {
-        "id": team.id,
-        "title": team.title,
-        "description": team.description,
-        "code": team.code,
-        "owner_id": team.owner_id,
-        "create_at": team.create_at,
-        "member_count": member_count
-    }
-
-    return {"team": team_data}
+        team_repo = TeamRepository(db)
+        team_service = TeamService(team_repo)
+        team_data = await team_service.get_team_by_id(team_id, user_id)
+        return {"team": team_data}
+    except PermissionError as pe:
+        raise HTTPException(status_code=403, detail=str(pe))
+    except LookupError as le:
+        raise HTTPException(status_code=404, detail=str(le))

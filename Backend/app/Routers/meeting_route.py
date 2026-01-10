@@ -1,64 +1,27 @@
 from fastapi import APIRouter, Body, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
-from sqlalchemy.future import select
-from datetime import datetime
-
 
 from ..Database.database import get_db
-from ..models import Team, Meeting
+from ..models import Team
 from ..utils.jwt_helper import get_current_user
 from ..Schemas.meeting_schemas import MeetingCreateSchema
+from ..Services.meeting_service import MeetingService
+from ..Repositories.meeting_repository import MeetingRepository
+from ..Repositories.team_repository import TeamRepository
+from ..Repositories.user_repository import UserRepository
 
 meeting_router = APIRouter(prefix="/meetings", tags=["Meetings"])
-# --------------- CSOT Meeting ---------------
-# central source of truth for meeting management
-
-meeting_state = {}
-
-def _init_meeting_state(meeting_id: int):
-    global meeting_state
-    if meeting_id not in meeting_state:
-        meeting_state[meeting_id] = {
-            "participants_count": 0,
-            "participants": [],
-            "is_active": False,
-        }
-
-    return meeting_state[meeting_id]
-
-def start_meeting_state(meeting_id: int, host_id: int):
-    state = _init_meeting_state(meeting_id)
-    state["is_active"] = True
-    state["participants_count"] = 1
-    state["participants"].append({"user_id": host_id, "username": "Host"})
-
-def end_meeting_state(meeting_id: int):
-    state = _init_meeting_state(meeting_id)
-    state["is_active"] = False
-    state["participants"].clear()
-    state["participants_count"] = 0
-
-def join(meeting_id: int, user_id: int, username: str):
-    state = _init_meeting_state(meeting_id)
-    state["participants"].append({"user_id": user_id, "username": username})
-    state["participants_count"] += 1
-
-def leave(meeting_id: int, user_id: int):
-    state = _init_meeting_state(meeting_id)
-    state["participants"] = [p for p in state["participants"] if p["user_id"] != user_id]
-    state["participants_count"] -= 1
-
-def get_meeting_state(meeting_id: int):
-    state = _init_meeting_state(meeting_id)
-    return state
 
 # --------------- Meeting Endpoints ---------------
 
 # get meeting current state
 @meeting_router.get("/state/{meeting_id}")
-async def get_meeting_current_state( meeting_id: int, current_user: dict = Depends):
-    state = get_meeting_state(meeting_id)
+async def get_meeting_current_state( meeting_id: int, current_user: dict = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    meeting_repo = MeetingRepository(db)
+    team_repo = TeamRepository(db)
+    user_repo = UserRepository(db)
+    service = MeetingService(meeting_repo, team_repo, user_repo)
+    state = service.get_meeting_state(meeting_id)
     return {"meeting_state": state}
 
 # todo[x]: Start Meeting Completed
@@ -69,88 +32,69 @@ async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(.
         Goal: Start a meeting for a team
         Conditions: Only team owner and team member can start a meeting
     """
+    try:
+        meeting_repo = MeetingRepository(db)
+        team_repo = TeamRepository(db)
+        user_repo = UserRepository(db)
+        meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
+        user_id = current_user.get("user_id")
+        meeting = await meeting_service.start_meeting(team_id=team_id, meeting_data=meeting_data, user_id=user_id)
 
-    title = meeting_data.title
-    print("Meeting Title:", title)
-
-    team = await db.execute(select(Team).where(Team.id == team_id).options(selectinload(Team.members)))
-    team = team.scalar_one_or_none()
-    if not team:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
-
-    current_user_id = current_user.get("user_id")
-
-    if not isAuthorized(current_user_id, team):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team owner can start a meeting")
-
-    # use my navtive datetime
-    current_time = datetime.now()
-    meeting = Meeting(team_id=team_id, title=title, host_id=current_user_id, status="active", started_at=current_time)
-    db.add(meeting)
-    await db.commit()
-    await db.refresh(meeting)
-
-    start_meeting_state(meeting.id, current_user_id)
-
-    return {"message": f"Meeting started for team {team.title}", "meeting_id": meeting.id}
+        return {"message": f"Meeting started successfully", "meeting_id": meeting.id}
+    except LookupError as le:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))
+    except PermissionError as pe:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
 
 # end meeting
 @meeting_router.post("/end/{meeting_id}")
 async def end_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    meeting = await db.execute(select(Meeting).where(Meeting.id == meeting_id))
-    meeting = meeting.scalar_one_or_none()
-    if not meeting:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Meeting not found")
-
-    current_user_id = current_user.get("id")
-    if meeting.host_id != current_user_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the host can end the meeting")
-
-    # later condition: When no participants are left in the meeting
-
-    meeting.status = "inactive"
-    meeting.ended_at = datetime.utcnow()
-    await db.commit()
-    await db.refresh(meeting)
-
-    end_meeting_state(meeting_id)
-
-    return {"message": f"Meeting {meeting_id} ended"}
+    try:
+        meeting_repo = MeetingRepository(db)
+        team_repo = TeamRepository(db)
+        user_repo = UserRepository(db)
+        meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
+        user_id = current_user.get("user_id")
+        meeting = await meeting_service.end_meeting(meeting_id=meeting_id, user_id=user_id)
+        return {"message": f"Meeting {meeting.id} ended"}
+    except LookupError as le:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))
+    except PermissionError as pe:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
 
 # join meeting
 @meeting_router.post("/join/{meeting_id}")
 async def join_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    meeting = await db.execute(select(Meeting).where(Meeting.id == meeting_id))
-    meeting = meeting.scalar_one_or_none()
-    if not meeting:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Meeting not found")
+    try:
+        meeting_repo = MeetingRepository(db)
+        team_repo = TeamRepository(db)
+        user_repo = UserRepository(db)
+        meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
+        current_id = current_user.get("user_id")
+        await meeting_service.join_meeting(meeting_id=meeting_id, user_id=current_id)
+        current_username = current_user.get("username")
+        return {"message": f"User {current_username} joined meeting {meeting_id}"}
+    except LookupError as le:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))
+    except PermissionError as pe:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
 
-    current_user_id = current_user.get("id")
-    current_username = current_user.get("username")
-
-    join(meeting_id, current_user_id, current_username)
-
-    return {"message": f"User {current_username} joined meeting {meeting_id}"}
 # leave meeting
 @meeting_router.post("/leave/{meeting_id}")
 async def leave_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    meeting = await db.execute(select(Meeting).where(Meeting.id == meeting_id))
-    meeting = meeting.scalar_one_or_none()
-    if not meeting:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Meeting not found")
+    try:
+        meeting_repo = MeetingRepository(db)
+        team_repo = TeamRepository(db)
+        user_repo = UserRepository(db)
+        meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
+        current_user_id = current_user.get("user_id")
+        await meeting_service.leave_meeting(meeting_id=meeting_id, user_id=current_user_id)
 
-    current_user_id = current_user.get("id")
-    leave(meeting_id, current_user_id)
-
-    state = get_meeting_state(meeting_id)
-    if state["participants_count"] == 0:
-        meeting.status = "inactive"
-        meeting.ended_at = datetime.utcnow()
-        await db.commit()
-        await db.refresh(meeting)
-        end_meeting_state(meeting_id)
-
-    return {"message": f"User {current_user_id} left meeting {meeting_id}"}
+        return {"message": f"User {current_user_id} left meeting {meeting_id}"}
+    except LookupError as le:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))
+    except PermissionError as pe:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
 
 @meeting_router.get("/get_meetings/team/{team_id}")
 async def get_team_meetings(team_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -158,21 +102,17 @@ async def get_team_meetings(team_id: int, db: AsyncSession = Depends(get_db), cu
         Goal: Get all meetings for a team and check if there are active meetings
         Conditions: Only team members can view meetings
     """
+    try:
+        meeting_repo = MeetingRepository(db)
+        team_repo = TeamRepository(db)
+        user_repo = UserRepository(db)
+        meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
+        current_user_id = current_user.get("user_id")
+        meetings = await meeting_service.get_team_meetings(team_id=team_id, user_id=current_user_id)
 
-    team = await db.execute(select(Team).where(Team.id == team_id).options(selectinload(Team.members)))
-    team = team.scalar_one_or_none()
-    if not team:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
-
-    current_user_id = current_user.get("user_id")
-
-    if not isAuthorized(current_user_id, team):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team members can view meetings")
-
-    meetings = await db.execute(select(Meeting).where(Meeting.team_id == team_id))
-    meetings = meetings.scalars().all()
-
-    return {"meetings": meetings}
+        return {"meetings": meetings}
+    except PermissionError as pe:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
 
 @meeting_router.get("/get_meeting/{meeting_id}")
 async def get_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -180,30 +120,15 @@ async def get_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), curre
         Goal: Get meeting details by meeting ID
         Conditions: Only team members can view meeting details
     """
-
-    meeting = await db.execute(select(Meeting).where(Meeting.id == meeting_id))
-    meeting = meeting.scalar_one_or_none()
-    if not meeting:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Meeting not found")
-
-    team = await db.execute(select(Team).where(Team.id == meeting.team_id).options(selectinload(Team.members)))
-    team = team.scalar_one_or_none()
-    if not team:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
-
-    current_user_id = current_user.get("user_id")
-
-    if not isAuthorized(current_user_id, team):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only team members can view meeting details")
-
-    return {"meeting": meeting}
-
-
-# --------------- Meeting Helper ---------------
-def isAuthorized(user_id: int, team: Team) -> bool:
-    if team.owner_id == user_id:
-        return True
-    for member in team.members:
-        if member.id == user_id:
-            return True
-    return False
+    try:
+        meeting_repo = MeetingRepository(db)
+        team_repo = TeamRepository(db)
+        user_repo = UserRepository(db)
+        meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
+        current_user_id = current_user.get("user_id")
+        meeting = await meeting_service.get_meeting_by_id(meeting_id=meeting_id, user_id=current_user_id)
+        return {"meeting": meeting}
+    except PermissionError as pe:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
+    except LookupError as le:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))

@@ -146,7 +146,7 @@ async def get_latest_teams(
     current_user_id = current_user.get("user_id")
     team_repo = TeamRepository(db)
     team_service = TeamService(team_repo)
-    latest_teams = await team_service.get_latest_teams(limit=3)
+    latest_teams = await team_service.get_latest_teams(limit=3, user_id=current_user_id)
 
     return {"latest_teams": latest_teams}
 

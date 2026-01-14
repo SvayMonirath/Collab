@@ -77,7 +77,6 @@ class TeamService:
     async def get_all_teams(self, user_id: int) -> list[Team]:
         return await self.repo.get_all_teams_of_user(user_id=user_id)
 
-    async def get_latest_teams(self, limit: int = 3) -> list[Team]:
-        return await self.repo.get_latest_teams(limit)
-
-
+    # Non-default argument follows default argumentPylance
+    async def get_latest_teams(self, user_id: int,limit: int = 3) -> list[Team]:
+        return await self.repo.get_latest_teams(limit=limit, user_id=user_id)

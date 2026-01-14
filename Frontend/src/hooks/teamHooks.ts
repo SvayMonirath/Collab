@@ -69,6 +69,8 @@ export function useUserLatestTeams() {
         fetchTeams();
     }, [])
 
+    console.log("Latest teams from hook:", teams);
+
     return { teams, loading, error, refetch: async () => {
         setLoading(true);
         setError(null);

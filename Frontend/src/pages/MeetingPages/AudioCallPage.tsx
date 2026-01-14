@@ -40,7 +40,6 @@ export function MeetingAudioCallPage() {
                     {/* Main Section */}
                     <div className="flex flex-row flex-1! h-full! ">
                         {/* Participant Container */}
-                        {/* animation */}
                         <div className={`flex flex-col bg-white! p-6! lg:w-80! h-full!  sm:w-1/3! lg:w-1/6! ${showParticipants ? "inline-block!" : "hidden!"} border-r-3! border-t-3! border-gray-300!`}>
                             {/* Participant Count and Search Box */}
                             <div className="flex flex-row justify-between items-center mb-6! gap-16! sm:gap-24! lg:gap-28!">
@@ -50,6 +49,19 @@ export function MeetingAudioCallPage() {
 
                             <div className={`mb-6! transition-all! duration-150! ${showSearch ? "h-fit! opacity-100! pb-4!" : "h-0! opacity-0! overflow-hidden!"}`}>
                                 <input type="text" placeholder="Search Participants" className="w-full! border! border-gray-300! rounded-lg! px-2! py-1! text-sm! sm:text-base! focus:outline-none! focus:ring-2! focus:ring-purple-600! text-gray-700!"/>
+                            </div>
+                            <div className="min-h-screen! overflow-y-auto! flex flex-col">
+                                {meetingState?.participants.map((participant) => (
+                                <div key={participant.id} className="flex justify-between items-center! mb-3! border border-gray-300! rounded-lg! px-3! py-2! bg-white! hover:bg-gray-50! hover:shadow-sm! transition-all! duration-200!">
+                                    <div className="flex items-center! gap-3!">
+                                    <div className="size-8! rounded-full! bg-purple-200! flex items-center justify-center! text-xs! font-semibold! text-gray-700!">
+                                        {participant.username?.[0]?.toUpperCase()}
+                                    </div>
+                                    <span className="text-black! font-medium! text-sm! sm:text-base!">{participant.username}</span>
+                                    </div>
+                                    <Mic2 className="size-4! sm:size-5! text-gray-600!"/>
+                                </div>
+                                ))}
                             </div>
                         </div>
 

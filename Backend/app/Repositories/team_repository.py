@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy import select, or_
 from sqlalchemy.orm import selectinload
 from ..models import Team, User, user_team_association
 
@@ -40,11 +40,13 @@ class TeamRepository:
         all_teams = owned_teams + joined_teams
         return all_teams
 
-    async def get_latest_teams(self, limit: int = 3) -> list[Team]:
-        result = await self.db.execute(
-            select(Team).order_by(Team.create_at.desc()).limit(limit)
+    async def get_latest_teams(self, user_id: int, limit: int = 3) -> list[Team]:
+        joined_teams_result = await self.db.execute(
+            select(Team).join(user_team_association).where(
+                user_team_association.c.user_id == user_id
+            ).order_by(Team.id.desc()).limit(limit)
         )
-        return result.scalars().all()
+        return joined_teams_result.scalars().all()
 
 
     async def get_by_code(self, code: str) -> Team | None:

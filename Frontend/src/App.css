@@ -16,4 +16,5 @@ html, body {
 
 button {
   font-weight: bold;
+  min-width: fit-content;
 }

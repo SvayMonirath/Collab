@@ -207,7 +207,8 @@ export function MainHome() {
 
               {/* Latest Teams CARDS  */}
               <div className="grid gap-6 mt-10! sm:grid-cols-2 lg:grid-cols-3">
-                {teams.map((team) => (
+                {/* if no teams display you have no team joined */}
+                { teams.map((team) => (
                   <div
                     key={team.id}
                     onClick={() => navigate(`${TeamHomeUrl}/${team.id}`)}

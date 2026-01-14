@@ -102,7 +102,7 @@ export const CurrentlyActiveMeetingEmpty: React.FC<CreateMeetingModalProps> = ({
       <div className="flex flex-row gap-4!">
         {/* todo[]: Scheduling Meeting */}
         <button
-          className="bg-purple-700! hover:bg-purple-800! text-white! rounded-2xl! px-4! py-4! mt-4! flex flex-row items-center gap-2! transition-all! duration-200
+          className="bg-purple-700! hover:bg-purple-800! text-white! rounded-2xl! px-4! py-4! mt-4! flex flex-row  items-center gap-2! transition-all! duration-200
             md:px-4! md:py-4! md:mt-6! md:text-lg md:gap-4!
             lg:px-6! lg:py-3! lg:mt-8! lg:text-xl!" onClick={onOpen}
         >

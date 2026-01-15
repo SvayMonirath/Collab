@@ -1,11 +1,17 @@
-<!-- Format this make it alot better -->
-<!-- 08/01/26 -->
 # Current Todos
-- [X] Update Current Active Meeting UI in Team Home Page
-- [X] Implement Join Meeting Functionality Team Home Page.
-- [X] Implement Leave Meeting Functionality in Meeting Page.
-- [X] Fetch Meeting Data to use for displaying ongoing meeting info.
-- [X] Implement Ending Meeting Functionality in Meeting Page.
+
+# Listed Todos
+- [] Oauth
+- [] Implement Show Notification Functionality
+- [] Implement Profile Page
+- [] Add Team Calendar Page
+- [] Add Team tasks Page
+- [] Add Calendar Integration
+- [] Add Task System
+- [] Add Model Review System
+- [] Implement forget password functionality
+- [] Make Overview Dynamic and Functional in Home Page
+- [] Add Forget Password Functionality
 
 ## Upcoming Tasks
 - [ ] Implement WebSocket for Real-Time UI Updates in TeamHome Page and Meeting Page.

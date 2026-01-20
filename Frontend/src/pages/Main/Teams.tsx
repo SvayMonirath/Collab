@@ -120,7 +120,7 @@ export function MainTeams() {
                   <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
                     {team.title}
                   </h3>
-                  <p className="text-gray-600 text-sm md:text-base lg:text-lg line-clamp-3">
+                  <p className="text-gray-400! text-xs md:text-sm lg:text-base line-clamp-2 overflow-auto">
                     {team.description || "No description available."}
                   </p>
                 </div>
@@ -129,19 +129,19 @@ export function MainTeams() {
                 <div className="grid grid-cols-3 gap-4 mt-6">
                   {/* Member Count */}
                   <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
-                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.membersCount}</span>
+                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.membersCount ? team.membersCount : 0}</span>
                     <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Members</span>
                   </div>
 
                   {/* Task Count */}
                   <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
-                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.tasksCount}</span>
+                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.tasksCount ? team.tasksCount : 0}</span>
                     <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Tasks</span>
                   </div>
 
                   {/* Meeting Count */}
-                  <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
-                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.meetingsCount}</span>
+                  <div className="flex flex-col items-center justify-center p-3 px-6 bg-gray-50 rounded-xl">
+                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.meetingsCount ? team.meetingsCount : 0}</span>
                     <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Meetings</span>
                   </div>
                 </div>

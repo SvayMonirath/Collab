@@ -208,7 +208,7 @@ export function MainHome() {
               {/* Latest Teams CARDS  */}
               <div className="grid gap-6 mt-10! sm:grid-cols-2 lg:grid-cols-3">
                 {/* if no teams display you have no team joined */}
-                { teams.map((team) => (
+                {teams.length > 0 ? teams.map((team) => (
                   <div
                     key={team.id}
                     onClick={() => navigate(`${TeamHomeUrl}/${team.id}`)}
@@ -237,7 +237,9 @@ export function MainHome() {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) : (
+                  <p className="text-gray-500! px-4!">You have not joined any teams yet.</p>
+                )}
 
                 {/* Show More Card */}
                 {teams.length > 0 && !teamsLoading && (

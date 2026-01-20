@@ -1,4 +1,9 @@
 # Current Todos
+- [] Implement Websocket For Real-Time  In Meeting Page
+- [] Implement Websocket For Real-Time  In TeamHome Page
+
+# Pending Todos
+- [] Fix up UI for Main Team Page
 
 # Listed Todos
 - [] Oauth

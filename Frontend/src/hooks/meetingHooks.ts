@@ -7,7 +7,6 @@ import type { CreateMeetingSchemas } from "../types/meetingTypes";
 // API
 import { createMeeting, getMeetingByID, getMeetingState, joinMeeting, leaveMeeting } from "../api/meetingAPI";
 import { getTeamMeetings } from "../api/meetingAPI";
-import { TeamHome } from "../pages/TeamsPages/TeamHome";
 import { MeetingAudioCallPageUrl, TeamHomeUrl } from "../urlPath";
 
 export function useCreateMeeting() {

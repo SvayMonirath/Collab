@@ -36,7 +36,7 @@ export const AudioCallNav: React.FC<AudioCallNavProps> = ({ meetingTitle }) => {
 
             {/* Other Options */}
             <div className="flex flex-row gap-2! lg:gap-3! items-center!">
-                <button className="hidden! bg-black! sm:inline-block! hover:scale-110! hover:border-none! transition-all! duration-300! text-white! px-4! py-2! lg:px-6! lg:py-3! rounded-xl! text-base! sm:text-lg! lg:text-xl! font-bold! lg:flex! flex-row items-center gap-2!">
+                <button className="hidden! bg-black! sm:inline-block! hover:border hover:border-black! transition-all! duration-300! text-white! px-4! py-2! lg:px-6! lg:py-3! rounded-xl! text-base! sm:text-lg! lg:text-xl! font-bold! lg:flex! flex-row items-center gap-2!">
                     <UserPlus className=" fill-white!"/>
                     <span className="hidden! lg:inline-block!">Invite</span>
                 </button>

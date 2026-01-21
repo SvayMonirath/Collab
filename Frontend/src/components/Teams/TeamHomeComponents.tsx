@@ -31,7 +31,8 @@ export const CurrentActiveMeeting: React.FC<CurrentActiveMeetingProps> = ({ acti
     const { join, loading, error } = useJoinMeeting(activeMeeting.id);
 
     return (
-        <div className="flex flex-col gap-2! sm:px-20!">
+        // todo[]: Improve Current Active Meeting UI
+        <div className="flex flex-col gap-2! sm:px-20! border border-gray-300! rounded-3xl! p-5! sm:py-10!">
             <div className="flex flex-row gap-3 items-center mb-4! px-5!">
                 <div className="bg-green-500! rounded-full size-2! animate-pulse!"></div><span className="text-sm! text-green-600! font-bold! ">LIVE NOW</span>
             </div>

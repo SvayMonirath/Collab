@@ -38,12 +38,11 @@ export function TeamHome() {
                         sm:text-xl! lg:text-2xl!
                         ">{team?.title}</h1>
                         <p className="hidden! text-gray-500! text-sm!
-                        sm:text-base! sm:inline-block! lg:text-lg!
+                        sm:text-base! sm:inline-block! lg:text-lg!  max-w-md! lg:max-w-lg!
                         ">{ team?.description ? team.description : "Team Home Page - Manage your team workspace here." }</p>
                     </div>
                     {/* Invite Member */}
 
-                    {/* todo[x]: Inviting Non Members to the team  */}
                     <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
                         md:px-3! md:py-2! md:gap-2! hover:bg-blue-600! hover:text-white! transition-all! duration-200!
                     " onClick={() => setShowInviteMemberModal(true)}>

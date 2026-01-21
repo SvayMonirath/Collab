@@ -65,25 +65,6 @@ export  function useActiveMeeting(teamID: string) {
 
     }, [teamID]);
 
-    // Polling for meetings every 10 seconds (Later can be replaced with WebSocket)
-    useEffect(() => {
-        async function refreshMeetings() {
-            const response = await getTeamMeetings(teamID);
-
-            if (response?.error) {
-                setError(response.error);
-                return;
-            }
-
-            setMeetings(response.meetings);
-        }
-
-        const interval = setInterval(() => {
-            refreshMeetings();
-        }, 10000);
-        return () => clearInterval(interval);
-    }, [teamID]);
-
     const activeMeeting = meetings.find((meeting) => meeting.status === "active");
     console.log("Active Meeting:", activeMeeting);
 
@@ -187,4 +168,34 @@ export function useLeaveMeeting(meetingID: string, teamID: string) {
     }
 
     return { leave, loading, error };
+}
+
+export function useParticipantCountWebSocket(meetingID: string) {
+    const [participantCount, setParticipantCount] = useState<number>(0);
+
+    useEffect(() => {
+        const ws = new WebSocket(`ws://localhost:8001/meetings/ws/audio/join/${meetingID}`);
+
+        ws.onopen = () => {
+            console.log("WebSocket connection established");
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "participants_update") {
+                setParticipantCount(data.count);
+                console.log("Participant Count Updated:", data.count);
+            }
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [meetingID]);
+
+    return participantCount;
 }

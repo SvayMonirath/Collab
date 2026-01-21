@@ -1,4 +1,4 @@
-from fastapi import Body
+from fastapi import Body, WebSocket, WebSocketDisconnect
 from datetime import datetime
 
 from ..Repositories.meeting_repository import MeetingRepository
@@ -88,7 +88,7 @@ class MeetingService:
         leave(meeting_id, user_id)
 
         state = get_meeting_state(meeting_id)
-        if state["participants_count"] == 0:
+        if state["participants_count"] <= 0:
             meeting.status = "inactive"
             meeting.ended_at = datetime.utcnow()
             await self.meeting_repo.update(meeting)
@@ -154,11 +154,14 @@ def join(meeting_id: int, user_id: int, username: str):
     state = _init_meeting_state(meeting_id)
     state["participants"].append({"user_id": user_id, "username": username})
     state["participants_count"] += 1
+    state["is_active"] = True
 
 def leave(meeting_id: int, user_id: int):
     state = _init_meeting_state(meeting_id)
     state["participants"] = [p for p in state["participants"] if p["user_id"] != user_id]
     state["participants_count"] -= 1
+    if state["participants_count"] <= 0:
+        state["is_active"] = False
 
 def get_meeting_state(meeting_id: int):
     state = _init_meeting_state(meeting_id)
@@ -172,3 +175,7 @@ def isAuthorized(user_id: int, team: Team) -> bool:
         if member.id == user_id:
             return True
     return False
+
+
+# todo[]: Implement Websocket For Real-Time In Meeting Page
+

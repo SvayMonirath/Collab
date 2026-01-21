@@ -227,7 +227,7 @@ export function MainHome() {
                         <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors duration-300">
                           {team.title}
                         </h3>
-                        <p className="mt-2 text-gray-600 text-sm leading-relaxed">
+                        <p className="mt-2 text-gray-600 text-sm leading-relaxed overflow-auto! h-12">
                           {team.description || "No description available."}
                         </p>
                       </div>

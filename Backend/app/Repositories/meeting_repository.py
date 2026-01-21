@@ -20,6 +20,7 @@ class MeetingRepository:
         )
         return result.scalars().all()
 
+
     async def save(self, meeting: Meeting) -> Meeting:
         self.db.add(meeting)
         await self.db.commit()

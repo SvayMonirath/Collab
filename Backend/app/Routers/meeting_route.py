@@ -139,10 +139,13 @@ async def get_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), curre
 async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
     await meeting_manager.connect(websocket, meeting_id)
 
-    await meeting_manager.broadcast_participants_update(meeting_id)
     try:
         while True:
-            await websocket.receive_text()
+            event = await websocket.receive_text()
+
+            if event == "join":
+                await meeting_manager.broadcast_participants_update(meeting_id)
+
     except WebSocketDisconnect:
         meeting_manager.disconnect(websocket, meeting_id)
         await meeting_manager.broadcast_participants_update(meeting_id)

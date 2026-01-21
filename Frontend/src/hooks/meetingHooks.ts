@@ -174,6 +174,7 @@ export function useParticipantCountWebSocket(meetingID: string) {
     const [participantCount, setParticipantCount] = useState<number>(0);
 
     useEffect(() => {
+        // Correct URL with router prefix
         const ws = new WebSocket(`ws://localhost:8001/meetings/ws/audio/join/${meetingID}`);
 
         ws.onopen = () => {

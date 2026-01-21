@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..Database.database import get_db
 from ..models import Team
 from ..utils.jwt_helper import get_current_user
+from ..utils.ws_manager import meeting_manager
 from ..Schemas.meeting_schemas import MeetingCreateSchema
 from ..Services.meeting_service import MeetingService
 from ..Repositories.meeting_repository import MeetingRepository
@@ -132,3 +133,17 @@ async def get_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), curre
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
     except LookupError as le:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))
+
+# Websocket endpoint for meeting
+@meeting_router.websocket("/ws/audio/join/{meeting_id}")
+async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
+    await meeting_manager.connect(websocket, meeting_id)
+
+    await meeting_manager.broadcast_participants_update(meeting_id)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        meeting_manager.disconnect(websocket, meeting_id)
+        await meeting_manager.broadcast_participants_update(meeting_id)
+

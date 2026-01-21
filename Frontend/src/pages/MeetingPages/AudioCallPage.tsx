@@ -8,15 +8,13 @@ import { ControlBar } from "../../components/AudioCall/ControlBar";
 // Hooks
 import { useMeetingByID, useLeaveMeeting, useParticipantCountWebSocket } from "../../hooks/meetingHooks";
 
-
-
 export function MeetingAudioCallPage() {
 
     const meetingID = useParams<{ meetingID: string }>().meetingID || "";
     const { meeting, meetingState,  loading: meetingLoading, error: meetingError } = useMeetingByID(meetingID);
     const { leave, loading: leaveLoading, error: leaveError } = useLeaveMeeting(meetingID, meeting?.team_id || "");
-
     const participantCount = useParticipantCountWebSocket(meetingID);
+
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [showParticipants, setShowParticipants] = useState<boolean>(true);
 

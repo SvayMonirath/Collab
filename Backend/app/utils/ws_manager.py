@@ -1,6 +1,8 @@
 from fastapi import WebSocket, WebSocketDisconnect
 from typing import Dict, List
 
+from ..Services.meeting_service import _init_meeting_state
+
 class MeetingConnectionManager:
     def __init__(self):
         self.active_connections: Dict[int, List[WebSocket]] = {}
@@ -23,8 +25,11 @@ class MeetingConnectionManager:
                 await connection.send_text(message)
 
     async def broadcast_participants_update(self, meeting_id: int):
-        count = len(self.active_connections.get(meeting_id, []))
-        for connection in self.active_connections.get(meeting_id, []):
-            await connection.send_json({"type": "participants_update", "count": count})
+        meeting = _init_meeting_state(meeting_id)
+        active_connection = self.active_connections.get(meeting_id, [])
+        count = len(active_connection)
+        for connection in active_connection:
+            await connection.send_json({"type": "participants_update", "count": count, "participants": meeting["participants"]})
+
 
 meeting_manager = MeetingConnectionManager()

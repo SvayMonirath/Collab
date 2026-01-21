@@ -146,6 +146,7 @@ async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
             if event == "join":
                 await meeting_manager.broadcast_participants_update(meeting_id)
 
+
     except WebSocketDisconnect:
         meeting_manager.disconnect(websocket, meeting_id)
         await meeting_manager.broadcast_participants_update(meeting_id)

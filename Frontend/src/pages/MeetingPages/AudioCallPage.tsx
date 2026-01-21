@@ -13,7 +13,7 @@ export function MeetingAudioCallPage() {
     const meetingID = useParams<{ meetingID: string }>().meetingID || "";
     const { meeting, meetingState,  loading: meetingLoading, error: meetingError } = useMeetingByID(meetingID);
     const { leave, loading: leaveLoading, error: leaveError } = useLeaveMeeting(meetingID, meeting?.team_id || "");
-    const participantCount = useParticipantCountWebSocket(meetingID);
+    const { participantCount, participants } = useParticipantCountWebSocket(meetingID);
 
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [showParticipants, setShowParticipants] = useState<boolean>(true);
@@ -51,7 +51,7 @@ export function MeetingAudioCallPage() {
                                 <input type="text" placeholder="Search participants" className="w-full! border! border-gray-300! rounded-lg! px-2! py-1! text-sm! sm:text-base! focus:outline-none! focus:ring-2! focus:ring-purple-600! text-gray-700!"/>
                             </div>
                             <div className="min-h-screen! overflow-y-auto! flex flex-col">
-                                {meetingState?.participants.map((participant) => (
+                                {participants.map((participant) => (
                                 <div key={participant.id} className="flex justify-between items-center! mb-3! border border-gray-300! rounded-lg! px-3! py-2! bg-white! hover:bg-gray-50! hover:shadow-sm! transition-all! duration-200!">
                                     <div className="flex items-center! gap-3!">
                                     <div className="size-8! rounded-full! bg-purple-200! flex items-center justify-center! text-xs! font-semibold! text-gray-700!">

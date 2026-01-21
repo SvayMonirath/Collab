@@ -172,6 +172,7 @@ export function useLeaveMeeting(meetingID: string, teamID: string) {
 
 export function useParticipantCountWebSocket(meetingID: string) {
     const [participantCount, setParticipantCount] = useState<number>(0);
+    const [participants, setParticipants] = useState<any[]>([]);
 
     useEffect(() => {
         // Correct URL with router prefix
@@ -179,13 +180,16 @@ export function useParticipantCountWebSocket(meetingID: string) {
 
         ws.onopen = () => {
             console.log("WebSocket connection established");
+            ws.send("join");
         };
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === "participants_update") {
                 setParticipantCount(data.count);
+                setParticipants(data.participants);
                 console.log("Participant Count Updated:", data.count);
+                console.log("Participants List:", data.participants);
             }
         };
 
@@ -198,5 +202,5 @@ export function useParticipantCountWebSocket(meetingID: string) {
         };
     }, [meetingID]);
 
-    return participantCount;
+    return { participantCount, participants };
 }

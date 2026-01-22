@@ -7,17 +7,16 @@ import { TeamSideBar } from "../../components/Teams/TeamSideBar";
 import { TeamMobileDropDown } from "../../components/MobileDropDown";
 import { CurrentlyActiveMeetingEmpty, CurrentActiveMeeting, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal, InviteMemberModal } from "../../components/Teams/TeamHomeComponents";
 
-
 // Hooks
 import { useTeamById } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
-import { useActiveMeeting } from "../../hooks/meetingHooks";
+import { useLatestActiveMeetingWS } from "../../hooks/meetingHooks";
 
 export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
     const { team, loading, error } = useTeamById(teamID || "");
     const { user, loading: userLoading, error: userError } = useCurrentUser();
-    const { activeMeeting: ActiveMeeting, loading: meetingLoading, error: meetingError, meetings } = useActiveMeeting(teamID || "");
+    const { latestActiveMeeting, startMeeting } = useLatestActiveMeetingWS(teamID || "");
 
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [ShowTasks, setShowTasks] = useState(false);
@@ -92,7 +91,7 @@ export function TeamHome() {
                     <section className="flex flex-col flex-3">
 
                         {/* Currently Active Meeting */}
-                        {ActiveMeeting ? <CurrentActiveMeeting activeMeeting={ActiveMeeting} /> : <CurrentlyActiveMeetingEmpty onOpen={() => setShowCreateMeetingModal(true)} />  }
+                        {latestActiveMeeting ? <CurrentActiveMeeting activeMeeting={latestActiveMeeting} /> : <CurrentlyActiveMeetingEmpty onOpen={() => setShowCreateMeetingModal(true)} />  }
 
                         {/* line break */}
                         <hr className=" border-t border-gray-300 my-6" />
@@ -110,7 +109,7 @@ export function TeamHome() {
                     <aside className="hidden! p-8! bg-white! flex-1 lg:inline-block!">
 
                         {/* Meeting Action */}
-                        <AsideMeetingAction onOpen={() => setShowCreateMeetingModal(true)}/>
+                        <AsideMeetingAction onOpen={() => setShowCreateMeetingModal(true)} />
                     </aside>
                 </div>
             </main>
@@ -124,7 +123,7 @@ export function TeamHome() {
 
             {showCreateMeetingModal && <CreateMeetingModal onClose={() => {
                 setShowCreateMeetingModal(false);
-            } } teamID={teamID} />}
+            } } teamID={teamID} onSubmit={startMeeting}/>}
             {showInviteMemberModal && <InviteMemberModal team={team} onClose={() => setShowInviteMemberModal(false)} />}
         </div>
     );

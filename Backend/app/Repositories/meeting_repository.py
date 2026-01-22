@@ -20,6 +20,14 @@ class MeetingRepository:
         )
         return result.scalars().all()
 
+    async def get_latest_active_meeting_by_team_id(self, team_id: int) -> Meeting | None:
+        result = await self.db.execute(
+            select(Meeting)
+            .where(Meeting.team_id == team_id, Meeting.status == "active")
+            .order_by(Meeting.started_at.desc())
+        )
+        return result.scalars().first()
+
 
     async def save(self, meeting: Meeting) -> Meeting:
         self.db.add(meeting)

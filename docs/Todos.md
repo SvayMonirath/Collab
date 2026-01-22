@@ -1,5 +1,5 @@
 # Current Todos
-- [] Implement Websocket For Real-Time  In Meeting Page
+- [x] Implement Websocket For Real-Time  In Meeting Page
 - [] Implement Websocket For Real-Time  In TeamHome Page
 
 # Pending Todos

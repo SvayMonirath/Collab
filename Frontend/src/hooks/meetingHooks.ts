@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import {  useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // TYPES
@@ -176,7 +176,7 @@ export function useParticipantCountWebSocket(meetingID: string) {
 
     useEffect(() => {
         // Correct URL with router prefix
-        const ws = new WebSocket(`ws://localhost:8001/meetings/ws/audio/join/${meetingID}`);
+        const ws = new WebSocket(`ws://localhost:8001/meetings/ws/audio/${meetingID}`);
 
         ws.onopen = () => {
             console.log("WebSocket connection established");
@@ -203,4 +203,51 @@ export function useParticipantCountWebSocket(meetingID: string) {
     }, [meetingID]);
 
     return { participantCount, participants };
+}
+
+export function useLatestActiveMeetingWS(teamID: string) {
+    const [latestActiveMeeting, setLatestActiveMeeting] = useState<any | null>(null);
+    const wsRef = useRef<WebSocket | null>(null);
+
+    useEffect(() => {
+        const ws = new WebSocket(`ws://localhost:8001/meetings/ws/Team/${teamID}`);
+        wsRef.current = ws;
+
+        ws.onopen = () => {
+            console.log("WebSocket connection for latest active meeting established");
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.type === "active_meeting_update") {
+                console.log("Latest Active Meeting Updated:", data);
+                setLatestActiveMeeting(data.data.payload);
+            }
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket connection for latest active meeting closed");
+        };
+
+        return () => {
+            if(wsRef.current) {
+                wsRef.current.close();
+                wsRef.current = null;
+            }
+        };
+    }, [teamID]);
+
+    const startMeeting = () => {
+        if (wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send("start_meeting");
+        } else {
+            console.warn("WebSocket not connected");
+        }
+    };
+
+    return {
+        latestActiveMeeting,
+        startMeeting,
+    };
 }

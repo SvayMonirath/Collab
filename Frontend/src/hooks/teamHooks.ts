@@ -199,3 +199,7 @@ export function useJoinTeam() {
 
     return { join, loading, error, message };
 }
+
+export function useActiveMeetingWS() {
+    
+}

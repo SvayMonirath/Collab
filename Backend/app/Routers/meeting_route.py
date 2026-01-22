@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Body, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..Database.database import get_db
+from ..Database.database import get_db, SessionLocal
 from ..models import Team
 from ..utils.jwt_helper import get_current_user
-from ..utils.ws_manager import meeting_manager
+from ..utils.ws_manager import meeting_manager, team_manager
 from ..Schemas.meeting_schemas import MeetingCreateSchema
 from ..Services.meeting_service import MeetingService
 from ..Repositories.meeting_repository import MeetingRepository
@@ -135,7 +135,7 @@ async def get_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), curre
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(le))
 
 # Websocket endpoint for meeting
-@meeting_router.websocket("/ws/audio/join/{meeting_id}")
+@meeting_router.websocket("/ws/audio/{meeting_id}")
 async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
     await meeting_manager.connect(websocket, meeting_id)
 
@@ -151,3 +151,63 @@ async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
         meeting_manager.disconnect(websocket, meeting_id)
         await meeting_manager.broadcast_participants_update(meeting_id)
 
+@meeting_router.websocket("/ws/Team/{team_id}")
+async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
+    await team_manager.connect(websocket, team_id)
+    print(f"WebSocket connected for team {team_id}")
+
+    async with SessionLocal() as db:
+        meeting_repo = MeetingRepository(db)
+
+        active_meeting = await meeting_repo.get_latest_active_meeting_by_team_id(team_id)
+        if active_meeting:
+            await team_manager.broadcast_active_meeting_update(
+                team_id,
+                {
+                    "type": "active_meeting_update",
+                    "payload": {
+                        "id": active_meeting.id,
+                        "title": active_meeting.title,
+                        "started_at": active_meeting.started_at.isoformat(),
+                    },
+                },
+            )
+
+        try:
+            while True:
+                event = await websocket.receive_text()
+                print("WS event received:", event)
+
+                if event == "start_meeting":
+                    meeting = await meeting_repo.get_latest_active_meeting_by_team_id(team_id)
+                    print("Active meeting fetched:", meeting)
+
+                    if meeting:
+                        await team_manager.broadcast_active_meeting_update(
+                            team_id,
+                            {
+                                "type": "active_meeting_update",
+                                "payload": {
+                                    "id": meeting.id,
+                                    "title": meeting.title,
+                                    "started_at": meeting.started_at.isoformat(),
+                                },
+                            },
+                        )
+
+                if event == "end_meeting":
+                    await team_manager.broadcast_active_meeting_update(
+                        team_id,
+                        {
+                            "type": "active_meeting_update",
+                            "payload": None,
+                        },
+                    )
+
+        except WebSocketDisconnect:
+            team_manager.disconnect(websocket, team_id)
+            print(f"WebSocket disconnected for team {team_id}")
+        except Exception as e:
+            print("WebSocket error:", e)
+            team_manager.disconnect(websocket, team_id)
+            await websocket.close(code=1011)

@@ -13,6 +13,7 @@ import { useJoinMeeting } from "../../hooks/meetingHooks";
 interface CreateMeetingModalProps {
     onClose?: () => void;
     onOpen?: () => void;
+    onSubmit?: () => void;
     teamID?: string;
 }
 
@@ -253,7 +254,7 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
     );
 }
 
-export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID }) => {
+export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID, onSubmit }) => {
     const [title , setTitle] = useState<string>("");
     const { createNewMeeting, loading, error } = useCreateMeeting();
 
@@ -266,6 +267,7 @@ export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose,
         const res = await createNewMeeting(teamID || "", meetingData);
         if(res) {
             onClose && onClose();
+            onSubmit && onSubmit();
         }
     };
 

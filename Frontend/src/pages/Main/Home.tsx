@@ -196,12 +196,9 @@ export function MainHome() {
                   className="bg-white! text-black! text-sm! flex flex-row gap-2 justify-center items-center
                                 md:text-base! px-6! py-2! rounded-lg
                             "
-                  onClick={() => setIsJoinModalOpen(true)}
+                  onClick={() => navigate(MainTeamsUrl)}
                 >
-                  <span>
-                    <LogIn />
-                  </span>
-                  <span className="hidden! md:inline-block!">Join Team</span>
+                  <span className="hidden! md:inline-block! font-medium text-gray-500">See All</span>
                 </button>
               </div>
 

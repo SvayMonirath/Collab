@@ -51,7 +51,7 @@ export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
 }) => {
   return (
     <div
-      className={`fixed  top-16 left-0 py-4! px-8! z-50! bg-white border border-gray-700! min-w-full  rounded-lg! flex flex-col! ${
+      className={`fixed  top-16 left-0 py-4! px-8! z-50! bg-white min-w-full  rounded-lg! flex flex-col! ${
         showMobileMenu
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-24 pointer-events-none"
@@ -167,7 +167,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
 ) => {
   return (
     <div
-      className={`fixed  top-0 left-0 py-4! px-8! z-50! bg-white border border-gray-700! min-w-full  rounded-lg! flex flex-col! ${
+      className={`fixed  top-0 left-0 py-4! px-8! z-50! bg-white min-w-full  rounded-lg! flex flex-col! ${
         showMobileMenu
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-24 pointer-events-none"

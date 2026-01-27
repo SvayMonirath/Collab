@@ -60,43 +60,34 @@ export function MainTeams() {
 
   return (
     <div>
-      <HomeNav onOpenCreateTeam={() => setIsCreateModalOpen(true)} onOpenJoinTeam={() => setIsJoinModalOpen(true)} Username={user?.username || ""} Email={user?.email || ""}/>
+      <HomeNav
+        onOpenCreateTeam={() => setIsCreateModalOpen(true)}
+        onOpenJoinTeam={() => setIsJoinModalOpen(true)}
+        Username={user?.username || ""}
+        Email={user?.email || ""}
+      />
       <main className="flex flex-row min-h-screen! bg-white!">
         {/* SIDE BAR */}
         <SideBar />
         {/* TEAMS CONTENT */}
         <div className="flex flex-col flex-1! pt-20! px-8! sm:px-16! sm:pt-24! lg:px-40! lg:pt-32! ">
-          <div
-            className="flex flex-row justify-between items-center mb-10!
-                        md:mb-16! lg:mb-24!
-                    "
-          >
-            <div className="flex flex-col ">
-              <h1
-                className="font-medium text-2xl! text-black! font-bold!
-                                sm:text-3xl! lg:text-4xl!
-                            "
-              >
+
+          <div className="flex flex-row justify-between items-center mb-6! md:mb-8! lg:mb-12!">
+            <div className="flex flex-col">
+              <h1 className="font-medium text-2xl! text-black! sm:text-3xl! lg:text-4xl!">
                 Teams
               </h1>
               <p className="hidden! text-gray-500! sm:inline-block! sm:text-base! lg:text-lg!">
                 Manage your teams workspaces
               </p>
             </div>
+            <Settings
+              className="w-6! h-6! text-gray-600! hover:cursor-pointer! md:w-7! md:h-7!"/>
           </div>
           {/* todo[x]: Teams Page */}
 
-          <div
-            className="flex flex-row justify-between items-center mb-5! text-center!
-                        sm:mb-7!
-                    "
-          >
+          <div className="flex flex-row justify-between items-center text-center!">
             <div></div>
-            <Settings
-              className="w-6! h-6! text-gray-600! hover:cursor-pointer!
-                            md:w-7! md:h-7!
-                        "
-            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -117,33 +108,12 @@ export function MainTeams() {
               >
                 {/* Title and Description */}
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
+                  <h3 className="text-xl md:text-2xl  font-bold text-gray-900">
                     {team.title}
                   </h3>
                   <p className="text-gray-400! text-xs md:text-sm lg:text-base line-clamp-2 overflow-auto">
                     {team.description || "No description available."}
                   </p>
-                </div>
-
-                {/* Stats Section */}
-                <div className="grid grid-cols-3 gap-4 mt-6">
-                  {/* Member Count */}
-                  <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
-                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.membersCount ? team.membersCount : 0}</span>
-                    <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Members</span>
-                  </div>
-
-                  {/* Task Count */}
-                  <div className="flex flex-col items-center justify-center p-3 bg-gray-50 rounded-xl">
-                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.tasksCount ? team.tasksCount : 0}</span>
-                    <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Tasks</span>
-                  </div>
-
-                  {/* Meeting Count */}
-                  <div className="flex flex-col items-center justify-center p-3 px-6 bg-gray-50 rounded-xl">
-                    <span className="text-lg md:text-xl font-semibold text-gray-900">{team.meetingsCount ? team.meetingsCount : 0}</span>
-                    <span className="text-xs md:text-sm text-gray-500 uppercase tracking-wide">Meetings</span>
-                  </div>
                 </div>
 
                 {/* Action Button */}
@@ -161,22 +131,21 @@ export function MainTeams() {
           </div>
         </div>
       </main>
-    {isCreateModalOpen && (
-      <CreateTeamModal
-        onClose={() => setIsCreateModalOpen(false)}
-        onCreate={handleCreateTeam}
-        loading={createLoading}
-      />
-    )}
+      {isCreateModalOpen && (
+        <CreateTeamModal
+          onClose={() => setIsCreateModalOpen(false)}
+          onCreate={handleCreateTeam}
+          loading={createLoading}
+        />
+      )}
 
-    {isJoinModalOpen && (
-      <JoinTeamModal
-        onClose={() => setIsJoinModalOpen(false)}
-        onJoin={handleJoinTeam}
-        loading={joinLoading}
-      />
-    )}
-
+      {isJoinModalOpen && (
+        <JoinTeamModal
+          onClose={() => setIsJoinModalOpen(false)}
+          onJoin={handleJoinTeam}
+          loading={joinLoading}
+        />
+      )}
     </div>
   );
 }

@@ -99,13 +99,6 @@ export function MainHome() {
             >
               Welcome, {user ? user.username : "User"}!
             </h1>
-            <p
-              className="text-gray-500! text-sm! sm:px-8! lg:px-10!
-                        sm:text-lg! lg:text-xl! mb-6!
-                    "
-            >
-              Here's a summary of your team's activities and progress.
-            </p>
           </div>
 
           {/* OverView */}
@@ -189,7 +182,7 @@ export function MainHome() {
                                 md:text-2xl!
                             "
                 >
-                  Latest Teams
+                  Latest Joined Teams
                 </h1>
 
                 <button
@@ -202,7 +195,7 @@ export function MainHome() {
                 </button>
               </div>
 
-              {/* Latest Teams CARDS  */}
+              {/* Latest Joined Teams CARDS  */}
               <div className="grid gap-6 mt-10! sm:grid-cols-2 lg:grid-cols-3">
                 {/* if no teams display you have no team joined */}
                 {teams.length > 0 ? teams.map((team) => (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LogIn, Clock, Target, Zap } from "lucide-react";
+import { Clock, Target, Zap } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { HomeNav } from "../../components/HomeNav";
@@ -182,7 +182,7 @@ export function MainHome() {
                                 md:text-2xl!
                             "
                 >
-                  Latest Joined Teams
+                  Recently Joined Teams
                 </h1>
 
                 <button

@@ -34,7 +34,7 @@ class TeamRepository:
 
         owned_teams_datas = [
             {
-                "team_id": team.id,
+                "id": team.id,
                 "title": team.title,
                 "description": team.description,
                 "owner_id": team.owner_id,

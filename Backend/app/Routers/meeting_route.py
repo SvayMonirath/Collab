@@ -2,7 +2,6 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status, WebSocket, 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..Database.database import get_db, SessionLocal
-from ..models import Team
 from ..utils.jwt_helper import get_current_user
 from ..utils.ws_manager import meeting_manager, team_manager
 from ..Schemas.meeting_schemas import MeetingCreateSchema

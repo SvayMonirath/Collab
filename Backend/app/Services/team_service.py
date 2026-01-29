@@ -62,7 +62,7 @@ class TeamService:
         member_count = len(team.members) if team else 0
 
         team_data = {
-            "team_id": team.id,
+            "id": team.id,
             "title": team.title,
             "description": team.description,
             "code": team.code,

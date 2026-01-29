@@ -5,6 +5,7 @@ import { Bell, Menu} from "lucide-react";
 
 // Components
 import { MainMobileDropDown } from "./MobileDropDown";
+import { NotificationBell } from "./NotificationBell";
 
 interface HomeNavProps {
     onOpenCreateTeam: ()  => void;
@@ -61,11 +62,7 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
             >
               {/* Notification Icon */}
               {/* todo[]: Show Notification */}
-              <Bell
-                className="w-4! h-4! text-gray-600! hover:cursor-pointer!
-                            md:w-6! md:h-6!
-                        "
-              />
+              <NotificationBell />
 
               {/* profile or hamburger menu */}
               {/* todo[]: Profile Page */}

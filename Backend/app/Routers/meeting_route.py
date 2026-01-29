@@ -1,3 +1,7 @@
+import asyncio
+import os
+
+from dotenv import load_dotenv
 from fastapi import APIRouter, Body, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,6 +14,7 @@ from ..Repositories.meeting_repository import MeetingRepository
 from ..Repositories.team_repository import TeamRepository
 from ..Repositories.user_repository import UserRepository
 
+load_dotenv()
 meeting_router = APIRouter(prefix="/meetings", tags=["Meetings"])
 
 # --------------- Meeting Endpoints ---------------
@@ -192,6 +197,7 @@ async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
                                     "started_at": meeting.started_at.isoformat(),
                                 },
                             },
+                            f"A new meeting '{meeting.title}' has started in team {team_id}."
                         )
 
                 if event == "end_meeting":

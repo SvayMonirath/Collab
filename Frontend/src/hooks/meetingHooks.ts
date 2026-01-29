@@ -205,6 +205,7 @@ export function useParticipantCountWebSocket(meetingID: string) {
     return { participantCount, participants };
 }
 
+
 export function useLatestActiveMeetingWS(teamID: string) {
     const [latestActiveMeeting, setLatestActiveMeeting] = useState<any | null>(null);
     const wsRef = useRef<WebSocket | null>(null);
@@ -251,3 +252,4 @@ export function useLatestActiveMeetingWS(teamID: string) {
         startMeeting,
     };
 }
+

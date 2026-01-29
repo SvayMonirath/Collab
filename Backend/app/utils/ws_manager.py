@@ -1,8 +1,9 @@
 from fastapi import WebSocket, WebSocketDisconnect
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, List
 
 from ..Services.meeting_service import _init_meeting_state
-from ..Repositories.meeting_repository import MeetingRepository
+from ..Repositories.team_repository import TeamRepository
 
 class MeetingConnectionManager:
     def __init__(self):
@@ -56,10 +57,12 @@ class TeamConnectionManager:
             for connection in self.active_connections[team_id]:
                 await connection.send_text(message)
 
-    async def broadcast_active_meeting_update(self, team_id: int, data: dict):
+    async def broadcast_active_meeting_update(self, team_id: int, data: dict, message: str = ""):
         active_connection = self.active_connections.get(team_id, [])
 
         for connection in active_connection:
             await connection.send_json({"type": "active_meeting_update", "data": data})
+
+
 
 team_manager = TeamConnectionManager()

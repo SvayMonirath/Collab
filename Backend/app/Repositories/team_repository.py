@@ -86,6 +86,14 @@ class TeamRepository:
         )
         return result.scalar_one_or_none()
 
+    async def get_user_by_teamID(self, team_id: int) -> list[User]:
+        result = await self.db.execute(
+            select(User).join(user_team_association).where(
+                user_team_association.c.team_id == team_id
+            )
+        )
+        return result.scalars().all()
+
     async def get_user_by_id(self, user_id: int) -> User | None:
         result = await self.db.execute(
             select(User).where(User.id == user_id)

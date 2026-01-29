@@ -85,8 +85,8 @@ async def join_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), curr
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(pe))
 
 # leave meeting
-@meeting_router.post("/leave/{meeting_id}")
-async def leave_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
+@meeting_router.post("/leave/{meeting_id}/{team_id}")
+async def leave_meeting(meeting_id: int, team_id: int, db: AsyncSession = Depends(get_db), current_user: dict = Depends(get_current_user)):
     try:
         meeting_repo = MeetingRepository(db)
         team_repo = TeamRepository(db)
@@ -94,6 +94,14 @@ async def leave_meeting(meeting_id: int, db: AsyncSession = Depends(get_db), cur
         meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
         current_user_id = current_user.get("user_id")
         await meeting_service.leave_meeting(meeting_id=meeting_id, user_id=current_user_id)
+
+        await team_manager.broadcast_active_meeting_update(
+            team_id,
+            {
+                "type": "active_meeting_update",
+                "payload": None,
+            },
+        )
 
         return {"message": f"User {current_user_id} left meeting {meeting_id}"}
     except LookupError as le:

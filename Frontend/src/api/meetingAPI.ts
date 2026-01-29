@@ -130,14 +130,14 @@ export async function joinMeeting(meetingID: string) {
         }
 }
 
-export async function leaveMeeting(meetingID: string) {
+export async function leaveMeeting(meetingID: string, teamID: string) {
     /*
         Goal: Leave a meeting
         Conditions: Only team members can leave the meeting
     */
 
         try {
-            const res = await fetch(`${BACKEND_URL}/meetings/leave/${meetingID}`, {
+            const res = await fetch(`${BACKEND_URL}/meetings/leave/${meetingID}/${teamID}`, {
                 method: "POST",
                 credentials: "include",
             });

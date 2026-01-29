@@ -52,7 +52,7 @@ class TeamRepository:
         joined_teams = joined_teams_result.scalars().all()
         joined_teams_data = [
             {
-                "team_id": team.id,
+                "id": team.id,
                 "title": team.title,
                 "description": team.description,
                 "owner_id": team.owner_id,

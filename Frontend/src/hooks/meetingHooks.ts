@@ -154,7 +154,7 @@ export function useLeaveMeeting(meetingID: string, teamID: string) {
         setLoading(true);
         setError(null);
 
-        const response = await leaveMeeting(meetingID);
+        const response = await leaveMeeting(meetingID, teamID);
 
         if (response?.error) {
             setError(response.error);

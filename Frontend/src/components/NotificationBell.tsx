@@ -1,7 +1,6 @@
 import React from "react";
 import { Bell, X } from "lucide-react";
 
-
 export const NotificationBell: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -14,6 +13,7 @@ export const NotificationBell: React.FC = () => {
                     </header>
 
                     <div className="p-4! border-t! border-gray-400!">
+
                     </div>
                 </div>
             )}

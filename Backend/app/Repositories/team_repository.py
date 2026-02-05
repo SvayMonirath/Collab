@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, union_all
 from sqlalchemy.orm import selectinload
 from ..models import Team, User, user_team_association
 
@@ -109,6 +109,27 @@ class TeamRepository:
 
     def is_member(self, team: Team, user_id: int) -> bool:
         return any(member.id == user_id for member in team.members)
+
+    async def get_team_member_ids(self, team_id: int) -> list[int]:
+            # Members
+            members_stmt = (
+                select(user_team_association.c.user_id)
+                .where(user_team_association.c.team_id == team_id)
+            )
+
+            # Owner
+            owner_stmt = (
+                select(Team.owner_id)
+                .where(Team.id == team_id)
+            )
+
+            result = await self.db.execute(
+                union_all(members_stmt, owner_stmt)
+            )
+
+            # Deduplicate
+            user_ids = list(set(result.scalars().all()))
+            return user_ids
 
     async def save(self, team: Team) -> Team:
         self.db.add(team)

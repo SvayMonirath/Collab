@@ -63,6 +63,4 @@ class TeamConnectionManager:
         for connection in active_connection:
             await connection.send_json({"type": "active_meeting_update", "data": data})
 
-
-
 team_manager = TeamConnectionManager()

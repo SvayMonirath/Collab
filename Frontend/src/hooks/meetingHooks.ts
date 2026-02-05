@@ -252,4 +252,3 @@ export function useLatestActiveMeetingWS(teamID: string) {
         startMeeting,
     };
 }
-

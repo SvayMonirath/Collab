@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..Database.database import get_db, SessionLocal
 from ..utils.jwt_helper import get_current_user
 from ..utils.ws_manager import meeting_manager, team_manager
+from ..Services.notifications import notify_team_meeting_starts
 from ..Schemas.meeting_schemas import MeetingCreateSchema
 from ..Services.meeting_service import MeetingService
 from ..Repositories.meeting_repository import MeetingRepository
@@ -41,6 +42,8 @@ async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(.
         meeting_service = MeetingService(meeting_repo, team_repo, user_repo)
         user_id = current_user.get("user_id")
         meeting = await meeting_service.start_meeting(team_id=team_id, meeting_data=meeting_data, user_id=user_id)
+
+        await notify_team_meeting_starts(team_id, db)
 
         return {"message": f"Meeting started successfully", "meeting_id": meeting.id}
     except LookupError as le:

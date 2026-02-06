@@ -105,3 +105,28 @@ export async function checkAuthStatus() {
         return { error: "Check auth status failed" };
     }
 }
+
+export async function getUserToken() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/auth/ws_token`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const data = await res.json();
+
+        console.log("Get WS token response:", data);
+
+        if (!res.ok) {
+            return { error: data.detail || "Failed to get WebSocket token" };
+        }
+
+        return data;
+    } catch(err) {
+        console.error("Get WebSocket token failed:", err);
+        return { error: "Get WebSocket token failed" };
+    }
+}

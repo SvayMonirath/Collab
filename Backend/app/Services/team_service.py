@@ -6,7 +6,6 @@ class TeamService:
     def __init__(self, repo: TeamRepository):
         self.repo = repo
 
-
     async def create_team(self, team_input: CreateTeamInput, owner_id: int) -> Team:
         owned_team = await self.repo.get_owned_team_by_title(team_input.title, owner_id)
         if owned_team:

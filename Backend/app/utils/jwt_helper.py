@@ -37,3 +37,12 @@ async def get_current_user(request: Request):
     if payload is None:
         return None
     return {"user_id": payload.get("user_id"), "username": payload.get("username")}
+
+async def get_user_from_token(token: str):
+    print("WS trying token:", token)
+    payload = verify_jwt_token(token)
+    if payload is None:
+        print("WS token invalid")
+        return None
+    print("Token valid:", payload)
+    return {"user_id": payload.get("user_id"), "username": payload.get("username")}

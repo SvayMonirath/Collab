@@ -1,8 +1,12 @@
 import React from "react";
 import { Bell, X } from "lucide-react";
 
+// Hooks
+import { useNotificationWebsocket } from "../hooks/websocketHooks";
+
 export const NotificationBell: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState(false);
+    const notifications = useNotificationWebsocket();
 
     return (
         <div>
@@ -13,7 +17,16 @@ export const NotificationBell: React.FC = () => {
                     </header>
 
                     <div className="p-4! border-t! border-gray-400!">
-
+                        {notifications.length === 0 ? (
+                            <p className="text-gray-600!">No new notifications</p>
+                        ) : (
+                            notifications.map((notification, index) => (
+                                <div key={index} className="mb-3! p-3! bg-gray-100! rounded-lg!">
+                                    <p className="text-gray-800!">{notification.message}</p>
+                                    <span className="text-gray-500! text-xs!">{new Date(notification.timestamp).toLocaleTimeString()}</span>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             )}

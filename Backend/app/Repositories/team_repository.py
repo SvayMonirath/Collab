@@ -111,13 +111,15 @@ class TeamRepository:
         return any(member.id == user_id for member in team.members)
 
     async def get_all_members_id(self, team_id: int) -> list[int]:
-        result = await self.db.execute(
-            select(user_team_association.c.user_id).where(
-                user_team_association.c.team_id == team_id
-            )
-        )
-        members_id = [row.user_id for row in result.all()]  # using result.all() is clearer
-        print(f"Members ID for team {team_id}: {members_id}")
+        execution = select(Team).where(Team.id == team_id).options(selectinload(Team.members))
+        result = await self.db.execute(execution)
+        team = result.scalar_one_or_none()
+        if team is None:
+            return []
+        members_id = [member.id for member in team.members]
+        if team.owner_id not in members_id:
+            members_id.append(team.owner_id)
+            
         return members_id
 
     async def save(self, team: Team) -> Team:

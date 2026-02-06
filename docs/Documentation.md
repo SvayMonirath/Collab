@@ -48,7 +48,10 @@ token = request.cookies.get("accessToken")
 response.delete_cookie(key="accessToken")
 ```
 
-
-
-
-
+#### Websocket (Real-time Notifications)
+**Flow:**
+1. Client connects to WebSocket endpoint **Note: Endpoint is only called when component mounts**
+2. Server authenticates to get user ID using provided JWT token called from the server using a route **Note: Websocket endpoints does not support Dependency Injection, handle this by createa function that return what ever things you want instead**
+3. Server adds client to a connection manager pool
+4. When an event occurs (e.g., meeting starts), Server will use team_id to find all members and send notifications to their respective WebSocket connections.
+5. Client recieves notification and updates UI in real-time.

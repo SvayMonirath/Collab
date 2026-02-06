@@ -1,7 +1,8 @@
+from fastapi import HTTPException, Response, WebSocket
+
 from ..Repositories.user_repository import UserRepository
 from ..models import User
 from ..Schemas.auth_schemas import RegisterInput, LoginInput
-from fastapi import HTTPException, Response
 from ..utils.jwt_helper import JWT_ACCESS_TOKEN_EXPIRE_MINUTES, create_jwt_token
 
 class AuthService:
@@ -37,6 +38,7 @@ class AuthService:
             "username": user.username,
         }
         token = create_jwt_token(token_data)
+
         return token
 
 

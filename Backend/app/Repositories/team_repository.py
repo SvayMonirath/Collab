@@ -110,26 +110,17 @@ class TeamRepository:
     def is_member(self, team: Team, user_id: int) -> bool:
         return any(member.id == user_id for member in team.members)
 
-    async def get_team_member_ids(self, team_id: int) -> list[int]:
-            # Members
-            members_stmt = (
-                select(user_team_association.c.user_id)
-                .where(user_team_association.c.team_id == team_id)
-            )
-
-            # Owner
-            owner_stmt = (
-                select(Team.owner_id)
-                .where(Team.id == team_id)
-            )
-
-            result = await self.db.execute(
-                union_all(members_stmt, owner_stmt)
-            )
-
-            # Deduplicate
-            user_ids = list(set(result.scalars().all()))
-            return user_ids
+    async def get_all_members_id(self, team_id: int) -> list[int]:
+        execution = select(Team).where(Team.id == team_id).options(selectinload(Team.members))
+        result = await self.db.execute(execution)
+        team = result.scalar_one_or_none()
+        if team is None:
+            return []
+        members_id = [member.id for member in team.members]
+        if team.owner_id not in members_id:
+            members_id.append(team.owner_id)
+            
+        return members_id
 
     async def save(self, team: Team) -> Team:
         self.db.add(team)

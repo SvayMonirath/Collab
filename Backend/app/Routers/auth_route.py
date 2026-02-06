@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, WebSocket
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -9,6 +9,7 @@ from ..Schemas.auth_schemas import RegisterInput, LoginInput
 
 from ..Services.auth_service import AuthService
 from ..Repositories.user_repository import UserRepository
+
 
 auth_router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -47,9 +48,27 @@ async def login(login_input: LoginInput, response: Response, db: AsyncSession = 
 
 # --------------- Logout Endpoint ---------------
 @auth_router.post("/logout")
-async def logout(response: Response):
+async def logout(response: Response, current_user: dict = Depends(get_current_user)):
+    user = current_user
+    if user is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
     response.delete_cookie(key="accessToken")
+
     return {"message": "Logout successful"}
+
+@auth_router.get("/ws_token")
+async def get_ws_token(current_user: dict = Depends(get_current_user)):
+    if current_user is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    token_data = {
+        "user_id": current_user.get("user_id"),
+        "username": current_user.get("username"),
+    }
+    token = create_jwt_token(token_data)
+
+    return {"token": token}
 
 # -------------- Check Authentication Status ---------------
 @auth_router.get("/status")

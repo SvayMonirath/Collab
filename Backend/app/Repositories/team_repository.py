@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, union_all
 from sqlalchemy.orm import selectinload
 from ..models import Team, User, user_team_association
 
@@ -31,13 +31,34 @@ class TeamRepository:
     async def get_all_teams_of_user(self, user_id: int) -> list[Team]:
         owned_teams_result = await self.db.execute(select(Team).where(Team.owner_id == user_id))
         owned_teams = owned_teams_result.scalars().all()
+
+        owned_teams_datas = [
+            {
+                "id": team.id,
+                "title": team.title,
+                "description": team.description,
+                "owner_id": team.owner_id,
+            } for team in owned_teams
+        ]
+
         joined_teams_result = await self.db.execute(
             select(Team).join(user_team_association).where(
                 user_team_association.c.user_id == user_id
             )
         )
+
+
+        # get member counts for each team
         joined_teams = joined_teams_result.scalars().all()
-        all_teams = owned_teams + joined_teams
+        joined_teams_data = [
+            {
+                "id": team.id,
+                "title": team.title,
+                "description": team.description,
+                "owner_id": team.owner_id,
+            } for team in joined_teams
+        ]
+        all_teams = owned_teams_datas + joined_teams_data
         return all_teams
 
     async def get_latest_teams(self, user_id: int, limit: int = 3) -> list[Team]:
@@ -65,6 +86,14 @@ class TeamRepository:
         )
         return result.scalar_one_or_none()
 
+    async def get_user_by_teamID(self, team_id: int) -> list[User]:
+        result = await self.db.execute(
+            select(User).join(user_team_association).where(
+                user_team_association.c.team_id == team_id
+            )
+        )
+        return result.scalars().all()
+
     async def get_user_by_id(self, user_id: int) -> User | None:
         result = await self.db.execute(
             select(User).where(User.id == user_id)
@@ -80,6 +109,27 @@ class TeamRepository:
 
     def is_member(self, team: Team, user_id: int) -> bool:
         return any(member.id == user_id for member in team.members)
+
+    async def get_team_member_ids(self, team_id: int) -> list[int]:
+            # Members
+            members_stmt = (
+                select(user_team_association.c.user_id)
+                .where(user_team_association.c.team_id == team_id)
+            )
+
+            # Owner
+            owner_stmt = (
+                select(Team.owner_id)
+                .where(Team.id == team_id)
+            )
+
+            result = await self.db.execute(
+                union_all(members_stmt, owner_stmt)
+            )
+
+            # Deduplicate
+            user_ids = list(set(result.scalars().all()))
+            return user_ids
 
     async def save(self, team: Team) -> Team:
         self.db.add(team)

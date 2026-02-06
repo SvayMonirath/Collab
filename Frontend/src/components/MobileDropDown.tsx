@@ -40,7 +40,7 @@ const handleLogout = async () => {
 }
 
 const isActiveStyle = "text-black! bg-black! text-white! p-3! rounded-lg! transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!";
-const isInactiveStyle = "text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!";
+const isInactiveStyle = "text-black! hover:bg-black! hover:text-white! hover:p-3! rounded-lg transition-all! duration-200! font-semibold! flex flex-row items-center! gap-3! text-base!";
 
 export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
   showMobileMenu,
@@ -51,7 +51,7 @@ export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
 }) => {
   return (
     <div
-      className={`fixed  top-16 left-0 py-4! px-8! z-50! bg-white border border-gray-700! min-w-full  rounded-lg! flex flex-col! ${
+      className={`fixed  top-16 left-0 py-4! px-8! z-50! bg-white min-w-full  rounded-lg! flex flex-col! ${
         showMobileMenu
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-24 pointer-events-none"
@@ -146,7 +146,7 @@ export const MainMobileDropDown: React.FC<MobileDropDownProps> = ({
           onClick={() => {
             handleLogout();
           }}
-          className="text-red-700! hover:bg-red-600! hover:font-bold! hover:border-2 hover:border-red-900/30! cursor-pointer! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
+          className="text-red-700! hover:bg-red-600! hover:font-bold! hover:border-2 hover:border-red-900/30! cursor-pointer! hover:text-white! hover:p-3! rounded-lg transition-all! duration-200! font-semibold! flex flex-row items-center! gap-3! text-base!"
         >
           <span>
             <LogOut className="size-5!" />
@@ -167,7 +167,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
 ) => {
   return (
     <div
-      className={`fixed  top-0 left-0 py-4! px-8! z-50! bg-white border border-gray-700! min-w-full  rounded-lg! flex flex-col! ${
+      className={`fixed  top-0 left-0 py-4! px-8! z-50! bg-white min-w-full  rounded-lg! flex flex-col! ${
         showMobileMenu
           ? "opacity-100 translate-y-0"
           : "opacity-0 -translate-y-24 pointer-events-none"
@@ -251,7 +251,7 @@ export const TeamMobileDropDown: React.FC<TeamMobileDropDownProps> = ( {
       <div className="flex flex-col gap-4! mb-6!">
         <NavLink
           to={MainHomeUrl}
-          className="text-red-700! hover:bg-red-600! hover:font-bold! hover:border-2 hover:border-red-900/30! cursor-pointer! hover:text-white! hover:p-3! rounded-lg transition-all! duration-300! font-semibold! flex flex-row items-center! gap-3! text-base!"
+          className="text-red-700! hover:bg-red-600! hover:font-bold! hover:border-2 hover:border-red-900/30! cursor-pointer! hover:text-white! hover:p-3! rounded-lg transition-all! duration-200! font-semibold! flex flex-row items-center! gap-3! text-base!"
         >
           <span>
             <DoorOpen className="size-5!" />

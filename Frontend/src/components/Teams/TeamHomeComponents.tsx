@@ -13,6 +13,7 @@ import { useJoinMeeting } from "../../hooks/meetingHooks";
 interface CreateMeetingModalProps {
     onClose?: () => void;
     onOpen?: () => void;
+    onSubmit?: () => void;
     teamID?: string;
 }
 
@@ -253,7 +254,7 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
     );
 }
 
-export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID }) => {
+export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID, onSubmit }) => {
     const [title , setTitle] = useState<string>("");
     const { createNewMeeting, loading, error } = useCreateMeeting();
 
@@ -266,6 +267,7 @@ export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose,
         const res = await createNewMeeting(teamID || "", meetingData);
         if(res) {
             onClose && onClose();
+            onSubmit && onSubmit();
         }
     };
 
@@ -317,10 +319,10 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onCl
 
     return (
       <div className="fixed! inset-0! bg-black/50! backdrop-blur-md! flex! justify-center! items-center! z-[200]!">
-        <div className="bg-white! p-10! rounded-2xl flex flex-col! w-11/12! max-w-xl!">
+        <div className="relative bg-white! p-10! rounded-2xl flex flex-col! w-11/12! max-w-xl!">
             <div className="flex flex-row items-center justify-between! mb-4!">
                 <h2 className="text-lg! font-bold! text-black! sm:text-xl! lg:text-2xl!">Invite Members </h2>
-                <X className="w-6! h-6! text-black! cursor-pointer! hover:text-red-500!" onClick={onClose} />
+                <X className="absolute top-3 right-3 w-6! h-6! text-black! cursor-pointer! hover:text-red-500!" onClick={onClose} />
             </div>
 
             {message && (
@@ -329,8 +331,8 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ team, onCl
                 </div>
             )}
 
-            <div className="flex flex-col gap-4! mt-8!">
-                <div className="flex flex-col! gap-2! mb-5!">
+            <div className="flex flex-col gap-4! mt-10!">
+                <div className="flex flex-col! gap-2! mb-1!">
                   <p className="text-gray-500! text-sm! sm:text-base! lg:text-lg! font-mono! font-bold!">JOIN VIA CODE</p>
                   <p className="text-gray-500! text-sm! sm:text-base! lg:text-lg!">
                       Share the invite link below to invite members to the team

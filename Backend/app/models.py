@@ -86,3 +86,5 @@ class Meeting(Base):
 
     team = relationship("Team", backref="meetings")
     host = relationship("User", backref="hosted_meetings")
+
+# todo[]: Add Notification Model for persistant notifications to avoid losing notifications when user is offline, and also for better management of read/unread status and history of notifications

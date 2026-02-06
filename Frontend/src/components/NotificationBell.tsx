@@ -4,6 +4,8 @@ import { Bell, X } from "lucide-react";
 // Hooks
 import { useNotificationWebsocket } from "../hooks/websocketHooks";
 
+// todo[]: Real Time counter for unread notifications
+
 export const NotificationBell: React.FC = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const notifications = useNotificationWebsocket();

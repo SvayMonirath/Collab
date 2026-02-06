@@ -8,6 +8,7 @@ async def notify_team_meeting_starts(team_id: int, db):
     # Ensure members are ints to match NotificationManager
     members = [int(m) for m in members]
 
+    # todo[]: Enhance payload for more detailed notifications or convenient button actions redirecting to the teamHome Page 
     payload = {
         "type": "meeting_started",
         "team_id": team_id,

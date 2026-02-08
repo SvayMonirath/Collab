@@ -6,6 +6,7 @@ import { BookCheck,  Menu, Sparkle, UserPlus, Users, Video } from "lucide-react"
 import { TeamSideBar } from "../../components/Teams/TeamSideBar";
 import { TeamMobileDropDown } from "../../components/DropDowns/MobileDropDown";
 import { CurrentlyActiveMeetingEmpty, CurrentActiveMeeting, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal, InviteMemberModal } from "../../components/Teams/TeamHomeComponents";
+import { LoadingScreen } from "../../components/Loaders/LoadingScreenComponent";
 
 // Hooks
 import { useTeamById } from "../../hooks/teamHooks";
@@ -14,7 +15,7 @@ import { useLatestActiveMeetingWS } from "../../hooks/meetingHooks";
 
 export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
-    const { team, loading, error } = useTeamById(teamID || "");
+    const { team, loading: teamLoading, error: teamError } = useTeamById(teamID || "");
     const { user, loading: userLoading, error: userError } = useCurrentUser();
     const { latestActiveMeeting, startMeeting } = useLatestActiveMeetingWS(teamID || "");
 
@@ -24,6 +25,8 @@ export function TeamHome() {
     const [showInviteMemberModal, setShowInviteMemberModal] = useState(false);
 
     const [showCreateMeetingModal, setShowCreateMeetingModal] = useState(false);
+
+    const loading = userLoading && teamLoading;
 
     return (
         <div>
@@ -125,6 +128,7 @@ export function TeamHome() {
                 setShowCreateMeetingModal(false);
             } } teamID={teamID} onSubmit={startMeeting}/>}
             {showInviteMemberModal && <InviteMemberModal team={team} onClose={() => setShowInviteMemberModal(false)} />}
+            {loading && <LoadingScreen message="Loading team information..." />}
         </div>
     );
 }

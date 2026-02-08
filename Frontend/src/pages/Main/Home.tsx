@@ -14,6 +14,7 @@ import { useCurrentUser } from "../../hooks/userHooks";
 import { PopUpMessage } from "../../components/popUpMessage";
 import { CreateTeamModal } from "../../components/HomeComponents";
 import { JoinTeamModal } from "../../components/HomeComponents";
+import { LoadingScreen } from "../../components/Loaders/LoadingScreenComponent";
 
 import type { CreateTeamSchemas } from "../../types/teamTypes";
 import type { JoinTeamSchemas } from "../../types/teamTypes";
@@ -302,6 +303,9 @@ export function MainHome() {
           loading={joinLoading}
         />
       )}
+
+      {(teamsLoading || userLoading) && <LoadingScreen message="Loading..."/>}
+
     </div>
   );
 }

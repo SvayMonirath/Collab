@@ -1,11 +1,7 @@
-
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
 
-from ..Database.database import get_db, SessionLocal
-from ..models import Team, User, user_team_association
+from ..Database.database import get_db
 from ..Schemas.team_schemas import CreateTeamInput
 from ..utils.jwt_helper import get_current_user
 
@@ -138,7 +134,6 @@ async def get_all_teams(
 @team_router.get('/get_latest_teams')
 async def get_latest_teams(
     db: AsyncSession = Depends(get_db),
-    # JWT Required
     current_user: dict = Depends(get_current_user)
 ):
     if current_user is None:

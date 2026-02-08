@@ -7,6 +7,7 @@ import { CreateTeamModal } from "../../components/HomeComponents";
 import { JoinTeamModal } from "../../components/HomeComponents";
 import { SideBar } from "../../components/SideBars/asideBar";
 import { HomeNav } from "../../components/Navbars/HomeNav";
+import { LoadingScreen } from "../../components/Loaders/LoadingScreenComponent";
 
 // Hooks
 import { useCurrentUser } from "../../hooks/userHooks";
@@ -138,6 +139,9 @@ export function MainTeams() {
           loading={joinLoading}
         />
       )}
+
+      {(teamsLoading || userLoading) && <LoadingScreen message="Loading..."/>}
     </div>
+
   );
 }

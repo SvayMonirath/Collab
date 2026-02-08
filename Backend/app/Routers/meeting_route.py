@@ -43,7 +43,7 @@ async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(.
         user_id = current_user.get("user_id")
         meeting = await meeting_service.start_meeting(team_id=team_id, meeting_data=meeting_data, user_id=user_id)
 
-        await notify_team_meeting_starts(team_id, db)
+        await notify_team_meeting_starts(team_id, meeting_data,  db)
 
         return {"message": f"Meeting started successfully", "meeting_id": meeting.id}
     except LookupError as le:

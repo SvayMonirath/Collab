@@ -12,6 +12,7 @@ import { LoadingScreen } from "../../components/Loaders/LoadingScreenComponent";
 import { useTeamById } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
 import { useLatestActiveMeetingWS } from "../../hooks/meetingHooks";
+import { NotificationBell } from "../../components/NotificationBell";
 
 export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
@@ -44,11 +45,14 @@ export function TeamHome() {
                         ">{ team?.description ? team.description : "Team Home Page - Manage your team workspace here." }</p>
                     </div>
 
-                    {/* Invite Member */}
-                    <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:text-purple-700! font-bold! rounded-lg!
-                        md:px-3! md:py-2! md:gap-2! hover:bg-purple-600! hover:text-white! transition-all! duration-200!
-                    " onClick={() => setShowInviteMemberModal(true)}>
-                        <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite User</span>
+                    <div className="flex flex-row! items-center! gap-1 sm:gap-3">
+                        <NotificationBell />
+
+                        <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:text-black! font-bold! rounded-lg!
+                            md:px-3! md:py-2! md:gap-2! hover:bg-purple-600! hover:text-white! transition-all! duration-200!
+                        " onClick={() => setShowInviteMemberModal(true)}>
+                            <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite User</span>
+                        </div>
                     </div>
 
                     {/* Hamburger Menu */}

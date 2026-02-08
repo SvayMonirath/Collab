@@ -2,6 +2,13 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
+// URL
+import { LoginUrl } from "../urlPath";
+
+// Components
+import { LoadingScreen } from "./Loaders/LoadingScreenComponent";
+
+// API
 import { checkAuthStatus } from "../api/authAPI";
 
 interface PrivateRouteProps {
@@ -33,15 +40,15 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children}) => {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LoadingScreen message="Checking authentication..."/>;
     }
 
     if (isAuthenticated === null) {
-        return <div className="bg-white flex justify-center items-center ">Loading...</div>;
+        return <LoadingScreen message="Checking authentication..."/>;
     }
 
     if (isAuthenticated === false) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to={LoginUrl} replace />;
     }
 
     return <>{children}</>;

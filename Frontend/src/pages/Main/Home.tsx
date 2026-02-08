@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Clock, Target, Zap } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { HomeNav } from "../../components/HomeNav";
-import { SideBar } from "../../components/asideBar";
+import { HomeNav } from "../../components/Navbars/HomeNav";
+import { SideBar } from "../../components/SideBars/asideBar";
 
 // Hooks
 import { useCreateTeam } from "../../hooks/teamHooks";
@@ -40,25 +40,22 @@ export function MainHome() {
     error: joinError,
     message: joinMessage,
   } = useJoinTeam();
-  const {
-    user,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUser();
+  const { user, loading: userLoading, error: userError } = useCurrentUser();
 
   const navigate = useNavigate();
   const location = useLocation();
   const redirectError = location.state?.error || null;
-  const [showRedirectError, setShowRedirectError] = useState<string | null>(redirectError);
+  const [showRedirectError, setShowRedirectError] = useState<string | null>(
+    redirectError,
+  );
 
   useEffect(() => {
-    if(redirectError) {
+    if (redirectError) {
       setShowRedirectError(redirectError);
       setTimeout(() => {
         setShowRedirectError(null);
       }, 3000);
     }
-
   }, [redirectError]);
 
   const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
@@ -110,14 +107,16 @@ export function MainHome() {
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-
               {/* Cards Data */}
               {[
                 {
                   icon: <Clock className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
                   label: "Weekly Meetings",
                   value: "0",
-                  status: { text: "On Track", color: "bg-green-100 text-green-700" },
+                  status: {
+                    text: "On Track",
+                    color: "bg-green-100 text-green-700",
+                  },
                   iconBg: "bg-purple-600",
                 },
                 {
@@ -131,7 +130,10 @@ export function MainHome() {
                   icon: <Zap className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
                   label: "AI Summarizes",
                   value: "0",
-                  status: { text: "New Insights", color: "bg-yellow-100 text-yellow-700" },
+                  status: {
+                    text: "New Insights",
+                    color: "bg-yellow-100 text-yellow-700",
+                  },
                   iconBg: "bg-yellow-500",
                 },
               ].map((card, idx) => (
@@ -140,18 +142,26 @@ export function MainHome() {
                   className="relative flex flex-col p-6 rounded-2xl bg-white "
                 >
                   {/* Icon */}
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${card.iconBg}`}>
+                  <div
+                    className={`w-12 h-12 rounded-lg flex items-center justify-center ${card.iconBg}`}
+                  >
                     {card.icon}
                   </div>
 
                   {/* Label */}
-                  <p className="mt-4 text-gray-500 font-medium text-sm lg:text-base">{card.label}</p>
+                  <p className="mt-4 text-gray-500 font-medium text-sm lg:text-base">
+                    {card.label}
+                  </p>
 
                   {/* Value */}
-                  <h2 className="mt-1 text-2xl lg:text-3xl font-bold text-gray-900">{card.value}</h2>
+                  <h2 className="mt-1 text-2xl lg:text-3xl font-bold text-gray-900">
+                    {card.value}
+                  </h2>
 
                   {/* Status badge */}
-                  <div className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-semibold ${card.status.color}`}>
+                  <div
+                    className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-semibold ${card.status.color}`}
+                  >
                     {card.status.text}
                   </div>
 
@@ -191,44 +201,50 @@ export function MainHome() {
                             "
                   onClick={() => navigate(MainTeamsUrl)}
                 >
-                  <span className="hidden! md:inline-block! font-medium text-gray-500">See All</span>
+                  <span className="hidden! md:inline-block! font-medium text-gray-500">
+                    See All
+                  </span>
                 </button>
               </div>
 
               {/* Latest Joined Teams CARDS  */}
               <div className="grid gap-6 mt-10! sm:grid-cols-2 lg:grid-cols-3">
                 {/* if no teams display you have no team joined */}
-                {teams.length > 0 ? teams.map((team) => (
-                  <div
-                    key={team.id}
-                    onClick={() => navigate(`${TeamHomeUrl}/${team.id}`)}
-                    className="
+                {teams.length > 0 ? (
+                  teams.map((team) => (
+                    <div
+                      key={team.id}
+                      onClick={() => navigate(`${TeamHomeUrl}/${team.id}`)}
+                      className="
                       group relative cursor-pointer overflow-hidden rounded-2xl
                       bg-white! border border-gray-100!
                       transition-all duration-300
                       hover:-translate-y-1
                     "
-                  >
-                    {/* subtle top color accent */}
-                    <div className="h-1 w-full bg-purple-600"></div>
+                    >
+                      {/* subtle top color accent */}
+                      <div className="h-1 w-full bg-purple-600"></div>
 
-                    <div className="p-6 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors duration-300">
-                          {team.title}
-                        </h3>
-                        <p className="mt-2 text-gray-600 text-sm leading-relaxed overflow-auto! h-12">
-                          {team.description || "No description available."}
-                        </p>
-                      </div>
+                      <div className="p-6 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors duration-300">
+                            {team.title}
+                          </h3>
+                          <p className="mt-2 text-gray-600 text-sm leading-relaxed overflow-auto! h-12">
+                            {team.description || "No description available."}
+                          </p>
+                        </div>
 
-                      <div className="opacity-0! mt-4 flex items-center justify-between text-purple-600 font-semibold opacity-80 group-hover:opacity-100! transition-opacity! duration-300!">
-                        <span>Open →</span>
+                        <div className="opacity-0! mt-4 flex items-center justify-between text-purple-600 font-semibold opacity-80 group-hover:opacity-100! transition-opacity! duration-300!">
+                          <span>Open →</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )) : (
-                  <p className="text-gray-500! px-4!">You have not joined any teams yet.</p>
+                  ))
+                ) : (
+                  <p className="text-gray-500! px-4!">
+                    You have not joined any teams yet.
+                  </p>
                 )}
 
                 {/* Show More Card */}
@@ -242,7 +258,9 @@ export function MainHome() {
                       hover:border-purple-600 hover:text-purple-700 hover:bg-purple-50
                     "
                   >
-                    <span className="text-sm font-semibold">Show more teams +</span>
+                    <span className="text-sm font-semibold">
+                      Show more teams +
+                    </span>
                   </div>
                 )}
               </div>
@@ -265,9 +283,9 @@ export function MainHome() {
         <PopUpMessage message={joinMessage} error={joinError} />
       )}
 
-      {
-        showRedirectError && <PopUpMessage message="" error={showRedirectError} />
-      }
+      {showRedirectError && (
+        <PopUpMessage message="" error={showRedirectError} />
+      )}
 
       {isModalOpen && (
         <CreateTeamModal

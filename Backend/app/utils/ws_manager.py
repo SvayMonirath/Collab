@@ -1,9 +1,7 @@
-from fastapi import WebSocket, WebSocketDisconnect
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import WebSocket
 from typing import Dict, List
 
 from ..Services.meeting_service import _init_meeting_state
-from ..Repositories.team_repository import TeamRepository
 
 class MeetingConnectionManager:
     def __init__(self):
@@ -75,21 +73,21 @@ class NotificationManager:
         if user_id not in self.active_connections:
             self.active_connections[user_id] = []
         self.active_connections[user_id].append(websocket)
-        print(f"WS connected for user {user_id}. Active connections: {list(self.active_connections.keys())}")
+        print(f"\nWS connected for user {user_id}. Active connections: {list(self.active_connections.keys())} (ws_manager.py)\n")
 
     def disconnect(self, websocket: WebSocket, user_id: int):
         if user_id in self.active_connections:
             self.active_connections[user_id].remove(websocket)
             if not self.active_connections[user_id]:
                 del self.active_connections[user_id]
-            print(f"WS disconnected for user {user_id}. Active connections: {list(self.active_connections.keys())}")
+            print(f"\nWS disconnected for user {user_id}. Active connections: {list(self.active_connections.keys())} (ws_manager.py)\n")
 
     async def notify_users(self, user_ids: List[int], payload: dict):
-        print(f"Active connections: {self.active_connections}")
-        print(f"Attempting to notify: {user_ids}")
+        print(f"\nActive connections: {self.active_connections} (ws_manager.py)\n")
+        print(f"\nAttempting to notify: {user_ids} (ws_manager.py)\n")
         for uid in user_ids:
             sockets = self.active_connections.get(uid, [])
-            print(f"User {uid} sockets: {sockets}")
+            print(f"\nUser {uid} sockets: {sockets} (ws_manager.py)\n")
             for ws in sockets:
                 await ws.send_json(payload)
 

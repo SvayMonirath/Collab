@@ -166,7 +166,7 @@ async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
 @meeting_router.websocket("/ws/Team/{team_id}")
 async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
     await team_manager.connect(websocket, team_id)
-    print(f"WebSocket connected for team {team_id}")
+    print(f"\nWebSocket connected for team {team_id} (meeting_route.py)\n")
 
     async with SessionLocal() as db:
         meeting_repo = MeetingRepository(db)
@@ -188,12 +188,11 @@ async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
         try:
             while True:
                 event = await websocket.receive_text()
-                print("WS event received:", event)
+                print(f"\nWS event received: {event} (meeting_route.py)\n")
 
                 if event == "start_meeting":
                     meeting = await meeting_repo.get_latest_active_meeting_by_team_id(team_id)
-                    print("Active meeting fetched:", meeting)
-
+                    print(f"\nActive meeting fetched: {meeting} (meeting_route.py)\n")
                     if meeting:
                         await team_manager.broadcast_active_meeting_update(
                             team_id,
@@ -219,8 +218,8 @@ async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
 
         except WebSocketDisconnect:
             team_manager.disconnect(websocket, team_id)
-            print(f"WebSocket disconnected for team {team_id}")
+            print(f"\nWebSocket disconnected for team {team_id} (meeting_route.py)\n")
         except Exception as e:
-            print("WebSocket error:", e)
+            print(f"\nWebSocket error: {e} (meeting_route.py)\n")
             team_manager.disconnect(websocket, team_id)
             await websocket.close(code=1011)

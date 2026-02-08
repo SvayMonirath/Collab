@@ -35,12 +35,12 @@ async def get_current_user_info(
 
 @user_router.websocket("/ws/notifications")
 async def notification_ws(websocket: WebSocket):
-    print("WS connection attempt received")
+    print("\nWS connection attempt received (user_route.py)\n")
     token = websocket.query_params.get("token")
-    print("WS token received:", token)
+    print(f"\nWS token received (user_route.py)\n")
 
     user = await get_user_from_token(token)
-    print("WS user from token:", user)
+    print(f"\nWS user from token: {user} (user_route.py)\n")
 
     if not user:
         await websocket.close(code=1008)

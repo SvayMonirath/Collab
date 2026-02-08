@@ -4,7 +4,7 @@ import { useRegister } from "../../hooks/authHooks";
 import type { RegisterTypes } from "../../types/registerTypes";
 
 import { PopUpMessage } from "../../components/popUpMessage";
-import { AuthNav } from "../../components/AuthNav";
+import { AuthNav } from "../../components/Navbars/AuthNav";
 import VideoCall from "../../assets/videoCall.svg";
 import GoogleIcon from "../../assets/googleIcon.png";
 import GithubIcon from "../../assets/githubIcon.png";
@@ -35,7 +35,7 @@ export function Register() {
     <div>
       <AuthNav />
       <main
-        className="bg-white min-h-screen flex flex-row justify-center!  sm:pb-30! pt-0! relative
+        className="bg-white min-h-screen flex flex-row justify-center!  sm:pb-30! pt-8! relative
                  md:text-left! md:items-center! lg:justify-around!
             "
       >

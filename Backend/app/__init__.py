@@ -10,7 +10,7 @@ def create_app() -> FastAPI:
 
     app = FastAPI(title="Collaborative Platform API", version="1.0.0")
 
-    origin = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+    origin = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
 
     app.add_middleware(
         CORSMiddleware,

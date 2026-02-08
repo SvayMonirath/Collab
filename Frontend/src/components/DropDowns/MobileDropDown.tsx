@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 // API
-import { LogoutUser } from "../api/authAPI";
+import { LogoutUser } from "../../api/authAPI";
 
 // URL PATH
-import { MainHomeUrl, MainTeamsUrl, TeamHomeUrl, TeamMeetingsUrl } from "../urlPath";
+import { MainHomeUrl, MainTeamsUrl, TeamHomeUrl, TeamMeetingsUrl } from "../../urlPath";
 
 interface MobileDropDownProps {
   showMobileMenu: boolean;

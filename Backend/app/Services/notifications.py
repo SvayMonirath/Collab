@@ -14,6 +14,6 @@ async def notify_team_meeting_starts(team_id: int, db):
         "message": f"A meeting has started for team {team_id}"
     }
 
-    print(f"Notifying members: {members}")
+    print(f"\nNotifying members: {members} (notifications.py)\n")
     await notification_manager.notify_users(members, payload)
 

@@ -3,7 +3,7 @@ import { MessageSquareDot, Mic, Mic2, PanelRightClose, PanelRightOpen, Phone, Se
 import { useParams } from "react-router-dom";
 
 // COMPONENTS
-import { AudioCallNav } from "../../components/AudioCallNav";
+import { AudioCallNav } from "../../components/Navbars/AudioCallNav";
 import { ControlBar } from "../../components/AudioCall/ControlBar";
 // Hooks
 import { useMeetingByID, useLeaveMeeting, useParticipantCountWebSocket } from "../../hooks/meetingHooks";

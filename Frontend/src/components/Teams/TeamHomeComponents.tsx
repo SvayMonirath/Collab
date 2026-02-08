@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { Coffee, Video, History, CheckCircle2, CheckCircle, Plus, ThumbsUp, SquarePen, Phone, X, Clock, Headphones } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 // hooks
 import { useCreateMeeting } from "../../hooks/meetingHooks";
@@ -253,10 +252,10 @@ export const ShowReviewsEmpty: React.FC = () => {
 export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }) => {
     return (
         <div
-            className="flex flex-col bg-gradient-to-r from-blue-500! to-blue-600! min-w-full! px-6! py-6! rounded-4xl! shadow-lg! text-white! gap-3!
+            className="flex flex-col bg-gradient-to-r from-purple-500! to-blue-600! min-w-full! px-6! py-6! rounded-4xl! shadow-lg! text-white! gap-3!
         hover:shadow-xl! transition-all! duration-300!"
         >
-            <Phone className="size-12! mb-2! bg-blue-300/50! p-3! rounded-2xl! fill-white!" />
+            <Phone className="size-12! mb-2! bg-purple-300/50! p-3! rounded-2xl! fill-white!" />
             <h3 className="text-2xl! font-bold">
             Start A Meeting
             </h3>
@@ -264,8 +263,8 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
             Start a instant meeting or schedule one for
             later.
             </p>
-            <button className="bg-white! text-blue-700! rounded-2xl! px-4! py-2! hover:bg-blue-100!" onClick={onOpen}>
-            Launch Now
+            <button className="bg-white! text-blue-700! rounded-2xl! px-4! py-2!" onClick={onOpen}>
+            Go Live Now
             </button>
         </div>
     );
@@ -273,7 +272,7 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
 
 export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID, onSubmit }) => {
     const [title , setTitle] = useState<string>("");
-    const { createNewMeeting, loading, error } = useCreateMeeting();
+    const { createNewMeeting, loading } = useCreateMeeting();
 
     const handleCreateMeeting = async () => {
         if(!title) return;

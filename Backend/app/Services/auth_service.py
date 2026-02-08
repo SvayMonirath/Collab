@@ -12,13 +12,16 @@ class AuthService:
 
     async def register_user(self, user_input: RegisterInput) -> User:
         if await self.repo.get_by_email(user_input.email):
-            raise ValueError("Email already registered (auth_service.py)")
+            print(f"\nEmail: {user_input.email} already registered (auth_service.py)\n")
+            raise ValueError("Email already registered")
 
         if await self.repo.get_by_username(user_input.username):
-            raise ValueError("Username already taken (auth_service.py)")
+            print(f"\nUsername: {user_input.username} already taken (auth_service.py)\n")
+            raise ValueError("Username already taken")
 
         if user_input.password != user_input.confirmPassword:
-            raise ValueError("Passwords do not match (auth_service.py)")
+            print(f"\nPasswords do not match for username: {user_input.username} (auth_service.py)\n")
+            raise ValueError("Passwords do not match")
 
         new_user = User(
             username=user_input.username,
@@ -35,7 +38,8 @@ class AuthService:
         user = await self.repo.get_by_username(login_input.username)
 
         if not user or not user.verify_password(login_input.password):
-            raise LookupError("Invalid email/username or password (auth_service.py)")
+            print(f"\nInvalid login attempt for username: {login_input.username} (auth_service.py)\n")
+            raise LookupError("Invalid email/username or password")
 
         token_data = {
             "user_id": user.id,

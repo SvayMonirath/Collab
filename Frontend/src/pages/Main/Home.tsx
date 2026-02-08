@@ -111,31 +111,31 @@ export function MainHome() {
               {/* Cards Data */}
               {[
                 {
-                  icon: <Clock className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
+                  icon: <Clock className="w-6 h-6 lg:w-8 lg:h-8 text-purple-700!" />,
                   label: "Weekly Meetings",
                   value: "0",
                   status: {
                     text: "On Track",
                     color: "bg-green-100 text-green-700",
                   },
-                  iconBg: "bg-purple-600",
+                  iconBg: "",
                 },
                 {
-                  icon: <Target className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
+                  icon: <Target className="w-6 h-6 lg:w-8 lg:h-8 text-red-700!" />,
                   label: "Open Tasks",
                   value: "0",
                   status: { text: "Overdue", color: "bg-red-100 text-red-700" },
-                  iconBg: "bg-red-600",
+                  iconBg: "",
                 },
                 {
-                  icon: <Zap className="w-6 h-6 lg:w-8 lg:h-8 text-white" />,
+                  icon: <Zap className="w-6 h-6 lg:w-8 lg:h-8 text-yellow-400!" />,
                   label: "AI Summarizes",
                   value: "0",
                   status: {
                     text: "New Insights",
-                    color: "bg-yellow-100 text-yellow-700",
+                    color: "bg-yellow-100 text-yellow-700 ",
                   },
-                  iconBg: "bg-yellow-500",
+                  iconBg: "",
                 },
               ].map((card, idx) => (
                 <div
@@ -193,7 +193,7 @@ export function MainHome() {
                                 md:text-2xl!
                             "
                 >
-                  Recently Joined Teams
+                  Latest Joined
                 </h1>
 
                 <button

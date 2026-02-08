@@ -43,12 +43,12 @@ export function TeamHome() {
                         sm:text-base! sm:inline-block! lg:text-lg!  max-w-md! lg:max-w-lg!
                         ">{ team?.description ? team.description : "Team Home Page - Manage your team workspace here." }</p>
                     </div>
-                    {/* Invite Member */}
 
-                    <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
-                        md:px-3! md:py-2! md:gap-2! hover:bg-blue-600! hover:text-white! transition-all! duration-200!
+                    {/* Invite Member */}
+                    <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:text-purple-700! font-bold! rounded-lg!
+                        md:px-3! md:py-2! md:gap-2! hover:bg-purple-600! hover:text-white! transition-all! duration-200!
                     " onClick={() => setShowInviteMemberModal(true)}>
-                        <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite Member</span>
+                        <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite User</span>
                     </div>
 
                     {/* Hamburger Menu */}

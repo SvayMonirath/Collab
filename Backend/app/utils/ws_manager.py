@@ -75,7 +75,7 @@ class NotificationManager:
         self.active_connections[user_id].append(websocket)
         print(f"\nWS connected for user {user_id}. Active connections: {list(self.active_connections.keys())} (ws_manager.py)\n")
 
-    def disconnect(self, websocket: WebSocket, user_id: int):
+    async def disconnect(self, websocket: WebSocket, user_id: int):
         if user_id in self.active_connections:
             self.active_connections[user_id].remove(websocket)
             if not self.active_connections[user_id]:

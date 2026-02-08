@@ -7,7 +7,8 @@ import { useNotificationWebsocket } from "../hooks/websocketHooks";
 import { useJoinMeeting } from "../hooks/meetingHooks";
 
 // Helpers
-import { MainTeamsUrl, TeamMeetingsUrl} from "../urlPath";
+import { MainTeamsUrl, TeamHomeUrl, TeamMeetingsUrl} from "../urlPath";
+import { TeamHome } from "../pages/TeamsPages/TeamHome";
 
 // todo[]: Real Time counter for unread notifications
 
@@ -65,7 +66,7 @@ export const NotificationBell: React.FC = () => {
                                 {!notification.meeting_data.status ? "LIVE NOW" : "ENDED"}
                             </span>
                             <button
-                                onClick={ () => navigate(`${MainTeamsUrl}`) }
+                                onClick={ () => navigate(`${TeamHomeUrl}/${notification.team_id}`) }
                                 className={`px-4! py-2! rounded-lg! text-sm! font-semibold! transition-all! duration-150!
                                 ${
                                     !notification.meeting_data.status

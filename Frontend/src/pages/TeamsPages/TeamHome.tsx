@@ -46,7 +46,7 @@ export function TeamHome() {
                     </div>
 
                     <div className="flex flex-row! items-center! gap-1 sm:gap-3">
-                        <NotificationBell />
+                        {/* <NotificationBell /> */}
 
                         <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:text-black! font-bold! rounded-lg!
                             md:px-3! md:py-2! md:gap-2! hover:bg-purple-600! hover:text-white! transition-all! duration-200!

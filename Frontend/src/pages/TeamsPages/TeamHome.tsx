@@ -126,6 +126,7 @@ export function TeamHome() {
                 TeamID={teamID}
                 Username={user?.username || ""}
                 Email={user?.email || ""}
+                onOpenStartMeeting={() => setShowCreateMeetingModal(true)}
             />
 
             {showCreateMeetingModal && <CreateMeetingModal onClose={() => {

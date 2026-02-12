@@ -88,4 +88,13 @@ class Meeting(Base):
     team = relationship("Team", backref="meetings")
     host = relationship("User", backref="hosted_meetings")
 
-# todo[]: Add Notification Model for persistant notifications to avoid losing notifications when user is offline, and also for better management of read/unread status and history of notifications
+# todo[x]: Add Notification Model for persistant notifications to avoid losing notifications when user is offline, and also for better management of read/unread status and history of notifications
+class Notification(Base):
+    __tablename__ = "notifications"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    description = Column(String, nullable=True)
+    seen = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship("User", backref="notifications")

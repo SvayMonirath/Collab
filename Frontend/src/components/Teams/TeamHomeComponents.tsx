@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Coffee, Video, History, CheckCircle2, CheckCircle, Plus, ThumbsUp, SquarePen, Phone, X, Clock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Coffee, Video, History, CheckCircle2, CheckCircle, Plus, ThumbsUp, SquarePen, Phone, X, Clock, Headphones } from "lucide-react";
 
 // hooks
 import { useCreateMeeting } from "../../hooks/meetingHooks";
@@ -28,26 +27,43 @@ interface InviteMemberModalProps {
 
 export const CurrentActiveMeeting: React.FC<CurrentActiveMeetingProps> = ({ activeMeeting }) => {
 
-    const navigate = useNavigate();
-    const { join, loading, error } = useJoinMeeting(activeMeeting.id);
+    const { join } = useJoinMeeting(activeMeeting.id);
 
     return (
         // todo[]: Improve Current Active Meeting UI
-        <div className="flex flex-col gap-2! sm:px-20! border border-gray-300! rounded-3xl! p-5! sm:py-10!">
-            <div className="flex flex-row gap-3 items-center mb-4! px-5!">
-                <div className="bg-green-500! rounded-full size-2! animate-pulse!"></div><span className="text-sm! text-green-600! font-bold! ">LIVE NOW</span>
-            </div>
-            <div className="flex flex-col mx-8! sm:mx-12! min-w-full">
-                <h1 className="text-black! font-semibold! font-mono! text-2xl! sm:text-4xl! lg:text-5xl!">{activeMeeting.title}</h1>
-                {/* Format Time  */}
-                <h3 className="flex flex-row items-center! text-center! gap-2! text-black/60! font-medium! text-md! sm:text-lg!"><Clock className="size-4! sm:size-5!"/><span>{formatElapsedTime(activeMeeting.started_at)}</span></h3>
+        <div className="flex flex-col justify-between! gap-4! sm:px-8! border border-gray-300/70! rounded-3xl! p-5! sm:py-6! bg-white!">
 
-                <button className="bg-blue-600! text-white! font-bold! flex flex-row items-center! rounded-2xl! mt-8! mx-5! justify-center! gap-3! size-fit sm:mt-15! hover:bg-blue-700! px-4! py-3! transition-all! duration-200!"
-                onClick={() => join()}>
-                  <Video className="size-4! sm:size-5! "/><span className="text-sm! sm:text-base!">Join Meeting</span>
-                </button>
+            {/* Live status */}
+            <div className="flex flex-row gap-2.5! items-center! px-4! py-1.5! rounded-full! w-fit!">
+                <div className="bg-green-500! rounded-full! size-2! animate-pulse!"></div>
+                <span className="text-xs! text-green-400! font-semibold! tracking-wide!">
+                    LIVE NOW
+                </span>
             </div>
+
+            {/* Content */}
+            <div className="flex flex-col mx-6! sm:mx-10! gap-1!">
+                <h1 className="text-gray-900! font-semibold! text-xl! sm:text-3xl! lg:text-4xl! leading-tight!">
+                    {activeMeeting.title}
+                </h1>
+
+                <h3 className="flex flex-row items-center! gap-2! text-gray-500! font-medium! text-sm! sm:text-base!">
+                    <Clock className="size-4! sm:size-4.5!" />
+                    <span>{formatElapsedTime(activeMeeting.started_at)}</span>
+                </h3>
+            </div>
+
+            {/* CTA */}
+            <button
+                onClick={() => join()}
+                className="bg-blue-500! text-white! font-semibold! flex flex-row items-center! rounded-xl! mx-4! justify-center! gap-2.5! px-4! py-2.5! hover:bg-blue-700! active:scale-[0.98]! transition-all! duration-150! shadow-sm!"
+            >
+                <Headphones className="size-5!" />
+                <span className="text-sm! sm:text-base!">Join meeting</span>
+            </button>
+
         </div>
+
     );
 }
 // Helper function to format elapsed time
@@ -236,10 +252,10 @@ export const ShowReviewsEmpty: React.FC = () => {
 export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }) => {
     return (
         <div
-            className="flex flex-col bg-gradient-to-r from-blue-500! to-blue-600! min-w-full! px-6! py-6! rounded-4xl! shadow-lg! text-white! gap-3!
+            className="flex flex-col bg-gradient-to-r from-purple-500! to-blue-600! min-w-full! px-6! py-6! rounded-4xl! shadow-lg! text-white! gap-3!
         hover:shadow-xl! transition-all! duration-300!"
         >
-            <Phone className="size-12! mb-2! bg-blue-300/50! p-3! rounded-2xl! fill-white!" />
+            <Phone className="size-12! mb-2! bg-purple-300/50! p-3! rounded-2xl! fill-white!" />
             <h3 className="text-2xl! font-bold">
             Start A Meeting
             </h3>
@@ -247,8 +263,8 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
             Start a instant meeting or schedule one for
             later.
             </p>
-            <button className="bg-white! text-blue-700! rounded-2xl! px-4! py-2! hover:bg-blue-100!" onClick={onOpen}>
-            Launch Now
+            <button className="bg-white! text-blue-700! rounded-2xl! px-4! py-2!" onClick={onOpen}>
+            Go Live Now
             </button>
         </div>
     );
@@ -256,7 +272,7 @@ export const AsideMeetingAction: React.FC<CreateMeetingModalProps> = ({ onOpen }
 
 export const CreateMeetingModal: React.FC<CreateMeetingModalProps> = ({ onClose, teamID, onSubmit }) => {
     const [title , setTitle] = useState<string>("");
-    const { createNewMeeting, loading, error } = useCreateMeeting();
+    const { createNewMeeting, loading } = useCreateMeeting();
 
     const handleCreateMeeting = async () => {
         if(!title) return;

@@ -1,3 +1,4 @@
+from urllib import response
 from fastapi import HTTPException, Response, WebSocket
 
 from ..Repositories.user_repository import UserRepository
@@ -11,12 +12,15 @@ class AuthService:
 
     async def register_user(self, user_input: RegisterInput) -> User:
         if await self.repo.get_by_email(user_input.email):
+            print(f"\nEmail: {user_input.email} already registered (auth_service.py)\n")
             raise ValueError("Email already registered")
 
         if await self.repo.get_by_username(user_input.username):
+            print(f"\nUsername: {user_input.username} already taken (auth_service.py)\n")
             raise ValueError("Username already taken")
 
         if user_input.password != user_input.confirmPassword:
+            print(f"\nPasswords do not match for username: {user_input.username} (auth_service.py)\n")
             raise ValueError("Passwords do not match")
 
         new_user = User(
@@ -25,12 +29,16 @@ class AuthService:
         )
 
         new_user.set_password(user_input.password)
-        return await self.repo.save(new_user)
 
-    async def login_user(self, login_input: LoginInput) -> str:
+        saved_user = await self.repo.save(new_user)
+
+        return saved_user
+
+    async def login_user(self, login_input: LoginInput):
         user = await self.repo.get_by_username(login_input.username)
 
         if not user or not user.verify_password(login_input.password):
+            print(f"\nInvalid login attempt for username: {login_input.username} (auth_service.py)\n")
             raise LookupError("Invalid email/username or password")
 
         token_data = {
@@ -40,5 +48,4 @@ class AuthService:
         token = create_jwt_token(token_data)
 
         return token
-
 

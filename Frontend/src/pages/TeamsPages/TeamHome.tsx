@@ -4,17 +4,19 @@ import { BookCheck,  Menu, Sparkle, UserPlus, Users, Video } from "lucide-react"
 
 // Components
 import { TeamSideBar } from "../../components/Teams/TeamSideBar";
-import { TeamMobileDropDown } from "../../components/MobileDropDown";
+import { TeamMobileDropDown } from "../../components/DropDowns/MobileDropDown";
 import { CurrentlyActiveMeetingEmpty, CurrentActiveMeeting, ShowTasksEmpty, ShowReviewsEmpty, AsideMeetingAction, CreateMeetingModal, InviteMemberModal } from "../../components/Teams/TeamHomeComponents";
+import { LoadingScreen } from "../../components/Loaders/LoadingScreenComponent";
 
 // Hooks
 import { useTeamById } from "../../hooks/teamHooks";
 import { useCurrentUser } from "../../hooks/userHooks";
 import { useLatestActiveMeetingWS } from "../../hooks/meetingHooks";
+import { NotificationBell } from "../../components/NotificationBell";
 
 export function TeamHome() {
     const { teamID } = useParams<{ teamID: string }>();
-    const { team, loading, error } = useTeamById(teamID || "");
+    const { team, loading: teamLoading, error: teamError } = useTeamById(teamID || "");
     const { user, loading: userLoading, error: userError } = useCurrentUser();
     const { latestActiveMeeting, startMeeting } = useLatestActiveMeetingWS(teamID || "");
 
@@ -24,6 +26,8 @@ export function TeamHome() {
     const [showInviteMemberModal, setShowInviteMemberModal] = useState(false);
 
     const [showCreateMeetingModal, setShowCreateMeetingModal] = useState(false);
+
+    const loading = userLoading && teamLoading;
 
     return (
         <div>
@@ -40,12 +44,15 @@ export function TeamHome() {
                         sm:text-base! sm:inline-block! lg:text-lg!  max-w-md! lg:max-w-lg!
                         ">{ team?.description ? team.description : "Team Home Page - Manage your team workspace here." }</p>
                     </div>
-                    {/* Invite Member */}
 
-                    <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:border-2 sm:border-blue-500! sm:text-blue-500! font-bold! rounded-lg!
-                        md:px-3! md:py-2! md:gap-2! hover:bg-blue-600! hover:text-white! transition-all! duration-200!
-                    " onClick={() => setShowInviteMemberModal(true)}>
-                        <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite Member</span>
+                    <div className="flex flex-row! items-center! gap-1 sm:gap-3">
+                        <NotificationBell />
+
+                        <div className="flex flex-row items-center px-3! py-2! gap-2! cursor-pointer! text-black! sm:text-black! font-bold! rounded-lg!
+                            md:px-3! md:py-2! md:gap-2! hover:bg-purple-600! hover:text-white! transition-all! duration-200!
+                        " onClick={() => setShowInviteMemberModal(true)}>
+                            <span><UserPlus className="w-5! h-5!"/></span><span className="hidden! md:inline-block!">Invite User</span>
+                        </div>
                     </div>
 
                     {/* Hamburger Menu */}
@@ -57,7 +64,7 @@ export function TeamHome() {
                     </div>
                 </div>
 
-                {/* todo[m]: Fetch Team Info For updating Hero Overview */}
+                {/* todo[]: Fetch Team Info For updating Hero Overview */}
                 <div className="grid grid-cols-2 gap-4 lg:gap-8 md:grid-cols-4 min-w-full mb-10!">
                     {[
                         { label: "Total Members", value: team?.member_count, icon: <Users /> , iconColor: "text-orange-700!", borderColor: "border-black!", bgColor: "bg-white!" },
@@ -119,12 +126,14 @@ export function TeamHome() {
                 TeamID={teamID}
                 Username={user?.username || ""}
                 Email={user?.email || ""}
+                onOpenStartMeeting={() => setShowCreateMeetingModal(true)}
             />
 
             {showCreateMeetingModal && <CreateMeetingModal onClose={() => {
                 setShowCreateMeetingModal(false);
             } } teamID={teamID} onSubmit={startMeeting}/>}
             {showInviteMemberModal && <InviteMemberModal team={team} onClose={() => setShowInviteMemberModal(false)} />}
+            {loading && <LoadingScreen message="Loading team information..." />}
         </div>
     );
 }

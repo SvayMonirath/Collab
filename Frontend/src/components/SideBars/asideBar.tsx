@@ -1,10 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { House, Users, Calendar, NotebookText, LogOut } from "lucide-react";
 
-import { LogoutUser } from "../api/authAPI";
+import { LogoutUser } from "../../api/authAPI";
 
 // Path URL
-import { MainHomeUrl, MainTeamsUrl } from "../urlPath";
+import { MainHomeUrl, MainTeamsUrl } from "../../urlPath";
 
 
 const active =

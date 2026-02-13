@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { AuthNav } from "../../components/AuthNav";
+import { AuthNav } from "../../components/Navbars/AuthNav";
 import Collaboration from "../../assets/collaboration.svg";
 import GoogleIcon from "../../assets/googleIcon.png";
 import GithubIcon from "../../assets/githubIcon.png";

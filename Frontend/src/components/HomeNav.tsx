@@ -1,7 +1,6 @@
 import { useState } from "react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Bell, Menu} from "lucide-react";
+import { Menu} from "lucide-react";
 
 // Components
 import { MainMobileDropDown } from "./MobileDropDown";
@@ -61,7 +60,7 @@ export const HomeNav: React.FC<HomeNavProps> = ({ onOpenCreateTeam, onOpenJoinTe
                     "
             >
               {/* Notification Icon */}
-              {/* todo[]: Show Notification */}
+              {/* todo[x]: Show Notification */}
               <NotificationBell />
 
               {/* profile or hamburger menu */}

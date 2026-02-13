@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 // Components
 import { CreateTeamModal } from "../../components/HomeComponents";
 import { JoinTeamModal } from "../../components/HomeComponents";
-import { SideBar } from "../../components/asideBar";
-import { HomeNav } from "../../components/HomeNav";
+import { SideBar } from "../../components/SideBars/asideBar";
+import { HomeNav } from "../../components/Navbars/HomeNav";
+import { LoadingScreen } from "../../components/Loaders/LoadingScreenComponent";
 
 // Hooks
 import { useCurrentUser } from "../../hooks/userHooks";
@@ -17,11 +18,9 @@ import { useUserTeams } from "../../hooks/teamHooks";
 // Types
 import type { CreateTeamSchemas, JoinTeamSchemas } from "../../types/teamTypes";
 
-import {  TeamHomeUrl } from "../../urlPath";
-
+import { TeamHomeUrl } from "../../urlPath";
 
 export function MainTeams() {
-
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
@@ -36,11 +35,7 @@ export function MainTeams() {
   const { create, loading: createLoading } = useCreateTeam();
   const { join, loading: joinLoading } = useJoinTeam();
 
-  const {
-    user,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUser();
+  const { user, loading: userLoading, error: userError } = useCurrentUser();
 
   const handleCreateTeam = async (teamData: CreateTeamSchemas) => {
     const result = await create(teamData);
@@ -71,7 +66,6 @@ export function MainTeams() {
         <SideBar />
         {/* TEAMS CONTENT */}
         <div className="flex flex-col flex-1! pt-20! px-8! sm:px-16! sm:pt-24! lg:px-40! lg:pt-32! ">
-
           <div className="flex flex-row justify-between items-center mb-6! md:mb-8! lg:mb-12!">
             <div className="flex flex-col">
               <h1 className="font-medium text-2xl! text-black! sm:text-3xl! lg:text-4xl!">
@@ -81,8 +75,7 @@ export function MainTeams() {
                 Manage your teams workspaces
               </p>
             </div>
-            <Settings
-              className="w-6! h-6! text-gray-600! hover:cursor-pointer! md:w-7! md:h-7!"/>
+            <Settings className="w-6! h-6! text-gray-600! hover:cursor-pointer! md:w-7! md:h-7!" />
           </div>
           {/* todo[x]: Teams Page */}
 
@@ -146,6 +139,9 @@ export function MainTeams() {
           loading={joinLoading}
         />
       )}
+
+      {(teamsLoading || userLoading) && <LoadingScreen message="Loading..."/>}
     </div>
+
   );
 }

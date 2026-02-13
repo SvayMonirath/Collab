@@ -5,7 +5,7 @@ import ReviewApprove from "../../assets/Review_Approve.svg";
 import CallingAmico from "../../assets/Calling-amico.svg";
 import LiveTranscript from "../../assets/live_transcription.svg";
 import AiSuggestion from "../../assets/AI_suggestion.svg";
-import UnAuthNav from "../../components/unAuthNav";
+import UnAuthNav from "../../components/Navbars/unAuthNav";
 
 export function Landing() {
   const features = [

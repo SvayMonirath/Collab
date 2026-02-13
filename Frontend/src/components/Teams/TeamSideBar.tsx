@@ -4,7 +4,7 @@ import { BookCheck, Calendar, DoorOpen, LayoutTemplate, Users, Video } from "luc
 
 // Path URL
 import { MainHomeUrl, TeamHomeUrl, TeamMeetingsUrl } from "../../urlPath";
-import { TeamHome } from "../../pages/TeamsPages/TeamHome";
+
 
 const active =
   "w-12 h-12 p-2 bg-black text-white! rounded-xl flex items-center justify-center transition-all duration-200";
@@ -50,7 +50,7 @@ export const TeamSideBar: React.FC<TeamSideBarProps> = ({ TeamID }) => {
             <Users />
             </NavLink>
 
-            {/* todo[m]: Create Team Meetings page showing both active and upcoming meetings and inactive meetings */}
+            {/* todo[]: Create Team Meetings page showing both active and upcoming meetings and inactive meetings */}
             <NavLink
             to={`${TeamMeetingsUrl}/${TeamID}`}
             className={({ isActive }) => (isActive ? active : inactive)}

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, WebSocket
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -39,7 +39,7 @@ async def login(login_input: LoginInput, response: Response, db: AsyncSession = 
             max_age=JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60,
             expires=JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60,
             samesite="lax",
-            secure=False,  # Set to True in production with HTTPS
+            secure=False,
         )
 
         return {"message": "Login successful"}

@@ -56,7 +56,7 @@ class TeamService:
         member_access = team and self.repo.is_member(team, user_id)
 
         if not owner_access and not member_access:
-            raise PermissionError("You do not have access to this team")
+            raise PermissionError("You do not have access to this team ")
 
         member_count = len(team.members) if team else 0
 

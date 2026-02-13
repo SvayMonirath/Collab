@@ -21,7 +21,7 @@ class MeetingService:
 
     async def start_meeting(self, team_id: int, meeting_data: MeetingCreateSchema = Body(...), user_id: int = None):
         title = meeting_data.title
-        print("Meeting Title:", title)
+        print(f"\nMeeting Title: {title} (meeting_service.py)\n")
 
         team = await self.team_repo.get_by_id(team_id)
         if not team:

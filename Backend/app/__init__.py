@@ -10,7 +10,7 @@ def create_app() -> FastAPI:
 
     app = FastAPI(title="Collaborative Platform API", version="1.0.0")
 
-    origin = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+    origin = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
 
     app.add_middleware(
         CORSMiddleware,
@@ -20,11 +20,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    from .Routers import auth_route, team_route, user_route, meeting_route
+    from .Routers import auth_route, team_route, user_route, meeting_route, notification_route
 
     app.include_router(auth_route.auth_router)
     app.include_router(team_route.team_router)
     app.include_router(user_route.user_router)
     app.include_router(meeting_route.meeting_router)
+    app.include_router(notification_route.notification_router)
 
     return app

@@ -5,10 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..Database.database import get_db, SessionLocal
 from ..utils.jwt_helper import get_current_user
 from ..utils.ws_manager import meeting_manager, team_manager
-from ..Services.notifications import notify_team_meeting_starts
+from ..Services.notifications import NotificationService
 from ..Schemas.meeting_schemas import MeetingCreateSchema
 from ..Services.meeting_service import MeetingService
 from ..Repositories.meeting_repository import MeetingRepository
+from ..Repositories.notification_repository import NotificationRepository
 from ..Repositories.team_repository import TeamRepository
 from ..Repositories.user_repository import UserRepository
 
@@ -43,7 +44,8 @@ async def start_meeting(team_id: int, meeting_data: MeetingCreateSchema = Body(.
         user_id = current_user.get("user_id")
         meeting = await meeting_service.start_meeting(team_id=team_id, meeting_data=meeting_data, user_id=user_id)
 
-        await notify_team_meeting_starts(team_id, db)
+        notification_service = NotificationService(NotificationRepository(db), TeamRepository(db))
+        await notification_service.notify_team_meeting_starts(team_id, meeting_data, user_id, db)
 
         return {"message": f"Meeting started successfully", "meeting_id": meeting.id}
     except LookupError as le:
@@ -166,7 +168,7 @@ async def meeting_websocket_endpoint(websocket: WebSocket, meeting_id: int):
 @meeting_router.websocket("/ws/Team/{team_id}")
 async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
     await team_manager.connect(websocket, team_id)
-    print(f"WebSocket connected for team {team_id}")
+    print(f"\nWebSocket connected for team {team_id} (meeting_route.py)\n")
 
     async with SessionLocal() as db:
         meeting_repo = MeetingRepository(db)
@@ -188,12 +190,11 @@ async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
         try:
             while True:
                 event = await websocket.receive_text()
-                print("WS event received:", event)
+                print(f"\nWS event received: {event} (meeting_route.py)\n")
 
                 if event == "start_meeting":
                     meeting = await meeting_repo.get_latest_active_meeting_by_team_id(team_id)
-                    print("Active meeting fetched:", meeting)
-
+                    print(f"\nActive meeting fetched: {meeting} (meeting_route.py)\n")
                     if meeting:
                         await team_manager.broadcast_active_meeting_update(
                             team_id,
@@ -219,8 +220,8 @@ async def team_websocket_endpoint(websocket: WebSocket, team_id: int):
 
         except WebSocketDisconnect:
             team_manager.disconnect(websocket, team_id)
-            print(f"WebSocket disconnected for team {team_id}")
+            print(f"\nWebSocket disconnected for team {team_id} (meeting_route.py)\n")
         except Exception as e:
-            print("WebSocket error:", e)
+            print(f"\nWebSocket error: {e} (meeting_route.py)\n")
             team_manager.disconnect(websocket, team_id)
             await websocket.close(code=1011)
